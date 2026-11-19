@@ -48,9 +48,9 @@ function CardImage({ project, className, sizes }: { project: ProjectCardData; cl
 export function ProjectRowCard({ project }: { project: ProjectCardData }) {
   const meta = cardMeta(project);
   return (
-    <article className="grid gap-6 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card md:grid-cols-[630px_1fr] md:gap-10">
-      <CardImage project={project} sizes="(min-width: 768px) 630px, 100vw" className="aspect-[630/474]" />
-      <div className="flex flex-col justify-between gap-8 px-3 pb-6 pt-2 md:py-9 md:pr-10">
+    <article className="grid gap-6 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card lg:grid-cols-[minmax(0,630px)_1fr] lg:gap-10">
+      <CardImage project={project} sizes="(min-width: 1024px) 630px, 100vw" className="aspect-[630/474]" />
+      <div className="flex flex-col justify-between gap-8 px-3 pb-6 pt-2 lg:py-9 lg:pr-10">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-600">{meta || " "}</p>
         <div className="flex flex-col gap-4">
           <h3 className="font-serif text-3xl leading-[1.15] text-neutral-950 sm:text-4xl md:text-[40px]">{project.title}</h3>

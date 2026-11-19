@@ -39,7 +39,7 @@ export function ProjectGrid({
   }
 
   return (
-    <div className="flex flex-col items-center gap-12">
+    <div className="flex w-full min-w-0 flex-col items-center gap-12">
       <Tabs items={tabItems} value={category} onChange={changeCategory} label="Project categories" />
 
       {shown.length === 0 ? (

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { legacyRedirects } from "./src/lib/redirects";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -8,6 +9,9 @@ const nextConfig: NextConfig = {
   // Local in-process Postgres used when no DATABASE_URL is set outside production.
   serverExternalPackages: ["@electric-sql/pglite", "drizzle-kit"],
   partialPrefetching: true,
+  async redirects() {
+    return legacyRedirects;
+  },
   turbopack: {
     rules: {
       "*.css": {
