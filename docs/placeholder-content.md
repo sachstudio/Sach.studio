@@ -13,3 +13,13 @@ Emily Carter and Daniel Brooks are from the Figma frames. The other four come fr
 
 ## Social links (`src/content/site.ts`)
 LinkedIn, Instagram and Twitter / X point to `/contact` until the real profile URLs are provided.
+
+## Case studies (`src/db/seed-data.ts`)
+- Hasiru Dala: complete, from the owner's copy.
+- Gulf CV Writers, Cosmion: text is from the Figma frames. Their result stats are left empty because the design repeats the same placeholder numbers (42%, 180%, 35+) on every case study; add real numbers in the admin.
+- Master Systems: About is the owner's text; Problem, Solutions, Results and Conclusion were drafted because the Figma frame repeats the Hasiru Dala text there.
+- Arizona (loan page), Arizona (investment dashboard) and MediSmart are cards only, with no detail text. "View Figma design" and "Live website" buttons stay hidden until their URLs are added in the admin.
+- The Cosmion Works-card image is its hero image because the design has no card image for it.
+
+## Blog posts (`src/db/seed-data.ts`)
+The four titles come from the old Framer site (the Figma list repeats dummy titles). Bodies are placeholder text; covers are the four Figma stock images.

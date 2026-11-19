@@ -326,5 +326,77 @@
     "w": 150,
     "h": 150,
     "out": "thanks/hands.png"
+  },
+  {
+    "frame": "gulf",
+    "x": 320,
+    "y": 4300,
+    "w": 1280,
+    "h": 637,
+    "out": "projects/gulf-cv-writers-feature.webp"
+  },
+  {
+    "frame": "gulf",
+    "x": 320,
+    "y": 5775,
+    "w": 1280,
+    "h": 725,
+    "out": "projects/gulf-cv-writers-gallery-1.webp"
+  },
+  {
+    "frame": "gulf",
+    "x": 320,
+    "y": 6540,
+    "w": 1280,
+    "h": 630,
+    "out": "projects/gulf-cv-writers-gallery-2.webp"
+  },
+  {
+    "frame": "cosmion",
+    "x": 320,
+    "y": 4332,
+    "w": 1280,
+    "h": 638,
+    "out": "projects/cosmion-feature.webp"
+  },
+  {
+    "frame": "cosmion",
+    "x": 320,
+    "y": 5837,
+    "w": 1280,
+    "h": 738,
+    "out": "projects/cosmion-gallery-1.webp"
+  },
+  {
+    "frame": "cosmion",
+    "x": 320,
+    "y": 6595,
+    "w": 1280,
+    "h": 640,
+    "out": "projects/cosmion-gallery-2.webp"
+  },
+  {
+    "frame": "master",
+    "x": 320,
+    "y": 4017,
+    "w": 1280,
+    "h": 633,
+    "out": "projects/master-systems-feature.webp"
+  },
+  {
+    "frame": "master",
+    "x": 320,
+    "y": 5665,
+    "w": 1280,
+    "h": 735,
+    "out": "projects/master-systems-gallery-1.webp"
+  },
+  {
+    "frame": "master",
+    "x": 320,
+    "y": 6432,
+    "w": 1280,
+    "h": 630,
+    "out": "projects/master-systems-gallery-2.webp"
   }
 ]
