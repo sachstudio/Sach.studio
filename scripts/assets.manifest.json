@@ -1,0 +1,330 @@
+[
+  {
+    "frame": "home",
+    "x": 320,
+    "y": 833,
+    "w": 1280,
+    "h": 720,
+    "out": "hero/hero-photo.webp"
+  },
+  {
+    "frame": "home",
+    "x": 590,
+    "y": 1995,
+    "w": 200,
+    "h": 90,
+    "out": "logos/gulf-cv-writers.png"
+  },
+  {
+    "frame": "home",
+    "x": 860,
+    "y": 1995,
+    "w": 210,
+    "h": 90,
+    "out": "logos/hasiru-dala.png"
+  },
+  {
+    "frame": "home",
+    "x": 1145,
+    "y": 1995,
+    "w": 170,
+    "h": 90,
+    "out": "logos/master-systems.png"
+  },
+  {
+    "frame": "home",
+    "x": 320,
+    "y": 4273,
+    "w": 380,
+    "h": 380,
+    "out": "process/step-1.png"
+  },
+  {
+    "frame": "home",
+    "x": 770,
+    "y": 4273,
+    "w": 380,
+    "h": 380,
+    "out": "process/step-2.png"
+  },
+  {
+    "frame": "home",
+    "x": 1220,
+    "y": 4273,
+    "w": 380,
+    "h": 380,
+    "out": "process/step-3.png"
+  },
+  {
+    "frame": "home",
+    "x": 976,
+    "y": 6796,
+    "w": 634,
+    "h": 300,
+    "out": "why/integrations.png"
+  },
+  {
+    "frame": "home",
+    "x": 366,
+    "y": 8238,
+    "w": 80,
+    "h": 52,
+    "out": "testimonials/avatar-1.png"
+  },
+  {
+    "frame": "home",
+    "x": 1041,
+    "y": 8238,
+    "w": 80,
+    "h": 52,
+    "out": "testimonials/avatar-2.png"
+  },
+  {
+    "frame": "about",
+    "x": 970,
+    "y": 1170,
+    "w": 630,
+    "h": 768,
+    "out": "about/founder.webp"
+  },
+  {
+    "frame": "about",
+    "x": 440,
+    "y": 2435,
+    "w": 140,
+    "h": 130,
+    "out": "values/quality.png"
+  },
+  {
+    "frame": "about",
+    "x": 870,
+    "y": 2435,
+    "w": 140,
+    "h": 130,
+    "out": "values/communication.png"
+  },
+  {
+    "frame": "about",
+    "x": 1300,
+    "y": 2435,
+    "w": 140,
+    "h": 130,
+    "out": "values/growth.png"
+  },
+  {
+    "frame": "about",
+    "x": 1730,
+    "y": 2435,
+    "w": 140,
+    "h": 130,
+    "out": "values/design.png"
+  },
+  {
+    "frame": "projects",
+    "x": 320,
+    "y": 620,
+    "w": 630,
+    "h": 476,
+    "out": "projects/hasiru-dala-card.webp"
+  },
+  {
+    "frame": "projects",
+    "x": 320,
+    "y": 1160,
+    "w": 630,
+    "h": 470,
+    "out": "projects/gulf-cv-writers-card.webp"
+  },
+  {
+    "frame": "projects",
+    "x": 320,
+    "y": 1700,
+    "w": 630,
+    "h": 470,
+    "out": "projects/master-systems-card.webp"
+  },
+  {
+    "frame": "projects",
+    "x": 320,
+    "y": 2236,
+    "w": 630,
+    "h": 474,
+    "out": "projects/arizona-loan-card.webp"
+  },
+  {
+    "frame": "webapps",
+    "x": 320,
+    "y": 596,
+    "w": 614,
+    "h": 484,
+    "out": "projects/arizona-investment-card.webp"
+  },
+  {
+    "frame": "webapps",
+    "x": 986,
+    "y": 596,
+    "w": 614,
+    "h": 484,
+    "out": "projects/medismart-card.webp"
+  },
+  {
+    "frame": "hdi",
+    "x": 320,
+    "y": 586,
+    "w": 1280,
+    "h": 724,
+    "out": "projects/hasiru-dala-hero.webp"
+  },
+  {
+    "frame": "gulf",
+    "x": 320,
+    "y": 590,
+    "w": 1280,
+    "h": 722,
+    "out": "projects/gulf-cv-writers-hero.webp"
+  },
+  {
+    "frame": "cosmion",
+    "x": 320,
+    "y": 590,
+    "w": 1280,
+    "h": 722,
+    "out": "projects/cosmion-hero.webp"
+  },
+  {
+    "frame": "master",
+    "x": 320,
+    "y": 590,
+    "w": 1280,
+    "h": 722,
+    "out": "projects/master-systems-hero.webp"
+  },
+  {
+    "frame": "hdi",
+    "x": 310,
+    "y": 1505,
+    "w": 300,
+    "h": 100,
+    "out": "logos/case-hasiru-dala.png"
+  },
+  {
+    "frame": "gulf",
+    "x": 310,
+    "y": 1505,
+    "w": 300,
+    "h": 100,
+    "out": "logos/case-gulf-cv-writers.png"
+  },
+  {
+    "frame": "cosmion",
+    "x": 310,
+    "y": 1505,
+    "w": 320,
+    "h": 110,
+    "out": "logos/cosmion.png"
+  },
+  {
+    "frame": "master",
+    "x": 310,
+    "y": 1505,
+    "w": 300,
+    "h": 100,
+    "out": "logos/case-master-systems.png"
+  },
+  {
+    "frame": "hdi",
+    "x": 320,
+    "y": 2120,
+    "w": 1280,
+    "h": 410,
+    "out": "projects/hasiru-dala-banner.webp"
+  },
+  {
+    "frame": "hdi",
+    "x": 320,
+    "y": 4300,
+    "w": 1280,
+    "h": 636,
+    "out": "projects/hasiru-dala-feature.webp"
+  },
+  {
+    "frame": "hdi",
+    "x": 320,
+    "y": 5776,
+    "w": 1280,
+    "h": 732,
+    "out": "projects/hasiru-dala-gallery-1.webp"
+  },
+  {
+    "frame": "hdi",
+    "x": 320,
+    "y": 6536,
+    "w": 1280,
+    "h": 636,
+    "out": "projects/hasiru-dala-gallery-2.webp"
+  },
+  {
+    "frame": "gulf",
+    "x": 320,
+    "y": 2090,
+    "w": 1280,
+    "h": 410,
+    "out": "projects/gulf-cv-writers-banner.webp"
+  },
+  {
+    "frame": "cosmion",
+    "x": 320,
+    "y": 2125,
+    "w": 1280,
+    "h": 410,
+    "out": "projects/cosmion-banner.webp"
+  },
+  {
+    "frame": "master",
+    "x": 320,
+    "y": 2050,
+    "w": 1280,
+    "h": 412,
+    "out": "projects/master-systems-banner.webp"
+  },
+  {
+    "frame": "blogs",
+    "x": 320,
+    "y": 426,
+    "w": 606,
+    "h": 324,
+    "out": "blogs/wcag-contrast-tools-cover.webp"
+  },
+  {
+    "frame": "blogs",
+    "x": 996,
+    "y": 426,
+    "w": 604,
+    "h": 324,
+    "out": "blogs/master-systems-cover.webp"
+  },
+  {
+    "frame": "blogs",
+    "x": 320,
+    "y": 990,
+    "w": 606,
+    "h": 320,
+    "out": "blogs/gulf-cv-writers-cover.webp"
+  },
+  {
+    "frame": "blogs",
+    "x": 996,
+    "y": 990,
+    "w": 604,
+    "h": 320,
+    "out": "blogs/design-process-cover.webp"
+  },
+  {
+    "frame": "thanks",
+    "x": 800,
+    "y": 310,
+    "w": 150,
+    "h": 150,
+    "out": "thanks/hands.png"
+  }
+]
