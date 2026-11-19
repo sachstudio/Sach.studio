@@ -1,0 +1,11 @@
+node_modules/
+.next/
+.env*.local
+.env
+.vercel/
+.superpowers/
+design/figma-renders/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts
