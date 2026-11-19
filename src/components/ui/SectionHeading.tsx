@@ -23,6 +23,8 @@ export function SectionHeading({
   return (
     <div
       className={cn(
+        // The page's main heading eases in once on load; section headings further down stay still.
+        Tag === "h1" && "motion-enter",
         "flex flex-col gap-5",
         align === "center" ? "items-center text-center" : "items-start text-left",
         className,

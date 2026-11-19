@@ -11,6 +11,22 @@ export function Header({ currentPath }: { currentPath?: string }) {
   const routerPath = usePathname();
   const path = currentPath ?? routerPath ?? "/";
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const expanded = open && !closing;
+
+  /** Opening fades the menu in; closing fades it out (100ms) before it is removed. */
+  function toggleMenu() {
+    if (!open) {
+      setOpen(true);
+      return;
+    }
+    if (closing) return;
+    setClosing(true);
+    window.setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, 100);
+  }
 
   return (
     <header className="relative z-30 px-4 pt-6 sm:px-6 sm:pt-10">
@@ -36,7 +52,7 @@ export function Header({ currentPath }: { currentPath?: string }) {
                 href={link.href}
                 aria-current={current ? "page" : undefined}
                 className={cn(
-                  "text-[15px] font-medium transition-colors",
+                  "text-[15px] font-medium",
                   current ? "text-blue-500" : "text-neutral-800 hover:text-blue-500",
                 )}
               >
@@ -48,9 +64,9 @@ export function Header({ currentPath }: { currentPath?: string }) {
 
         <button
           type="button"
-          aria-expanded={open}
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
+          aria-expanded={expanded}
+          aria-label={expanded ? "Close menu" : "Open menu"}
+          onClick={toggleMenu}
           className="flex size-10 items-center justify-center rounded-lg text-neutral-800 md:hidden"
         >
           <svg aria-hidden viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -62,7 +78,10 @@ export function Header({ currentPath }: { currentPath?: string }) {
       {open && (
         <nav
           aria-label="Mobile"
-          className="mx-auto mt-2 flex max-w-[1300px] flex-col rounded-2xl border border-neutral-200 bg-white p-2 shadow-card md:hidden"
+          className={cn(
+            "mx-auto mt-2 flex max-w-[1300px] flex-col rounded-2xl border border-neutral-200 bg-white p-2 shadow-card md:hidden",
+            closing ? "motion-exit" : "motion-enter-small",
+          )}
         >
           {site.nav.map((link) => {
             const current = isCurrentPath(link.href, path);

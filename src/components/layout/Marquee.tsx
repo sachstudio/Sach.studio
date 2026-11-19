@@ -22,7 +22,8 @@ function Phrase() {
 export function Marquee() {
   return (
     <div aria-hidden className="overflow-hidden py-10 sm:py-14">
-      <div className="flex w-max animate-[marquee_28s_linear_infinite] motion-reduce:animate-none">
+      {/* Documented exception to the duration tokens: a slow, linear ticker taken from the design. */}
+      <div className="motion-ticker flex w-max animate-[marquee_28s_linear_infinite] motion-reduce:animate-none">
         <Phrase />
         <Phrase />
         <Phrase />

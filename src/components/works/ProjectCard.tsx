@@ -48,7 +48,7 @@ function CardImage({ project, className, sizes }: { project: ProjectCardData; cl
 export function ProjectRowCard({ project }: { project: ProjectCardData }) {
   const meta = cardMeta(project);
   return (
-    <article className="grid gap-6 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card lg:grid-cols-[minmax(0,630px)_1fr] lg:gap-10">
+    <article className="motion-lift grid gap-6 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card lg:grid-cols-[minmax(0,630px)_1fr] lg:gap-10">
       <CardImage project={project} sizes="(min-width: 1024px) 630px, 100vw" className="aspect-[630/474]" />
       <div className="flex flex-col justify-between gap-8 px-3 pb-6 pt-2 lg:py-9 lg:pr-10">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-600">{meta || " "}</p>
@@ -66,7 +66,7 @@ export function ProjectRowCard({ project }: { project: ProjectCardData }) {
 export function ProjectTileCard({ project, showDate = false }: { project: ProjectCardData; showDate?: boolean }) {
   const meta = showDate ? (project.displayDate ?? cardMeta(project)) : "";
   return (
-    <article className="flex flex-col gap-5">
+    <article className="motion-lift flex flex-col gap-5">
       <div className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
         <CardImage project={project} sizes="(min-width: 768px) 400px, 100vw" className="aspect-[4/3]" />
       </div>

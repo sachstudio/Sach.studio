@@ -69,3 +69,96 @@ body {
     transform: translateX(-50%);
   }
 }
+
+/* ---------- Motion ----------
+ * Durations are 100 / 150 / 200 / 300ms only. Enter uses ease-out, exit uses ease-in.
+ * Only transform and opacity are animated. Reduced-motion is handled by the rule above.
+ */
+:root {
+  --motion-100: 100ms;
+  --motion-150: 150ms;
+  --motion-200: 200ms;
+  --motion-300: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+@keyframes motion-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes motion-enter-small {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes motion-exit {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Page-load reveal for the first thing on a page; stagger with --motion-delay (0 / 100 / 200ms). */
+.motion-enter {
+  animation: motion-enter var(--motion-300) var(--ease-out) both;
+  animation-delay: var(--motion-delay, 0ms);
+}
+
+/* Content that appears after an action: an opened answer, a message, a changed list. */
+.motion-enter-small {
+  animation: motion-enter-small var(--motion-150) var(--ease-out) both;
+}
+
+.motion-exit {
+  animation: motion-exit var(--motion-100) var(--ease-in) both;
+}
+
+/* Hover and press feedback: a 2px lift, never a scale or bounce. */
+.motion-lift {
+  transition: transform var(--motion-200) var(--ease-out);
+}
+.motion-lift:hover {
+  transform: translateY(-2px);
+}
+
+.motion-press {
+  transition:
+    transform var(--motion-150) var(--ease-out),
+    opacity var(--motion-150) var(--ease-out);
+}
+.motion-press:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+.motion-press:active {
+  opacity: 1;
+  transform: none;
+  transition-duration: var(--motion-100);
+}
+
+.motion-rotate {
+  transition: transform var(--motion-150) var(--ease-out);
+}
+
+/* The "Let's work together" band is a functional ticker from the design; it pauses when pointed at. */
+.motion-ticker:hover {
+  animation-play-state: paused;
+}

@@ -61,7 +61,7 @@ function ArrowButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "flex size-[50px] items-center justify-center rounded-xl border bg-white transition-colors",
+        "flex size-[50px] items-center justify-center rounded-xl border bg-white",
         disabled ? "border-neutral-200 text-blue-300" : "border-neutral-300 text-blue-500 hover:bg-blue-50",
       )}
     >
@@ -81,7 +81,7 @@ export function Testimonials() {
     <section className="px-4 py-20 sm:px-6 sm:py-28">
       <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
         <SectionHeading title={home.testimonialsIntro.title} subtitle={home.testimonialsIntro.subtitle} />
-        <div className="grid gap-6 md:grid-cols-2" aria-live="polite">
+        <div key={page} className="motion-enter-small grid gap-6 md:grid-cols-2" aria-live="polite">
           {visible.map((t) => (
             <TestimonialCard key={t.id} item={t} />
           ))}

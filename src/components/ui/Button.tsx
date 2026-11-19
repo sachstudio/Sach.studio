@@ -15,13 +15,13 @@ type ButtonProps = {
 };
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-sans font-semibold uppercase tracking-[0.01em] text-sm transition-[transform,box-shadow,background-color] duration-200 disabled:opacity-50 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 font-sans font-semibold uppercase tracking-[0.01em] text-sm disabled:opacity-50 disabled:pointer-events-none";
 
 const variants = {
   primary:
-    "h-[54px] rounded-xl px-7 text-white bg-gradient-to-b from-blue-500 to-blue-700 shadow-button hover:-translate-y-px hover:shadow-[0_10px_22px_rgb(46_91_255/0.34)] active:translate-y-0",
+    "h-[54px] rounded-xl px-7 text-white bg-gradient-to-b from-blue-500 to-blue-700 shadow-button motion-press",
   outline:
-    "h-[54px] rounded-xl px-7 text-blue-500 bg-white border border-neutral-200 hover:border-blue-300 hover:bg-blue-50",
+    "h-[54px] rounded-xl px-7 text-blue-500 bg-white border border-neutral-200 hover:border-blue-300 hover:bg-blue-50 motion-press",
   link: "text-blue-500 border-b-2 border-blue-500 pb-0.5 hover:text-blue-700 hover:border-blue-700",
 } as const;
 

@@ -51,7 +51,7 @@ export function Tabs<T extends string>({ items, value, onChange, label = "Catego
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(item.value)}
             className={cn(
-              "shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm transition-colors",
+              "shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm",
               selected
                 ? "bg-white font-semibold text-blue-500 shadow-[0_1px_3px_rgb(15_23_42/0.1)]"
                 : "font-normal text-neutral-600 hover:text-neutral-900",

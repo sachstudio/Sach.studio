@@ -156,14 +156,14 @@ export function CaseStudyForm({ id, initial }: { id?: string; initial: CaseStudy
       {notice && (
         <p
           role={notice.kind === "ok" ? "status" : "alert"}
-          className={notice.kind === "ok" ? "rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-800" : "rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700"}
+          className={notice.kind === "ok" ? "motion-enter-small rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-800" : "motion-enter-small rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-red-700"}
         >
           {notice.text}
         </p>
       )}
 
       {confirmingDelete && (
-        <div role="alertdialog" aria-labelledby="delete-title" className="rounded-xl border border-red-200 bg-red-50 p-5">
+        <div role="alertdialog" aria-labelledby="delete-title" className="motion-enter-small rounded-xl border border-red-200 bg-red-50 p-5">
           <p id="delete-title" className="font-medium text-red-900">
             Delete this case study? It will be removed from the website and this cannot be undone.
           </p>

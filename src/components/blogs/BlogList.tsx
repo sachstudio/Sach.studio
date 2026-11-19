@@ -14,7 +14,7 @@ export type PostCardData = {
 
 export function PostCard({ post }: { post: PostCardData }) {
   return (
-    <article className="flex flex-col gap-5 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
+    <article className="motion-lift flex flex-col gap-5 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
       <Link href={`/blogs/${post.slug}`} tabIndex={-1} aria-hidden className="block overflow-hidden rounded-2xl">
         {post.coverImageUrl ? (
           <Image

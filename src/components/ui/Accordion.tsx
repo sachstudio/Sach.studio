@@ -21,7 +21,7 @@ export function Accordion({ items, defaultOpenId }: AccordionProps) {
           <div key={item.id} className="rounded-2xl border border-neutral-200 bg-white p-2 shadow-card">
             <div
               className={cn(
-                "rounded-xl border transition-colors",
+                "rounded-xl border",
                 open ? "border-blue-200 bg-blue-50" : "border-transparent bg-neutral-100",
               )}
             >
@@ -37,7 +37,7 @@ export function Accordion({ items, defaultOpenId }: AccordionProps) {
                   <svg
                     aria-hidden
                     viewBox="0 0 12 8"
-                    className={cn("size-3 shrink-0 text-neutral-500 transition-transform", open && "rotate-180")}
+                    className={cn("size-3 shrink-0 text-neutral-500 motion-rotate", open && "rotate-180")}
                   >
                     <path d="M1 1.5 6 6.5l5-5z" fill="currentColor" />
                   </svg>
@@ -47,7 +47,7 @@ export function Accordion({ items, defaultOpenId }: AccordionProps) {
                 id={panelId}
                 role="region"
                 hidden={!open}
-                className="px-5 pb-5 pr-8 text-base leading-[1.75] text-neutral-600"
+                className="motion-enter-small px-5 pb-5 pr-8 text-base leading-[1.75] text-neutral-600"
               >
                 {item.answer}
               </div>
