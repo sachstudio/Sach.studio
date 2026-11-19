@@ -69,7 +69,7 @@ describe("seed content", () => {
     expect((await repo.listPublishedPosts()).every((p) => p.isPlaceholder)).toBe(true);
   });
 
-  it("keeps the Works grid order from the design: Hasiru, Gulf, Master Systems, then Cosmion", async () => {
+  it("keeps the Works grid order from the design: Hasiru, Gulf, Master Systems, Arizona, then Cosmion", async () => {
     const db = await createTestDb();
     await seedDatabase(db as never);
     const repo = createRepo(db as never);
@@ -78,8 +78,9 @@ describe("seed content", () => {
       "hasiru-dala-innovations-website-redesign",
       "gulf-cv-writers-website-design",
       "master-systems-maritime-automation-website",
-      "cosmion-community-clubhouse-website-design",
+      "arizona-business-loan-page-design",
     ]);
+    expect(websites[4].slug).toBe("cosmion-community-clubhouse-website-design");
     const webApps = await repo.listPublishedCaseStudies({ category: "web-apps-dashboard" });
     expect(webApps).toHaveLength(2);
   });

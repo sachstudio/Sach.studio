@@ -8,6 +8,7 @@ import { Process } from "@/components/home/Process";
 import { Stats } from "@/components/home/Stats";
 import { Testimonials } from "@/components/home/Testimonials";
 import { WhyUs } from "@/components/home/WhyUs";
+import { FeaturedWork } from "@/components/works/FeaturedWork";
 import { homeFaqs } from "@/content/faqs";
 import { home } from "@/content/home";
 
@@ -23,7 +24,7 @@ export default function HomePage() {
       <Hero />
       <Stats />
       <ClientLogos />
-      {/* Featured work grid is added in the Works task (needs the data layer). */}
+      <FeaturedWork />
       <Process />
       <Pricing />
       <WhyUs />

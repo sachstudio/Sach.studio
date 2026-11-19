@@ -306,7 +306,7 @@ export const seedCaseStudies: CaseStudyInput[] = [
     metaDescription:
       "How Sach Studio designed a premium, conversion-focused WordPress website for Cosmion Community Clubhouse, a 6-acre lifestyle destination in Bengaluru.",
     isPlaceholder: true,
-    sortOrder: 40,
+    sortOrder: 50,
   },
   {
     ...defaults,
@@ -319,7 +319,7 @@ export const seedCaseStudies: CaseStudyInput[] = [
     summary: "A concept design for a business loan landing page.",
     isFeatured: true,
     isPlaceholder: true,
-    sortOrder: 50,
+    sortOrder: 40,
   },
   {
     ...defaults,
