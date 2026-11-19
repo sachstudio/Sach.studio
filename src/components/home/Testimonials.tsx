@@ -1,0 +1,96 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import { SectionHeading } from "@/components/ui";
+import { cn } from "@/lib/cn";
+import { home, type Testimonial } from "@/content/home";
+
+const PER_PAGE = 2;
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .map((p) => p[0])
+    .join("")
+    .slice(0, 2);
+}
+
+function TestimonialCard({ item }: { item: Testimonial }) {
+  return (
+    <article className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
+      <div className="flex h-full flex-col gap-8 rounded-2xl bg-neutral-100/70 p-6 sm:p-10">
+        <div className="flex items-center justify-between gap-4">
+          {item.avatar ? (
+            <Image src={item.avatar} alt="" width={80} height={52} unoptimized className="h-10 w-auto rounded-full" />
+          ) : (
+            <span
+              aria-hidden
+              className="flex size-10 items-center justify-center rounded-full bg-blue-100 text-sm font-medium text-blue-700"
+            >
+              {initials(item.name)}
+            </span>
+          )}
+          <span className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-600">
+            {item.tag}
+          </span>
+        </div>
+        <blockquote className="text-lg leading-[1.75] text-neutral-900 sm:text-xl sm:leading-[1.75]">{item.quote}</blockquote>
+        <footer className="mt-auto pt-4">
+          <p className="text-[15px] font-medium text-neutral-900">{item.name}</p>
+          <p className="text-xs text-neutral-500">{item.role}</p>
+        </footer>
+      </div>
+    </article>
+  );
+}
+
+function ArrowButton({
+  direction,
+  disabled,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={direction === "prev" ? "Previous testimonials" : "Next testimonials"}
+      disabled={disabled}
+      onClick={onClick}
+      className={cn(
+        "flex size-[50px] items-center justify-center rounded-xl border bg-white transition-colors",
+        disabled ? "border-neutral-200 text-blue-300" : "border-neutral-300 text-blue-500 hover:bg-blue-50",
+      )}
+    >
+      <svg aria-hidden viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {direction === "prev" ? <path d="M19 12H5m6-6-6 6 6 6" /> : <path d="M5 12h14m-6-6 6 6-6 6" />}
+      </svg>
+    </button>
+  );
+}
+
+export function Testimonials() {
+  const [page, setPage] = useState(0);
+  const pages = Math.ceil(home.testimonials.length / PER_PAGE);
+  const visible = home.testimonials.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
+
+  return (
+    <section className="px-4 py-20 sm:px-6 sm:py-28">
+      <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
+        <SectionHeading title={home.testimonialsIntro.title} subtitle={home.testimonialsIntro.subtitle} />
+        <div className="grid gap-6 md:grid-cols-2" aria-live="polite">
+          {visible.map((t) => (
+            <TestimonialCard key={t.id} item={t} />
+          ))}
+        </div>
+        <div className="flex justify-center gap-3">
+          <ArrowButton direction="prev" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))} />
+          <ArrowButton direction="next" disabled={page >= pages - 1} onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} />
+        </div>
+      </div>
+    </section>
+  );
+}
