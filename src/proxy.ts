@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isSignIn = createRouteMatcher(["/admin/sign-in(.*)"]);
+const isSignIn = createRouteMatcher(["/admin/sign-in(.*)", "/admin/sign-up(.*)"]);
 const isAdminPage = createRouteMatcher(["/admin(.*)"]);
 
 /*
