@@ -3,9 +3,11 @@ import { connection } from "next/server";
 import { CaseStudyView } from "@/components/works/CaseStudyView";
 import { getRepo } from "@/db";
 import { isUuid } from "@/lib/admin-forms";
+import { gateAdmin } from "@/lib/admin-gate";
 
 export default async function PreviewCaseStudyPage({ params }: { params: Promise<{ id: string }> }) {
   await connection();
+  await gateAdmin();
   const { id } = await params;
   if (!isUuid(id)) notFound();
   const repo = await getRepo();

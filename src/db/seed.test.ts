@@ -85,3 +85,48 @@ describe("seed content", () => {
     expect(webApps).toHaveLength(2);
   });
 });
+
+describe("seeding an existing database", () => {
+  it("keeps what the owner edited and does not republish what they unpublished", async () => {
+    const db = await createTestDb();
+    await seedDatabase(db as never);
+    const repo = createRepo(db as never);
+    const gulf = await repo.getPublishedCaseStudy("gulf-cv-writers-website-design");
+    if (!gulf) throw new Error("seed missing");
+    const edited = { ...seedCaseStudies.find((s) => s.slug === gulf.slug)!, summary: "Edited by the owner", status: "draft" as const };
+    await repo.saveCaseStudy(edited, gulf.id);
+
+    await seedDatabase(db as never);
+
+    const after = await repo.adminGetCaseStudy(gulf.id);
+    expect(after?.summary).toBe("Edited by the owner");
+    expect(after?.status).toBe("draft");
+    expect(await repo.getPublishedCaseStudy("gulf-cv-writers-website-design")).toBeNull();
+  });
+
+  it("restores the starting content only when asked with force", async () => {
+    const db = await createTestDb();
+    await seedDatabase(db as never);
+    const repo = createRepo(db as never);
+    const gulf = await repo.getPublishedCaseStudy("gulf-cv-writers-website-design");
+    if (!gulf) throw new Error("seed missing");
+    await repo.saveCaseStudy({ ...seedCaseStudies.find((s) => s.slug === gulf.slug)!, summary: "Edited", status: "draft" }, gulf.id);
+
+    await seedDatabase(db as never, { force: true });
+
+    const after = await repo.adminGetCaseStudy(gulf.id);
+    expect(after?.summary).not.toBe("Edited");
+    expect(after?.status).toBe("published");
+  });
+
+  it("adds a seeded item that is missing without touching the others", async () => {
+    const db = await createTestDb();
+    await seedDatabase(db as never);
+    const repo = createRepo(db as never);
+    const medismart = (await repo.adminListCaseStudies()).find((s) => s.slug === "medismart-health-dashboard")!;
+    await repo.deleteCaseStudy(medismart.id);
+    const counts = await seedDatabase(db as never);
+    expect(counts.caseStudies).toBe(1);
+    expect(await repo.adminListCaseStudies()).toHaveLength(7);
+  });
+});

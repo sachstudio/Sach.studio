@@ -34,3 +34,8 @@ export function toCardData(source: ProjectSource): ProjectCardData {
 export function cardMeta(project: Pick<ProjectCardData, "statusLabel" | "displayDate">): string {
   return project.statusLabel ?? project.displayDate ?? "";
 }
+
+/** Featured projects first, keeping the original order within each group. Does not change its input. */
+export function sortFeaturedFirst<T extends { isFeatured: boolean }>(items: readonly T[]): T[] {
+  return [...items.filter((i) => i.isFeatured), ...items.filter((i) => !i.isFeatured)];
+}

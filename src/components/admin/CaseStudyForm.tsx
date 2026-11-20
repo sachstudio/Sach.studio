@@ -259,7 +259,7 @@ export function CaseStudyForm({ id, initial }: { id?: string; initial: CaseStudy
       </FormSection>
 
       <FormSection title="Options">
-        <CheckboxField label="Show on the Home page" hint="Featured projects can be highlighted on Home." checked={values.isFeatured} onChange={(v) => set("isFeatured", v)} />
+        <CheckboxField label="Feature on the Home page" hint="Featured projects are shown first in the Home page project grid." checked={values.isFeatured} onChange={(v) => set("isFeatured", v)} />
         <CheckboxField label="Needs content" hint="Marks text you still plan to replace. Clear it when the page is final." checked={values.isPlaceholder} onChange={(v) => set("isPlaceholder", v)} />
       </FormSection>
     </form>

@@ -40,7 +40,7 @@ npm run db:push
 npm run db:seed
 ```
 
-`db:seed` can be run again safely; it updates by slug and never duplicates.
+`db:seed` only adds starting content that is missing (matched by slug). Running it again never overwrites edits you made in the admin and never republishes something you unpublished. To deliberately reset the starting items to their original text, run `npm run db:seed -- --force`. Run it once on a new database; it does not refresh the live site's cache, so after a `--force` reset, redeploy.
 
 7. Deploy: `vercel deploy` for a preview, `vercel deploy --prod` for the live site. Then add your domain in the Vercel dashboard.
 8. In Cal.com, set the booking confirmation redirect to `https://your-domain/thank-you`.

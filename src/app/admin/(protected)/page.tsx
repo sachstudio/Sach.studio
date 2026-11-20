@@ -2,6 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { getRepo } from "@/db";
+import { gateAdmin } from "@/lib/admin-gate";
 import { categoryLabel } from "@/lib/categories";
 
 function updated(date: Date) {
@@ -14,6 +15,7 @@ function EmptyRow({ text }: { text: string }) {
 
 export default async function AdminDashboard() {
   await connection(); // read the database at request time, never during the build
+  await gateAdmin();
   const repo = await getRepo();
   const [studies, posts] = await Promise.all([repo.adminListCaseStudies(), repo.adminListPosts()]);
 

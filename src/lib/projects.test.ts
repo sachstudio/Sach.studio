@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { cardMeta, toCardData, type ProjectSource } from "./projects";
+﻿import { describe, expect, it } from "vitest";
+import { cardMeta, sortFeaturedFirst, toCardData, type ProjectSource } from "./projects";
 
 const source: ProjectSource = {
   slug: "acme",
@@ -36,3 +36,21 @@ describe("cardMeta", () => {
     expect(cardMeta({ statusLabel: null, displayDate: null })).toBe("");
   });
 });
+
+describe("sortFeaturedFirst", () => {
+  const row = (slug: string, isFeatured: boolean) => ({ slug, isFeatured });
+
+  it("puts featured projects first and keeps the original order inside each group", () => {
+    const sorted = sortFeaturedFirst([row("a", false), row("b", true), row("c", false), row("d", true)]);
+    expect(sorted.map((r) => r.slug)).toEqual(["b", "d", "a", "c"]);
+  });
+
+  it("does not drop or change anything when none are featured, and does not mutate its input", () => {
+    const input = [row("a", false), row("b", false)];
+    expect(sortFeaturedFirst(input)).toEqual(input);
+    const copy = [...input];
+    sortFeaturedFirst(input);
+    expect(input).toEqual(copy);
+  });
+});
+

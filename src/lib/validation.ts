@@ -9,11 +9,20 @@ export const MAX_TAGS = 4;
 
 const categorySlugs = CATEGORIES.map((c) => c.slug) as unknown as [CategorySlug, ...CategorySlug[]];
 
+const BLOB_IMAGE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/\S+$/i;
+
+/** Empty, a path on this site (not protocol-relative), or an upload in Vercel Blob: the only places the site loads images from. */
+function isHostedImage(value: string): boolean {
+  if (value === "") return true;
+  if (value.startsWith("/")) return !value.startsWith("//");
+  return BLOB_IMAGE.test(value);
+}
+
 /** An uploaded image URL, a site path like /images/x.webp, or empty. */
 const imageRef = z
   .string()
   .trim()
-  .refine((v) => v === "" || v.startsWith("/") || /^https?:\/\//.test(v), "Use an uploaded image or a full web address");
+  .refine(isHostedImage, "Upload the image here, or use a path from this site such as /images/example.webp");
 
 const optionalUrl = z
   .string()

@@ -1,18 +1,13 @@
 import { UserButton } from "@clerk/nextjs";
-import { forbidden, redirect } from "next/navigation";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/admin-auth";
+import { gateAdmin } from "@/lib/admin-gate";
 
-/** Every page below this layout needs a signed-in admin: signed-out goes to sign-in, others get a 403. */
+/**
+ * Admin chrome. Each page also calls gateAdmin() itself: a layout is not re-run when a visitor
+ * navigates between pages inside it, so this check alone would not be enough.
+ */
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
-  try {
-    await requireAdmin();
-  } catch (error) {
-    const kind = (error as { name?: string; kind?: string })?.name === "AdminAuthError" ? (error as { kind: string }).kind : null;
-    if (kind === "unauthenticated") redirect("/admin/sign-in");
-    if (kind === "forbidden") forbidden();
-    throw error;
-  }
+  await gateAdmin();
 
   return (
     <div className="min-h-screen bg-neutral-50">

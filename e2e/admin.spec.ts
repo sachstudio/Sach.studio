@@ -54,7 +54,10 @@ test.describe("publishing from the admin", () => {
     await page.goBack();
     await page.getByRole("button", { name: "Unpublish" }).click();
     await expect(page.getByRole("status")).toHaveText("Unpublished");
-    expect((await page.request.get(`/works/${slug}`)).status()).toBe(404);
+    // An unpublished page shows the not-found screen with a noindex tag (the status stays 200; see docs/README.md).
+    const gone = await (await page.request.get(`/works/${slug}`)).text();
+    expect(gone).toContain("This page could not be found");
+    expect(gone).toMatch(/<meta name="robots" content="noindex"/);
 
     await page.getByRole("button", { name: "Delete" }).click();
     await page.getByRole("button", { name: "Delete case study" }).click();

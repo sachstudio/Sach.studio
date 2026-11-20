@@ -116,3 +116,27 @@ describe("validatePost", () => {
     if (!result.ok) expect(result.errors.body).toMatch(/before you publish/i);
   });
 });
+
+describe("image addresses", () => {
+  const blob = "https://abc123.public.blob.vercel-storage.com/case-studies/cover-x1y2.png";
+
+  it("accepts an uploaded image from Vercel Blob and a site path", () => {
+    expect(validateCaseStudy({ ...base, cardImageUrl: blob }).ok).toBe(true);
+    expect(validateCaseStudy({ ...base, cardImageUrl: "/images/projects/a.webp" }).ok).toBe(true);
+  });
+
+  it("rejects an image from any other website, because the site only loads images it hosts", () => {
+    const result = validateCaseStudy({ ...base, cardImageUrl: "https://evil.example/x.png" });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.cardImageUrl).toMatch(/upload/i);
+  });
+
+  it("rejects a protocol-relative address that would load from another host", () => {
+    expect(validateCaseStudy({ ...base, cardImageUrl: "//evil.example/x.png" }).ok).toBe(false);
+  });
+
+  it("applies the same rule to feature and gallery images", () => {
+    expect(validateCaseStudy({ ...base, galleryImages: ["https://evil.example/x.png"] }).ok).toBe(false);
+    expect(validateCaseStudy({ ...base, galleryImages: [blob] }).ok).toBe(true);
+  });
+});
