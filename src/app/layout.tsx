@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { instrumentSerif, outfit } from "@/lib/fonts";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl()),
   title: {
     default: "Sach Studio: Website, App & Dashboard Design and Development",
     template: "%s | Sach Studio",
