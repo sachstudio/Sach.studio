@@ -162,3 +162,10 @@ body {
 .motion-ticker:hover {
   animation-play-state: paused;
 }
+
+/* Words of a page heading rising in one after another on load: 300ms each, 60ms apart, ease-out. */
+.split-word {
+  display: inline-block;
+  animation: motion-enter var(--motion-300) var(--ease-out) both;
+  animation-delay: calc(var(--motion-delay, 0ms) + var(--i, 0) * 60ms);
+}
