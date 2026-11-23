@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Throwaway scratch files (screenshots and one-off scripts); they are not part of the project.
+    "work/**",
   ]),
 ]);
 

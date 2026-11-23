@@ -19,6 +19,7 @@ vi.mock("@/app/admin/actions", () => ({
 }));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: mocks.replace, refresh: mocks.refresh, push: vi.fn() }),
+  usePathname: () => "/admin/case-studies/new",
 }));
 vi.mock("@vercel/blob/client", () => ({ upload: vi.fn() }));
 
@@ -73,6 +74,13 @@ describe("CaseStudyForm", () => {
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(screen.queryByRole("alertdialog")).toBeNull();
     expect(mocks.del).not.toHaveBeenCalled();
+  });
+
+  it("names the case study in the delete question and focuses Cancel first", async () => {
+    render(<CaseStudyForm id="id-1" initial={{ ...emptyCaseStudy(), title: "Acme", slug: "acme" }} />);
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+    expect(screen.getByRole("alertdialog", { name: "Delete case study “Acme”?" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
   });
 
   it("deletes after confirmation and returns to the case studies list", async () => {

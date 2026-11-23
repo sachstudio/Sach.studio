@@ -19,6 +19,7 @@ vi.mock("@/app/admin/actions", () => ({
 }));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: mocks.replace, refresh: mocks.refresh, push: vi.fn() }),
+  usePathname: () => "/admin/posts/new",
 }));
 vi.mock("@vercel/blob/client", () => ({ upload: vi.fn() }));
 

@@ -1,9 +1,12 @@
 "use client";
 
 import { upload } from "@vercel/blob/client";
+import { ArrowDown, ArrowUp, ImagePlus, Plus, Trash2, Upload } from "lucide-react";
 import { useId, useRef, useState } from "react";
+import { Button } from "@/components/admin/ui/button";
+import { Input } from "@/components/admin/ui/input";
+import { Label } from "@/components/admin/ui/label";
 import { validateUpload } from "@/lib/upload-rules";
-import { inputClass } from "./fields";
 
 type ImageFieldProps = {
   label: string;
@@ -51,26 +54,27 @@ export function ImageField({ label, value, onChange, error, hint, folder = "uplo
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-medium text-neutral-800">
-        {label}
-      </label>
-      <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3 sm:flex-row">
-        <div className="flex h-28 w-full shrink-0 items-center justify-center overflow-hidden rounded-lg border border-neutral-200 bg-white sm:w-44">
+      <Label htmlFor={id}>{label}</Label>
+      <div className="flex flex-col gap-3 rounded-lg border bg-muted/40 p-3 sm:flex-row">
+        <div className="flex h-28 w-full shrink-0 items-center justify-center overflow-hidden rounded-md border bg-background sm:w-44">
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt={`${label} preview`} className="h-full w-full object-contain" />
           ) : (
-            <span className="text-xs text-neutral-400">No image</span>
+            <span className="flex flex-col items-center gap-1 text-xs text-muted-foreground">
+              <ImagePlus className="size-5" aria-hidden="true" />
+              No image
+            </span>
           )}
         </div>
-        <div className="flex flex-1 flex-col gap-2">
-          <input
+        <div className="flex flex-1 flex-col justify-center gap-2">
+          <Input
             id={id}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Upload an image, or paste its address"
-            className={inputClass}
             aria-invalid={Boolean(shown)}
+            className="bg-background"
           />
           <div className="flex flex-wrap items-center gap-2">
             <input
@@ -81,27 +85,23 @@ export function ImageField({ label, value, onChange, error, hint, folder = "uplo
               id={`${id}-file`}
               onChange={(e) => onFile(e.target.files?.[0])}
             />
-            <label
-              htmlFor={`${id}-file`}
-              className="cursor-pointer rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50"
-            >
-              {busy ? "Uploading…" : value ? "Replace image" : "Upload image"}
-            </label>
+            <Button asChild variant="outline" size="sm">
+              <label htmlFor={`${id}-file`} className="cursor-pointer">
+                <Upload />
+                {busy ? "Uploading…" : value ? "Replace image" : "Upload image"}
+              </label>
+            </Button>
             {value && (
-              <button
-                type="button"
-                onClick={() => onChange("")}
-                className="rounded-lg px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100"
-              >
+              <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
                 Remove
-              </button>
+              </Button>
             )}
           </div>
         </div>
       </div>
-      {hint && !shown && <p className="text-xs text-neutral-500">{hint}</p>}
+      {hint && !shown && <p className="text-xs text-muted-foreground">{hint}</p>}
       {shown && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-destructive">
           {shown}
         </p>
       )}
@@ -125,60 +125,58 @@ export function ImageListField({
 }) {
   return (
     <fieldset className="flex flex-col gap-3">
-      <legend className="text-sm font-medium text-neutral-800">{label}</legend>
+      <legend className="mb-1 text-sm font-medium">{label}</legend>
       {value.map((url, i) => (
-        <div key={i} className="flex flex-col gap-2 rounded-xl border border-neutral-200 p-3">
+        <div key={i} className="flex flex-col gap-3 rounded-lg border p-3">
           <ImageField
             label={`${label} ${i + 1}`}
             value={url}
             folder={folder}
             onChange={(next) => onChange(value.map((u, idx) => (idx === i ? next : u)))}
           />
-          <div className="flex gap-2">
-            <button
+          <div className="flex flex-wrap gap-2">
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               disabled={i === 0}
               onClick={() => {
                 const next = [...value];
                 [next[i - 1], next[i]] = [next[i], next[i - 1]];
                 onChange(next);
               }}
-              className="rounded-md border border-neutral-200 px-2.5 py-1 text-sm disabled:opacity-40"
             >
-              Move up
-            </button>
-            <button
+              <ArrowUp /> Move up
+            </Button>
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               disabled={i === value.length - 1}
               onClick={() => {
                 const next = [...value];
                 [next[i + 1], next[i]] = [next[i], next[i + 1]];
                 onChange(next);
               }}
-              className="rounded-md border border-neutral-200 px-2.5 py-1 text-sm disabled:opacity-40"
             >
-              Move down
-            </button>
-            <button
-              type="button"
-              onClick={() => onChange(value.filter((_, idx) => idx !== i))}
-              className="rounded-md px-2.5 py-1 text-sm text-red-600 hover:bg-red-50"
-            >
-              Remove image
-            </button>
+              <ArrowDown /> Move down
+            </Button>
+            <Button type="button" variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => onChange(value.filter((_, idx) => idx !== i))}>
+              <Trash2 /> Remove image
+            </Button>
           </div>
         </div>
       ))}
       <div>
-        <button
-          type="button"
-          onClick={() => onChange([...value, ""])}
-          className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50"
-        >
-          + Add image
-        </button>
+        <Button type="button" variant="outline" size="sm" onClick={() => onChange([...value, ""])}>
+          <Plus /> Add image
+        </Button>
       </div>
-      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
     </fieldset>
   );
 }
