@@ -117,7 +117,7 @@ export function PostForm({ id, initial }: { id?: string; initial: PostInput }) {
                 run(async () => {
                   const result = await deletePostAction(id);
                   if (result.ok) {
-                    router.replace("/admin");
+                    router.replace("/admin/posts");
                     return;
                   }
                   setConfirmingDelete(false);

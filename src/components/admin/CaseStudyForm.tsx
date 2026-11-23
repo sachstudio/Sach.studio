@@ -90,7 +90,7 @@ export function CaseStudyForm({ id, initial }: { id?: string; initial: CaseStudy
     run(async () => {
       const result = await deleteCaseStudyAction(id);
       if (result.ok) {
-        router.replace("/admin");
+        router.replace("/admin/case-studies");
         return;
       }
       setConfirmingDelete(false);

@@ -75,13 +75,13 @@ describe("CaseStudyForm", () => {
     expect(mocks.del).not.toHaveBeenCalled();
   });
 
-  it("deletes after confirmation and returns to the dashboard", async () => {
+  it("deletes after confirmation and returns to the case studies list", async () => {
     mocks.del.mockResolvedValue({ ok: true, message: "Deleted", slug: "acme" });
     render(<CaseStudyForm id="id-1" initial={{ ...emptyCaseStudy(), title: "Acme", slug: "acme" }} />);
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
     await userEvent.click(screen.getByRole("button", { name: "Delete case study" }));
     await waitFor(() => expect(mocks.del).toHaveBeenCalledWith("id-1"));
-    await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/admin"));
+    await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/admin/case-studies"));
   });
 
   it("offers Unpublish only for a published case study", () => {

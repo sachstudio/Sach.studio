@@ -63,4 +63,13 @@ describe("PostForm", () => {
     expect(await screen.findByRole("status")).toHaveTextContent("Published");
     await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/admin/posts/p-1"));
   });
+
+  it("deletes after confirmation and returns to the blog posts list", async () => {
+    mocks.del.mockResolvedValue({ ok: true, message: "Deleted", slug: "why" });
+    render(<PostForm id="p-1" initial={{ ...emptyPost(), title: "Why", slug: "why" }} />);
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+    await userEvent.click(screen.getByRole("button", { name: "Delete post" }));
+    await waitFor(() => expect(mocks.del).toHaveBeenCalledWith("p-1"));
+    await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/admin/posts"));
+  });
 });
