@@ -13,3 +13,6 @@ next-env.d.ts
 .vercel
 .env*
 !.env.example
+
+# Scratch output of the mockup scripts
+/work/

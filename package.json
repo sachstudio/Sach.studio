@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "db:push": "dotenv -e .env.local -- drizzle-kit push",
-    "db:seed": "dotenv -e .env.local -- tsx scripts/seed.ts"
+    "db:seed": "dotenv -e .env.local -- tsx scripts/seed.ts",
+    "db:import": "dotenv -e .env.local -- tsx scripts/import-case-study.ts",
+    "db:patch": "dotenv -e .env.local -- tsx scripts/patch-case-study.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.10.5",

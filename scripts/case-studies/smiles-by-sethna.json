@@ -1,0 +1,42 @@
+{
+  "slug": "smiles-by-sethna-dentist-website-design",
+  "title": "Smiles by Sethna: Bilingual, Booking-Led Website for a Dubai Dentist",
+  "subtitle": "A calm, doctor-led website that turns local searches for a Business Bay dentist into booked appointments.",
+  "clientName": "Smiles by Sethna",
+  "clientLogoUrl": "/images/logos/smiles-by-sethna.png",
+  "category": "websites",
+  "tags": ["Healthcare & Dentistry", "Dubai, UAE", "UI/UX Design", "Website Development"],
+  "statusLabel": "LIVE",
+  "displayDate": null,
+  "heroImageUrl": "/images/projects/smiles-by-sethna-hero.webp",
+  "cardImageUrl": "/images/projects/smiles-by-sethna-card.webp",
+  "liveUrl": "https://www.smilesbysethna.com/",
+  "about": "Smiles by Sethna is the private practice of Dr. Sethna, a DHA-licensed general dentist with an MDS (Gold Medalist) in Oral Medicine & Maxillofacial Radiology and a Fellowship in Endodontics. The clinic sits on the 25th floor of The Citadel Tower in Business Bay, Dubai, and offers family dentistry, check-ups, teeth cleaning, fillings and root canal care, open every day from 10 am to 9 pm.",
+  "bannerImageUrl": "/images/projects/smiles-by-sethna-banner.webp",
+  "problemIntro": "Patients choose a dentist they trust, and in a city like Dubai they usually start with a search and a phone. The website had to feel as calm and personal as the practice and make booking effortless. We worked from five gaps:",
+  "problems": [
+    { "lead": "Trust comes first", "text": "New patients needed to see Dr. Sethna's credentials and personality before anything else." },
+    { "lead": "Booking had to be effortless", "text": "A visitor ready to book should never have to hunt for a button, a form or a phone number." },
+    { "lead": "A multilingual city", "text": "Patients in Dubai read English and Arabic, and the site had to serve both." },
+    { "lead": "Local search visibility", "text": "People search for a dentist in Business Bay, so the pages had to answer those searches directly." },
+    { "lead": "Many treatments, one practice", "text": "General, restorative, endodontic and aesthetic care needed a structure patients could scan quickly." }
+  ],
+  "solutionIntro": "We designed the website around one goal: helping a new patient understand who Dr. Sethna is and book a visit in under a minute.",
+  "solutions": [
+    { "lead": "Doctor-led design", "text": "A portrait hero, credential tiles and a short personal introduction put Dr. Sethna and her training at the front of every visit." },
+    { "lead": "One-minute booking", "text": "A short appointment form with a date picker and preferred time, plus a WhatsApp button for patients who would rather chat." },
+    { "lead": "English and Arabic", "text": "A language switch in the header, with layouts that work in both directions." },
+    { "lead": "Clear service structure", "text": "Care is organised by age group and by treatment type, backed by FAQs and a Smile Journal that answer the questions patients search for." }
+  ],
+  "featureImages": ["/images/projects/smiles-by-sethna-feature.webp"],
+  "resultsText": "The website now presents Smiles by Sethna as the calm, expert practice it is. Credentials, clinic photography, opening hours and the booking form appear within the first screens, so trust is built early and the next step is always in view. Treatments are grouped so that families, adults and seniors each find their own starting point, and the FAQs and journal articles are written around the phrases patients actually search for.",
+  "stats": [],
+  "galleryImages": ["/images/projects/smiles-by-sethna-gallery-1.webp", "/images/projects/smiles-by-sethna-gallery-2.webp"],
+  "conclusion": "The Smiles by Sethna website shows that a healthcare brand can feel warm and still be efficient. By leading with the doctor, shortening the path to a booking and speaking to patients in both languages, we gave the practice a site that earns trust quickly and makes the first appointment easy to book.",
+  "summary": "A calm, bilingual website for a Business Bay dentist, designed to turn local searches into booked appointments.",
+  "metaTitle": "Smiles by Sethna Dentist Website Design | Sach Studio",
+  "metaDescription": "How Sach Studio designed a calm, bilingual, booking-led website for Smiles by Sethna, a Business Bay dentist in Dubai.",
+  "isFeatured": false,
+  "status": "draft",
+  "sortOrder": 20
+}

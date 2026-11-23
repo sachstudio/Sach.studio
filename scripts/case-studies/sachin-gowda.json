@@ -1,0 +1,42 @@
+{
+  "slug": "sachin-gowda-digital-marketing-website-design",
+  "title": "Sachin Gowda: Lead-Focused Website for a Bangalore Digital Marketing Consultant",
+  "subtitle": "A proof-led personal website that turns a consultant's reputation into booked discovery calls.",
+  "clientName": "Sachin Gowda",
+  "clientLogoUrl": "/images/logos/sachin-gowda.png",
+  "category": "websites",
+  "tags": ["Digital Marketing & Consulting", "Bangalore, India", "UI/UX Design", "Website Development"],
+  "statusLabel": "LIVE",
+  "displayDate": null,
+  "heroImageUrl": "/images/projects/sachin-gowda-hero.webp",
+  "cardImageUrl": "/images/projects/sachin-gowda-card.webp",
+  "liveUrl": "https://www.sachingowda.in/",
+  "about": "Sachin Gowda is a digital marketing consultant based in Bangalore with more than six years of experience. He works directly with startups, SMEs and growing businesses in India and abroad on SEO, website design, Google Ads, Meta Ads and content writing, with one aim: a steady flow of qualified leads that turns into revenue.",
+  "bannerImageUrl": "/images/projects/sachin-gowda-banner.webp",
+  "problemIntro": "A consultant sells trust before anything else, and his own website is the first sample of his work. Sachin needed a site that proved what he does and made it easy to start a conversation. We worked from five gaps:",
+  "problems": [
+    { "lead": "Proof before promises", "text": "Visitors who have been disappointed by agencies want evidence: reviews, experience and clear results." },
+    { "lead": "Five services, one message", "text": "SEO, websites, Meta Ads, Google Ads and content writing needed to read as one joined-up offer." },
+    { "lead": "A personal brand", "text": "Working with Sachin directly is the selling point, so the site had to feel personal, not corporate." },
+    { "lead": "Unclear next step", "text": "Prospects needed a simple way to book a call or message him straight away." },
+    { "lead": "Search visibility", "text": "The site had to rank for the searches that businesses in Bangalore and beyond make when they look for a marketing consultant." }
+  ],
+  "solutionIntro": "We designed the website to answer the questions a business owner asks before booking a call, in the order they ask them.",
+  "solutions": [
+    { "lead": "Proof above the fold", "text": "A portrait hero, his Google rating and review count, and headline numbers sit on the first screen." },
+    { "lead": "Services you can explore", "text": "An interactive service showcase lets visitors move through the five services and see what is included in each." },
+    { "lead": "A clear path from first call to results", "text": "A four-step process, sector pages and real Google reviews explain how the work runs and who it suits." },
+    { "lead": "Booking built in", "text": "A consultation form with a calendar, a WhatsApp button and a map make every route to Sachin one click away." }
+  ],
+  "featureImages": ["/images/projects/sachin-gowda-feature.webp"],
+  "resultsText": "The website now works the way Sachin does: direct, clear and focused on leads. Credentials and reviews appear early, each service explains what a client gets, and the process section removes the guesswork about what happens after the first call. Booking, WhatsApp and the contact form appear throughout the page, so a visitor who is ready to talk never has to look for the way in.",
+  "stats": [],
+  "galleryImages": ["/images/projects/sachin-gowda-gallery-1.webp", "/images/projects/sachin-gowda-gallery-2.webp"],
+  "conclusion": "The Sachin Gowda website shows that a personal brand can be both distinctive and conversion-minded. By leading with proof, organising services clearly and keeping the route to a conversation short, we gave a one-person consultancy a site that does the first sales conversation for him.",
+  "summary": "A proof-led personal website for a Bangalore digital marketing consultant, designed to turn visits into booked calls.",
+  "metaTitle": "Sachin Gowda Website Design | Sach Studio",
+  "metaDescription": "How Sach Studio designed a lead-focused personal website for Sachin Gowda, a digital marketing consultant in Bangalore.",
+  "isFeatured": false,
+  "status": "draft",
+  "sortOrder": 60
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "slug": "hasiru-dala-innovations-website-redesign",
+    "fields": {
+      "heroImageUrl": "/images/projects/hasiru-dala-v2-hero.webp",
+      "cardImageUrl": "/images/projects/hasiru-dala-v2-card.webp",
+      "bannerImageUrl": "/images/projects/hasiru-dala-v2-banner.webp",
+      "featureImages": ["/images/projects/hasiru-dala-v2-feature.webp"],
+      "galleryImages": ["/images/projects/hasiru-dala-v2-gallery-1.webp", "/images/projects/hasiru-dala-v2-gallery-2.webp"],
+      "liveUrl": "https://hasirudalainnovations.com/"
+    }
+  },
+  {
+    "slug": "gulf-cv-writers-website-design",
+    "fields": {
+      "heroImageUrl": "/images/projects/gulf-cv-writers-v2-hero.webp",
+      "cardImageUrl": "/images/projects/gulf-cv-writers-v2-card.webp",
+      "bannerImageUrl": "/images/projects/gulf-cv-writers-v2-banner.webp",
+      "featureImages": ["/images/projects/gulf-cv-writers-v2-feature.webp"],
+      "galleryImages": ["/images/projects/gulf-cv-writers-v2-gallery-1.webp", "/images/projects/gulf-cv-writers-v2-gallery-2.webp"],
+      "liveUrl": "https://gulfcvwriters.ae"
+    }
+  },
+  {
+    "slug": "cosmion-community-clubhouse-website-design",
+    "fields": {
+      "heroImageUrl": "/images/projects/cosmion-v2-hero.webp",
+      "cardImageUrl": "/images/projects/cosmion-v2-card.webp",
+      "bannerImageUrl": "/images/projects/cosmion-v2-banner.webp",
+      "featureImages": ["/images/projects/cosmion-v2-feature.webp"],
+      "galleryImages": ["/images/projects/cosmion-v2-gallery-1.webp", "/images/projects/cosmion-v2-gallery-2.webp"],
+      "liveUrl": "https://cosmion.in"
+    }
+  },
+  {
+    "slug": "master-systems-maritime-automation-website",
+    "fields": { "statusLabel": "CONCEPT" }
+  }
+]

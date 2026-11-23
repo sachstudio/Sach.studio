@@ -1,0 +1,42 @@
+{
+  "slug": "wegroww-agency-website-design",
+  "title": "Wegroww Agency: Growth-Focused Website for a UK, UAE & India Digital Marketing Agency",
+  "subtitle": "A bold, proof-led website that makes ten services feel like one clear growth plan.",
+  "clientName": "Wegroww Agency",
+  "clientLogoUrl": "/images/logos/wegroww.png",
+  "category": "websites",
+  "tags": ["Digital Marketing Agency", "UK, UAE & India", "UI/UX Design", "Website Development"],
+  "statusLabel": "LIVE",
+  "displayDate": null,
+  "heroImageUrl": "/images/projects/wegroww-hero.webp",
+  "cardImageUrl": "/images/projects/wegroww-card.webp",
+  "liveUrl": "https://wegroww.agency/",
+  "about": "Wegroww Agency is an India-based digital marketing agency that has worked for more than five years with startups, SMEs and established brands in the UK, the UAE and India. It combines strategy, creativity, technology and performance marketing across ten services, including SEO, website design and development, Google and Meta Ads, creative design and lead generation, delivered remotely by one senior team.",
+  "bannerImageUrl": "/images/projects/wegroww-banner.webp",
+  "problemIntro": "Marketing agencies all promise growth, so an agency's own website has to do what it claims it can do for others. Wegroww needed a site that stood out and turned interest into conversations. We worked from five gaps:",
+  "problems": [
+    { "lead": "Standing out", "text": "Prospects compare many agencies that sound alike, so the site needed a clear point of view." },
+    { "lead": "Ten services, one story", "text": "SEO, web, paid media, design and content risked reading as a long list instead of one joined-up offer." },
+    { "lead": "Three markets", "text": "Clients in the UK, UAE and India buy differently, and the site had to speak to all three." },
+    { "lead": "Credibility", "text": "Experience, process and reporting had to be visible before a visitor decided to get in touch." },
+    { "lead": "A clear next step", "text": "Every section needed a simple route to a free strategy call." }
+  ],
+  "solutionIntro": "We designed the website around the way a business owner decides: what do you do, how do you work, and will it pay off?",
+  "solutions": [
+    { "lead": "A confident, high-contrast identity", "text": "A bold headline, a marquee of services and a clean layout give the agency a distinctive voice from the first screen." },
+    { "lead": "An interactive service showcase", "text": "Visitors can step through the ten services one by one and enquire about the one they need." },
+    { "lead": "Process, industries and proof", "text": "A four-step process, an industry strip, a results section and client testimonials answer the questions behind a buying decision." },
+    { "lead": "Calls to action throughout", "text": "A free strategy call is one click away from the header, the hero and every key section." }
+  ],
+  "featureImages": ["/images/projects/wegroww-feature.webp"],
+  "resultsText": "The website now presents Wegroww as a single, accountable growth partner rather than a menu of services. Visitors see what the agency does, how it works and what clients say in a short, focused scroll, and the booking prompt is never far away. The structure is also built around the phrases businesses search for when they look for a digital marketing agency in the UK, the UAE and India.",
+  "stats": [],
+  "galleryImages": ["/images/projects/wegroww-gallery-1.webp", "/images/projects/wegroww-gallery-2.webp"],
+  "conclusion": "The Wegroww website shows how an agency can use its own site as its best case study. By leading with a clear promise, organising ten services into one plan and keeping the way to a conversation short, we built a site that earns attention and turns it into strategy calls.",
+  "summary": "A bold, proof-led website for a digital marketing agency serving the UK, UAE and India, built to turn visits into strategy calls.",
+  "metaTitle": "Wegroww Agency Website Design | Sach Studio",
+  "metaDescription": "How Sach Studio designed a bold, growth-focused website for Wegroww Agency, a digital marketing agency serving the UK, UAE and India.",
+  "isFeatured": false,
+  "status": "draft",
+  "sortOrder": 70
+}
