@@ -32,7 +32,7 @@ export const caseStudies = pgTable("case_studies", {
   problems: jsonb("problems").$type<LeadItem[]>().notNull().default([]),
   solutionIntro: text("solution_intro").notNull().default(""),
   solutions: jsonb("solutions").$type<LeadItem[]>().notNull().default([]),
-  featureImages: jsonb("feature_images").$type<string[]>().notNull().default([]),
+  featureImages: jsonb("feature_images").$type<(string | { url: string; shape: "square" | "rectangle" })[]>().notNull().default([]),
   resultsText: text("results_text").notNull().default(""),
   stats: jsonb("stats").$type<StatItem[]>().notNull().default([]),
   galleryImages: jsonb("gallery_images").$type<string[]>().notNull().default([]),

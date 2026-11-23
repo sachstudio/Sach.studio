@@ -1,4 +1,5 @@
 import type { BlogPost, CaseStudy } from "@/db/schema";
+import { normalizeFeatureImages } from "./feature-images";
 import type { CaseStudyInput, PostInput } from "./validation";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -30,7 +31,7 @@ export function caseStudyToInput(row: CaseStudy): CaseStudyInput {
     problems: row.problems,
     solutionIntro: row.solutionIntro,
     solutions: row.solutions,
-    featureImages: row.featureImages,
+    featureImages: normalizeFeatureImages(row.featureImages),
     resultsText: row.resultsText,
     stats: row.stats,
     galleryImages: row.galleryImages,

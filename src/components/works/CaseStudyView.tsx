@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button, Pill, SectionHeading } from "@/components/ui";
 import type { CaseStudy } from "@/db/schema";
+import { groupFeatureImages, normalizeFeatureImages } from "@/lib/feature-images";
 import { toCardData } from "@/lib/projects";
 import { ProjectTileCard } from "./ProjectCard";
 
@@ -23,6 +24,22 @@ function ImageCard({ src, alt, priority }: { src: string; alt: string; priority?
         priority={priority}
         sizes="(min-width: 1300px) 1280px, 100vw"
         className="h-auto w-full rounded-[20px]"
+      />
+    </div>
+  );
+}
+
+/** A square image in the same framed card; two of these share a row (half the page width each). */
+function SquareCard({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
+      <Image
+        src={src}
+        alt={alt}
+        width={640}
+        height={640}
+        sizes="(min-width: 1300px) 640px, (min-width: 640px) 50vw, 100vw"
+        className="aspect-square h-auto w-full rounded-[20px] object-cover"
       />
     </div>
   );
@@ -56,6 +73,9 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
   const hasProblem = study.problemIntro.trim() || study.problems.length > 0;
   const hasSolution = study.solutionIntro.trim() || study.solutions.length > 0;
   const hasResults = study.resultsText.trim() || study.stats.length > 0;
+  const featureImages = normalizeFeatureImages(study.featureImages).filter((image) => image.url);
+  const featureRows = groupFeatureImages(featureImages);
+  const featureNumber = new Map(featureImages.map((image, i) => [image.url, i + 1]));
 
   return (
     <article className="px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
@@ -131,11 +151,21 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
           </TwoColumn>
         )}
 
-        {study.featureImages.length > 0 && (
+        {featureRows.length > 0 && (
           <div className="flex flex-col gap-6">
-            {study.featureImages.map((src, i) => (
-              <ImageCard key={src} src={src} alt={`${study.title}: design detail ${i + 1}`} />
-            ))}
+            {featureRows.map((row) =>
+              row[0].shape === "rectangle" ? (
+                <div key={row[0].url} data-feature-row="rectangle">
+                  <ImageCard src={row[0].url} alt={`${study.title}: design detail ${featureNumber.get(row[0].url)}`} />
+                </div>
+              ) : (
+                <div key={row[0].url} data-feature-row="square-pair" className="grid gap-6 sm:grid-cols-2">
+                  {row.map((image) => (
+                    <SquareCard key={image.url} src={image.url} alt={`${study.title}: design detail ${featureNumber.get(image.url)}`} />
+                  ))}
+                </div>
+              ),
+            )}
           </div>
         )}
 

@@ -72,6 +72,31 @@ describe("CaseStudyView", () => {
     expect(screen.queryByText("42%")).toBeNull();
   });
 
+  it("shows two square feature images side by side and a rectangle on its own row", () => {
+    render(
+      <CaseStudyView
+        study={study({
+          featureImages: [
+            { url: "/images/projects/s1.webp", shape: "square" },
+            { url: "/images/projects/s2.webp", shape: "square" },
+            { url: "/images/projects/r1.webp", shape: "rectangle" },
+          ],
+        })}
+        related={[]}
+      />,
+    );
+    const pair = screen.getByAltText("Acme: Website Redesign: design detail 1").closest('[data-feature-row="square-pair"]');
+    expect(pair).not.toBeNull();
+    expect(pair).toContainElement(screen.getByAltText("Acme: Website Redesign: design detail 2"));
+    expect(pair).not.toContainElement(screen.getByAltText("Acme: Website Redesign: design detail 3"));
+  });
+
+  it("still shows feature images saved the old way, as full-width rectangles", () => {
+    render(<CaseStudyView study={study({ featureImages: ["/images/projects/old.webp"] })} related={[]} />);
+    const img = screen.getByAltText("Acme: Website Redesign: design detail 1");
+    expect(img.closest("[data-feature-row]")).toHaveAttribute("data-feature-row", "rectangle");
+  });
+
   it("links the Figma design and live site when set", () => {
     render(<CaseStudyView study={study()} related={[]} />);
     expect(screen.getByRole("link", { name: "View Figma design" })).toHaveAttribute("href", "https://figma.com/design/abc");

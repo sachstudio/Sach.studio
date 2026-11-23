@@ -104,7 +104,7 @@ export const seedCaseStudies: CaseStudyInput[] = [
         text: "Consistent type, colour, and components, built so HDI’s team can update pages without breaking the design.",
       },
     ],
-    featureImages: [img("hasiru-dala-feature.webp")],
+    featureImages: [{ url: img("hasiru-dala-feature.webp"), shape: "rectangle" }],
     resultsText:
       "The new website presents HDI as what it has become: a professional, scalable waste management partner for businesses. Impact numbers, client logos, and testimonials now appear early on the homepage, so trust is built before a visitor scrolls far. Each solution has a focused landing page with a clear next step, which makes the journey from first visit to enquiry shorter and simpler. The site is also structured around the searches HDI’s clients make, such as “waste management company in Bangalore.”",
     stats: [
@@ -168,7 +168,7 @@ export const seedCaseStudies: CaseStudyInput[] = [
         text: "Dedicated pages for CV writing, resume writing, cover letters, LinkedIn makeovers and job portal optimization, plus a detailed FAQ.",
       },
     ],
-    featureImages: [img("gulf-cv-writers-feature.webp")],
+    featureImages: [{ url: img("gulf-cv-writers-feature.webp"), shape: "rectangle" }],
     resultsText:
       "The new Gulf CV Writers website makes a remote service feel trustworthy and easy to buy from. Visitors see proof of results before they see prices, so the pricing reads as value rather than cost. Clear package comparisons help job seekers choose the right option without needing to ask, while express delivery options and WhatsApp support serve urgent buyers. Each service now has its own search-optimized page, giving the brand a stronger foundation to compete for high-intent searches across the UAE and GCC.",
     // The design shows the same placeholder numbers (42%, 180%, 35+) on every case study. They are left out
@@ -220,7 +220,7 @@ export const seedCaseStudies: CaseStudyInput[] = [
       { lead: "Request a quote everywhere", text: "A quote action on product, solution and footer sections." },
       { lead: "Careers and contact", text: "Job listings and an application form alongside the service and support pages." },
     ],
-    featureImages: [img("master-systems-feature.webp")],
+    featureImages: [{ url: img("master-systems-feature.webp"), shape: "rectangle" }],
     resultsText:
       "The new website presents Master Systems as the established global partner it is, with products, proof and support organised for the way maritime buyers search. Replace this paragraph with the measured results once they are available.",
     stats: [],
@@ -293,7 +293,7 @@ export const seedCaseStudies: CaseStudyInput[] = [
         text: "One-tap WhatsApp reservations with pre-filled messages, a sticky call button, “Plan Your Visit” CTAs and a direct member login.",
       },
     ],
-    featureImages: [img("cosmion-feature.webp")],
+    featureImages: [{ url: img("cosmion-feature.webp"), shape: "rectangle" }],
     resultsText:
       "The new website presents Cosmion as a premium destination rather than a collection of separate facilities. Each audience now has a direct path, whether a couple planning a wedding, a family booking a weekend stay or a parent looking for a sports membership. Clear details and visible policies answer common questions before visitors need to ask, and one-tap WhatsApp enquiries turn interest into conversations quickly. With dedicated pages for every venue and service, Cosmion also has a strong foundation to rank for local searches across Yelahanka and North Bengaluru.",
     stats: [],

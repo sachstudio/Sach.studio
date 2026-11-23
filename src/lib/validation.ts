@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CATEGORIES, type CategorySlug } from "./categories";
+import { FEATURE_SHAPES } from "./feature-images";
 import { SLUG_PATTERN } from "./slug";
 
 export const META_TITLE_MAX = 55;
@@ -23,6 +24,12 @@ const imageRef = z
   .string()
   .trim()
   .refine(isHostedImage, "Upload the image here, or use a path from this site such as /images/example.webp");
+
+/** A feature image and whether it is shown as a square (two share a row) or a full-width rectangle. Old plain addresses count as rectangles. */
+const featureImage = z.preprocess(
+  (value) => (typeof value === "string" ? { url: value, shape: "rectangle" } : value),
+  z.object({ url: imageRef, shape: z.enum(FEATURE_SHAPES).default("rectangle") }),
+);
 
 const optionalUrl = z
   .string()
@@ -58,7 +65,7 @@ const caseStudyShape = z.object({
   problems: z.array(leadText).default([]),
   solutionIntro: z.string().trim().default(""),
   solutions: z.array(leadText).default([]),
-  featureImages: z.array(imageRef).default([]),
+  featureImages: z.array(featureImage).default([]),
   resultsText: z.string().trim().default(""),
   stats: z
     .array(z.object({ value: z.string().trim().min(1, "Add the number"), label: z.string().trim().min(1, "Add the label") }))

@@ -18,7 +18,7 @@ import { META_DESCRIPTION_MAX, META_TITLE_MAX, MAX_STATS, MAX_TAGS, type CaseStu
 import { CheckboxField, FormSection, SelectField, TextArea, TextField } from "./fields";
 import { FormActions } from "./FormActions";
 import { FormNotice } from "./FormNotice";
-import { ImageField, ImageListField } from "./ImageField";
+import { FeatureImageListField, ImageField, ImageListField } from "./ImageField";
 import { ListField } from "./ListField";
 import { PageHeader } from "./PageHeader";
 import { PublishPanel } from "./PublishPanel";
@@ -156,7 +156,7 @@ export function CaseStudyForm({ id, initial }: { id?: string; initial: CaseStudy
               <ImageField label="Client logo" value={values.clientLogoUrl} onChange={(v) => set("clientLogoUrl", v)} error={errors.clientLogoUrl} folder="logos" />
               <ImageField label="Banner image" value={values.bannerImageUrl} onChange={(v) => set("bannerImageUrl", v)} error={errors.bannerImageUrl} folder="case-studies" />
             </div>
-            <ImageListField label="Feature images" value={values.featureImages} onChange={(v) => set("featureImages", v)} folder="case-studies" error={errors.featureImages} />
+            <FeatureImageListField label="Feature images" value={values.featureImages} onChange={(v) => set("featureImages", v)} folder="case-studies" error={errors.featureImages} />
             <ImageListField label="Gallery images" value={values.galleryImages} onChange={(v) => set("galleryImages", v)} folder="case-studies" error={errors.galleryImages} />
           </FormSection>
 

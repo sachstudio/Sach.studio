@@ -6,6 +6,7 @@ import { createRepo } from "./repo";
 import { seedCaseStudies, seedPosts } from "./seed-data";
 import { seedDatabase } from "./seed";
 import { createTestDb } from "./test-db";
+import { normalizeFeatureImages } from "@/lib/feature-images";
 import { validateCaseStudy, validatePost } from "@/lib/validation";
 
 describe("seed content", () => {
@@ -23,7 +24,7 @@ describe("seed content", () => {
   it("only references images that exist in public/", () => {
     const refs: string[] = [];
     for (const s of seedCaseStudies) {
-      refs.push(s.clientLogoUrl, s.heroImageUrl, s.cardImageUrl, s.bannerImageUrl, ...s.featureImages, ...s.galleryImages);
+      refs.push(s.clientLogoUrl, s.heroImageUrl, s.cardImageUrl, s.bannerImageUrl, ...normalizeFeatureImages(s.featureImages).map((i) => i.url), ...s.galleryImages);
     }
     for (const p of seedPosts) refs.push(p.coverImageUrl);
     for (const ref of refs.filter(Boolean)) {

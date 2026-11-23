@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const mocks = vi.hoisted(() => ({
@@ -98,6 +98,24 @@ describe("CaseStudyForm", () => {
     draft.unmount();
     render(<CaseStudyForm id="id-1" initial={{ ...emptyCaseStudy(), status: "published" }} />);
     expect(screen.getByRole("button", { name: "Unpublish" })).toBeInTheDocument();
+  });
+
+  it("adds a feature image as a square and lets you switch it to a rectangle", async () => {
+    mocks.save.mockResolvedValue({ ok: true, message: "Saved", id: "id-1", slug: "acme" });
+    render(<CaseStudyForm id="id-1" initial={{ ...emptyCaseStudy(), title: "Acme", slug: "acme" }} />);
+    await userEvent.click(screen.getByRole("button", { name: "Add feature image" }));
+
+    const group = screen.getByRole("radiogroup", { name: "Feature images 1 shape" });
+    expect(within(group).getByRole("radio", { name: "Square" })).toBeChecked();
+    expect(within(group).getByRole("radio", { name: "Rectangle" })).not.toBeChecked();
+
+    await userEvent.type(screen.getByLabelText("Feature images 1"), "/images/a.webp");
+    await userEvent.click(within(group).getByRole("radio", { name: "Rectangle" }));
+    expect(within(group).getByRole("radio", { name: "Rectangle" })).toBeChecked();
+
+    await userEvent.click(screen.getByRole("button", { name: "Save draft" }));
+    await waitFor(() => expect(mocks.save).toHaveBeenCalled());
+    expect(mocks.save.mock.calls[0][0].featureImages).toEqual([{ url: "/images/a.webp", shape: "rectangle" }]);
   });
 
   it("limits tags to four", async () => {
