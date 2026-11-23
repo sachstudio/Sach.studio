@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "gulf-cv-writers-website-design",
+    "fields": {
+      "subtitle": "A trust-first WordPress website that turns job seekers across the UAE and GCC into paying clients.",
+      "about": "Gulf CV Writers is a professional CV writing company serving job seekers in Dubai, Abu Dhabi, Riyadh, Doha and across the GCC. With more than 10 years of experience and 2,500+ CVs delivered across 50+ industries, its certified writers create ATS-optimised CVs, cover letters, LinkedIn profiles and job portal profiles for Bayt, Naukrigulf and GulfTalent. Every document is written by hand, with delivery from four working days down to eight hours.",
+      "problemIntro": "CV writing in Dubai is a crowded, price-sensitive market, and buyers are anxious: they are paying a service they have never met to shape their career. Gulf CV Writers needed a website that earned that trust quickly and made ordering simple. We worked from five challenges:",
+      "problems": [
+        { "lead": "Trust gap", "text": "A fully remote service had to prove its credibility to first-time buyers before they paid." },
+        { "lead": "Price justification", "text": "Premium AED pricing needed clear value next to cheaper, template-based competitors." },
+        { "lead": "A wide service range", "text": "Four services and two bundled packages, from AED 99 to AED 699, risked confusing visitors." },
+        { "lead": "Urgent buyers", "text": "Many visitors have an interview coming up and need quick answers, fast delivery and an easy checkout." },
+        { "lead": "Competitive search", "text": "Ranking for terms like “CV writing Dubai” meant a strong, search-friendly page structure." }
+      ],
+      "solutionIntro": "We designed the website to build confidence first and ask for the order second.",
+      "solutions": [
+        { "lead": "Proof up front", "text": "The interview success rate, CVs delivered, industries covered and employer logos sit right below the hero." },
+        { "lead": "Packages and prices in plain sight", "text": "Two bundled packages and four individual services each show the AED price, what is included, the revisions and the delivery time." },
+        { "lead": "Short paths to purchase", "text": "An “Order Now” button on every service and a “Make my resume” call to action in the header keep the next step one click away." },
+        { "lead": "A structure search engines can read", "text": "Clear sections for CV writing, cover letters, LinkedIn makeovers and job portal optimisation, backed by an FAQ and customer testimonials." }
+      ],
+      "resultsText": "The website now makes a remote service feel trustworthy and easy to buy from. Visitors see proof of results before they see prices, so the pricing reads as value rather than cost. Side-by-side packages help job seekers choose without having to ask, while express delivery and clear next steps serve urgent buyers. Each service has its own clearly structured section, giving the brand a stronger base to compete for high-intent searches across the UAE and the wider GCC.",
+      "conclusion": "For Gulf CV Writers, the website is the salesperson. By leading with proof, simplifying pricing and shortening the path to checkout, we built a site that helps job seekers across the Gulf trust the brand and order with confidence.",
+      "summary": "A conversion-focused WordPress website for a Dubai CV writing company, built to turn job seekers across the UAE and GCC into confident customers.",
+      "metaTitle": "Gulf CV Writers Website Design | Sach Studio",
+      "metaDescription": "How Sach Studio designed a conversion-focused WordPress website for Gulf CV Writers, a Dubai CV writing service, with clear AED packages and fast ordering.",
+      "isPlaceholder": false
+    }
+  }
+]
