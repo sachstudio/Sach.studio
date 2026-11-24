@@ -1,9 +1,10 @@
 import { and, asc, desc, eq, ne } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type { CategorySlug } from "@/lib/categories";
-import { validateCaseStudy, validatePost, type CaseStudyInput, type PostInput } from "@/lib/validation";
+import { validateCaseStudy, validatePost, type CaseStudyInput, type PostInput, type PricingPlanInput } from "@/lib/validation";
 import * as schema from "./schema";
-import { blogPosts, caseStudies, type BlogPost, type CaseStudy, type ContentStatus } from "./schema";
+import { blogPosts, bookings, caseStudies, pricingPlans, type BlogPost, type Booking, type CaseStudy, type ContentStatus, type PricingPlan } from "./schema";
+import type { BookingInput } from "@/lib/cal-webhook";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Db = PgDatabase<any, typeof schema>;
@@ -33,6 +34,7 @@ function firstError(errors: Record<string, string>): string {
 export function createRepo(db: Db) {
   const caseOrder = [asc(caseStudies.sortOrder), desc(caseStudies.createdAt)];
   const postOrder = [asc(blogPosts.sortOrder), desc(blogPosts.createdAt)];
+  const planOrder = [asc(pricingPlans.sortOrder), asc(pricingPlans.createdAt)];
 
   return {
     // ---- case studies: public ----
@@ -221,6 +223,66 @@ export function createRepo(db: Db) {
       const deleted = await db.delete(blogPosts).where(eq(blogPosts.id, id)).returning({ slug: blogPosts.slug });
       if (!deleted.length) return { ok: false, error: "This post no longer exists. It may have been deleted." };
       return { ok: true, slug: deleted[0].slug };
+    },
+
+    // ---- bookings (Cal.com) ----
+    /** Saves a booking from the Cal.com webhook. The same booking sent again updates the row instead of adding one. */
+    async upsertBooking(input: BookingInput, replacesUid: string | null = null): Promise<void> {
+      const now = new Date();
+      await db
+        .insert(bookings)
+        .values(input)
+        .onConflictDoUpdate({ target: bookings.calUid, set: { ...input, updatedAt: now } });
+      if (replacesUid && replacesUid !== input.calUid) {
+        await db.update(bookings).set({ status: "rescheduled", updatedAt: now }).where(eq(bookings.calUid, replacesUid));
+      }
+    },
+
+    /** Every booking, the latest call time first. */
+    async adminListBookings(): Promise<Booking[]> {
+      return db.select().from(bookings).orderBy(desc(bookings.startTime));
+    },
+
+    // ---- pricing plans (home page) ----
+    async listPublishedPricingPlans(): Promise<PricingPlan[]> {
+      return db.select().from(pricingPlans).where(eq(pricingPlans.status, "published")).orderBy(...planOrder);
+    },
+
+    async adminListPricingPlans(): Promise<PricingPlan[]> {
+      return db.select().from(pricingPlans).orderBy(...planOrder);
+    },
+
+    async adminGetPricingPlan(id: string): Promise<PricingPlan | null> {
+      const [row] = await db.select().from(pricingPlans).where(eq(pricingPlans.id, id)).limit(1);
+      return row ?? null;
+    },
+
+    async savePricingPlan(input: PricingPlanInput, id?: string): Promise<SaveResult> {
+      if (!id) {
+        const [row] = await db.insert(pricingPlans).values(input).returning({ id: pricingPlans.id });
+        return { ok: true, id: row.id, slug: input.name };
+      }
+      const updated = await db
+        .update(pricingPlans)
+        .set({ ...input, updatedAt: new Date() })
+        .where(eq(pricingPlans.id, id))
+        .returning({ id: pricingPlans.id });
+      if (!updated.length) return { ok: false, error: "This package no longer exists. It may have been deleted." };
+      return { ok: true, id, slug: input.name };
+    },
+
+    async setPricingPlanStatus(id: string, status: ContentStatus): Promise<{ ok: true } | { ok: false; error: string }> {
+      const updated = await db
+        .update(pricingPlans)
+        .set({ status, updatedAt: new Date() })
+        .where(eq(pricingPlans.id, id))
+        .returning({ id: pricingPlans.id });
+      return updated.length ? { ok: true } : { ok: false, error: "This package no longer exists. It may have been deleted." };
+    },
+
+    async deletePricingPlan(id: string): Promise<{ ok: true } | { ok: false; error: string }> {
+      const deleted = await db.delete(pricingPlans).where(eq(pricingPlans.id, id)).returning({ id: pricingPlans.id });
+      return deleted.length ? { ok: true } : { ok: false, error: "This package no longer exists. It may have been deleted." };
     },
   };
 }

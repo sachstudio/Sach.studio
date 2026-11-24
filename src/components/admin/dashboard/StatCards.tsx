@@ -25,8 +25,7 @@ function StatCard({
   action: string;
 }) {
   return (
-    <div className="col-span-12 lg:col-span-4">
-      <Card data-stat className="h-full shadow-none">
+    <Card data-stat className="flex-1 shadow-none">
         <CardContent className="flex flex-col items-start gap-4 px-6">
           <div className="flex w-full items-center justify-between">
             <div className="flex flex-col gap-1">
@@ -47,15 +46,14 @@ function StatCard({
             </Link>
           </Button>
         </CardContent>
-      </Card>
-    </div>
+    </Card>
   );
 }
 
-/** The three stat cards under the chart: live case studies, drafts to review, and blog posts. */
+/** The three stat cards stacked beside the chart: live case studies, drafts to review, and blog posts. */
 export function StatCards({ studies, posts }: { studies: Counts & { percentPublished: number }; posts: Counts }) {
   return (
-    <>
+    <div className="col-span-12 flex flex-col gap-4 lg:col-span-5">
       <StatCard
         label="Published case studies"
         value={studies.published}
@@ -83,6 +81,6 @@ export function StatCards({ studies, posts }: { studies: Counts & { percentPubli
         href="/admin/posts"
         action="See posts"
       />
-    </>
+    </div>
   );
 }

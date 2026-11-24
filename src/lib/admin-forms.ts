@@ -1,6 +1,6 @@
-import type { BlogPost, CaseStudy } from "@/db/schema";
+import type { BlogPost, CaseStudy, PricingPlan } from "@/db/schema";
 import { normalizeFeatureImages } from "./feature-images";
-import type { CaseStudyInput, PostInput } from "./validation";
+import type { CaseStudyInput, PostInput, PricingPlanInput } from "./validation";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -109,5 +109,34 @@ export function emptyPost(): PostInput {
     sortOrder: 0,
     status: "draft",
     isPlaceholder: false,
+  };
+}
+
+export function pricingPlanToInput(row: PricingPlan): PricingPlanInput {
+  return {
+    name: row.name,
+    description: row.description,
+    priceLabel: row.priceLabel,
+    price: row.price,
+    ctaLabel: row.ctaLabel,
+    ctaHref: row.ctaHref,
+    features: row.features,
+    sortOrder: row.sortOrder,
+    status: row.status,
+  };
+}
+
+/** Starting values for a new package: the same wording the existing cards use, added after the others. */
+export function emptyPricingPlan(): PricingPlanInput {
+  return {
+    name: "",
+    description: "",
+    priceLabel: "Starting from",
+    price: "",
+    ctaLabel: "Book a 15min call",
+    ctaHref: "#book-a-call",
+    features: [],
+    sortOrder: 100,
+    status: "published",
   };
 }

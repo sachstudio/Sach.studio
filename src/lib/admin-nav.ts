@@ -3,6 +3,14 @@ export const ADMIN_SECTIONS = [
   { href: "/admin/posts", label: "Blog posts", singular: "post" },
 ] as const;
 
+/** The pricing cards on the home page. */
+export const PRICING_SECTIONS = [{ href: "/admin/pricing", label: "Packages", singular: "package" }] as const;
+
+/** Calls booked through the Cal.com widget. */
+export const BOOKING_SECTIONS = [{ href: "/admin/bookings", label: "Booking", singular: "booking" }] as const;
+
+const ALL_SECTIONS = [...ADMIN_SECTIONS, ...PRICING_SECTIONS, ...BOOKING_SECTIONS];
+
 export const DASHBOARD_HREF = "/admin";
 
 /** True on the admin home only, not on the sections inside it. */
@@ -19,7 +27,7 @@ export function isCurrentSection(pathname: string, href: string): boolean {
 
 /** The trail shown in the admin's top bar, for example Case studies / Edit case study. */
 export function breadcrumbsFor(pathname: string): Crumb[] {
-  const section = ADMIN_SECTIONS.find((s) => isCurrentSection(pathname, s.href));
+  const section = ALL_SECTIONS.find((s) => isCurrentSection(pathname, s.href));
   if (!section) return [];
 
   const rest = pathname.slice(section.href.length).split("/").filter(Boolean);

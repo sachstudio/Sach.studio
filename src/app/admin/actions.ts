@@ -3,8 +3,8 @@
 import { getRepo } from "@/db";
 import { requireAdmin } from "@/lib/admin-auth";
 import { revalidateContent } from "@/lib/revalidate";
-import { tagsForCaseStudyChange, tagsForPostChange } from "@/lib/tags";
-import { validateCaseStudy, validatePost } from "@/lib/validation";
+import { pricingTag, tagsForCaseStudyChange, tagsForPostChange } from "@/lib/tags";
+import { validateCaseStudy, validatePost, validatePricingPlan } from "@/lib/validation";
 
 export type ActionResult =
   | { ok: true; message: "Saved" | "Published" | "Unpublished" | "Deleted"; id?: string; slug?: string }
@@ -140,5 +140,59 @@ export async function deletePostAction(id: string): Promise<ActionResult> {
     return { ok: true, message: "Deleted", slug: result.slug };
   } catch (error) {
     return unexpected("delete the post", error);
+  }
+}
+
+// ---------- pricing packages ----------
+
+async function savePlanInput(input: unknown, id: string | undefined, status: "draft" | "published" | null): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+
+  const merged = status && input && typeof input === "object" ? { ...input, status } : input;
+  const checked = validatePricingPlan(merged);
+  if (!checked.ok) return { ok: false, error: fix, errors: checked.errors };
+
+  try {
+    const result = await (await getRepo()).savePricingPlan(checked.data, id);
+    if (!result.ok) return fromRepoFailure(result);
+    revalidateContent([pricingTag]);
+    return { ok: true, message: status === "published" ? "Published" : "Saved", id: result.id };
+  } catch (error) {
+    return unexpected("save the package", error);
+  }
+}
+
+export async function savePricingPlanAction(input: unknown, id?: string): Promise<ActionResult> {
+  return savePlanInput(input, id, null);
+}
+
+export async function publishPricingPlanAction(input: unknown, id?: string): Promise<ActionResult> {
+  return savePlanInput(input, id, "published");
+}
+
+export async function unpublishPricingPlanAction(id: string): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+  try {
+    const result = await (await getRepo()).setPricingPlanStatus(id, "draft");
+    if (!result.ok) return { ok: false, error: result.error };
+    revalidateContent([pricingTag]);
+    return { ok: true, message: "Unpublished" };
+  } catch (error) {
+    return unexpected("hide the package", error);
+  }
+}
+
+export async function deletePricingPlanAction(id: string): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+  try {
+    const result = await (await getRepo()).deletePricingPlan(id);
+    if (!result.ok) return { ok: false, error: result.error };
+    revalidateContent([pricingTag]);
+    return { ok: true, message: "Deleted" };
+  } catch (error) {
+    return unexpected("delete the package", error);
   }
 }

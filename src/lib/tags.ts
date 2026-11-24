@@ -1,5 +1,6 @@
 export const caseStudiesTag = "case-studies";
 export const postsTag = "posts";
+export const pricingTag = "pricing";
 
 export const caseStudyTag = (slug: string) => `case-study:${slug}`;
 export const postTag = (slug: string) => `post:${slug}`;

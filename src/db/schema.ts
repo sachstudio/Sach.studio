@@ -64,3 +64,46 @@ export const blogPosts = pgTable("blog_posts", {
 
 export type CaseStudy = typeof caseStudies.$inferSelect;
 export type BlogPost = typeof blogPosts.$inferSelect;
+
+/** A call booked through the Cal.com widget on the website; written by the Cal.com webhook. */
+export const bookings = pgTable("bookings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** Cal.com's own id for the booking. A reschedule creates a new one. */
+  calUid: text("cal_uid").notNull().unique(),
+  title: text("title").notNull().default(""),
+  eventTitle: text("event_title").notNull().default(""),
+  startTime: timestamp("start_time", { withTimezone: true }).notNull(),
+  endTime: timestamp("end_time", { withTimezone: true }),
+  status: text("status").$type<"confirmed" | "requested" | "cancelled" | "rejected" | "rescheduled">().notNull().default("confirmed"),
+  attendeeName: text("attendee_name").notNull().default(""),
+  attendeeEmail: text("attendee_email").notNull().default(""),
+  attendeeTimezone: text("attendee_timezone").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  meetingUrl: text("meeting_url").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Booking = typeof bookings.$inferSelect;
+
+/** A package shown as a card in the Flexible Pricing Plan section of the home page. */
+export const pricingPlans = pgTable("pricing_plans", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  description: text("description").notNull().default(""),
+  /** The small words before the price, for example "Starting from". */
+  priceLabel: text("price_label").notNull().default("Starting from"),
+  /** Shown as typed, for example "$1,999". */
+  price: text("price").notNull(),
+  ctaLabel: text("cta_label").notNull().default("Book a 15min call"),
+  ctaHref: text("cta_href").notNull().default("#book-a-call"),
+  features: jsonb("features").$type<string[]>().notNull().default([]),
+  /** Lower numbers come first. */
+  sortOrder: integer("sort_order").notNull().default(100),
+  /** "published" shows the card on the website, "draft" hides it. */
+  status: text("status").$type<ContentStatus>().notNull().default("published"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type PricingPlan = typeof pricingPlans.$inferSelect;

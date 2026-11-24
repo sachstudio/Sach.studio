@@ -2,7 +2,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { createRepo, type Repo } from "./repo";
 import { createTestDb } from "./test-db";
-import type { CaseStudyInput, PostInput } from "@/lib/validation";
+import type { BookingInput } from "@/lib/cal-webhook";
+import type { CaseStudyInput, PostInput, PricingPlanInput } from "@/lib/validation";
 
 function study(overrides: Partial<CaseStudyInput> = {}): CaseStudyInput {
   return {
@@ -183,5 +184,85 @@ describe("blog posts", () => {
     if (!saved.ok) throw new Error("setup failed");
     expect(await repo.deletePost(saved.id)).toEqual({ ok: true, slug: "bye" });
     expect(await repo.getPublishedPost("bye")).toBeNull();
+  });
+});
+
+describe("bookings", () => {
+  const booking = (overrides: Partial<BookingInput> = {}): BookingInput => ({
+    calUid: "uid-1",
+    title: "15 Min Meeting",
+    eventTitle: "15 Min Meeting",
+    startTime: new Date("2026-11-28T10:30:00.000Z"),
+    endTime: new Date("2026-11-28T10:45:00.000Z"),
+    status: "confirmed",
+    attendeeName: "Asha Rao",
+    attendeeEmail: "asha@example.com",
+    attendeeTimezone: "Asia/Kolkata",
+    notes: "",
+    meetingUrl: "",
+    ...overrides,
+  });
+
+  it("lists the latest call first", async () => {
+    await repo.upsertBooking(booking({ calUid: "a", startTime: new Date("2026-11-20T10:00:00Z") }));
+    await repo.upsertBooking(booking({ calUid: "b", startTime: new Date("2026-12-02T10:00:00Z") }));
+    expect((await repo.adminListBookings()).map((b) => b.calUid)).toEqual(["b", "a"]);
+  });
+
+  it("updates the same booking when Cal.com sends it again, instead of adding a second row", async () => {
+    await repo.upsertBooking(booking());
+    await repo.upsertBooking(booking({ status: "cancelled" }));
+    const rows = await repo.adminListBookings();
+    expect(rows).toHaveLength(1);
+    expect(rows[0].status).toBe("cancelled");
+  });
+
+  it("marks the earlier booking as rescheduled when a new time replaces it", async () => {
+    await repo.upsertBooking(booking({ calUid: "old" }));
+    await repo.upsertBooking(booking({ calUid: "new", startTime: new Date("2026-11-30T10:00:00Z") }), "old");
+    const byUid = Object.fromEntries((await repo.adminListBookings()).map((b) => [b.calUid, b.status]));
+    expect(byUid).toEqual({ old: "rescheduled", new: "confirmed" });
+  });
+});
+
+describe("pricing plans", () => {
+  const plan = (overrides: Partial<PricingPlanInput> = {}): PricingPlanInput => ({
+    name: "Websites",
+    description: "Great sites",
+    priceLabel: "Starting from",
+    price: "$2,999",
+    ctaLabel: "Book a 15min call",
+    ctaHref: "#book-a-call",
+    features: ["Timeline: 2 Weeks"],
+    sortOrder: 10,
+    status: "published",
+    ...overrides,
+  });
+
+  it("only returns shown plans to the public site, in position order", async () => {
+    await repo.savePricingPlan(plan({ name: "Second", sortOrder: 20 }));
+    await repo.savePricingPlan(plan({ name: "First", sortOrder: 10 }));
+    await repo.savePricingPlan(plan({ name: "Hidden", sortOrder: 5, status: "draft" }));
+    expect((await repo.listPublishedPricingPlans()).map((p) => p.name)).toEqual(["First", "Second"]);
+    expect((await repo.adminListPricingPlans()).map((p) => p.name)).toEqual(["Hidden", "First", "Second"]);
+  });
+
+  it("edits a plan in place, benefits and button included", async () => {
+    const saved = await repo.savePricingPlan(plan());
+    if (!saved.ok) throw new Error("setup failed");
+    await repo.savePricingPlan(plan({ price: "$3,499", ctaLabel: "Talk to us", features: ["A", "B"] }), saved.id);
+    const row = await repo.adminGetPricingPlan(saved.id);
+    expect(row).toMatchObject({ price: "$3,499", ctaLabel: "Talk to us", features: ["A", "B"] });
+    expect(await repo.adminListPricingPlans()).toHaveLength(1);
+  });
+
+  it("can hide, show and delete a plan", async () => {
+    const saved = await repo.savePricingPlan(plan());
+    if (!saved.ok) throw new Error("setup failed");
+    expect(await repo.setPricingPlanStatus(saved.id, "draft")).toEqual({ ok: true });
+    expect(await repo.listPublishedPricingPlans()).toHaveLength(0);
+    expect(await repo.deletePricingPlan(saved.id)).toEqual({ ok: true });
+    expect(await repo.adminGetPricingPlan(saved.id)).toBeNull();
+    expect((await repo.deletePricingPlan(saved.id)).ok).toBe(false);
   });
 });

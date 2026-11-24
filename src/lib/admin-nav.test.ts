@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ADMIN_SECTIONS, breadcrumbsFor, DASHBOARD_HREF, isCurrentSection, isDashboard } from "./admin-nav";
+import { ADMIN_SECTIONS, BOOKING_SECTIONS, PRICING_SECTIONS, breadcrumbsFor, DASHBOARD_HREF, isCurrentSection, isDashboard } from "./admin-nav";
 
 describe("isDashboard", () => {
   it("is only the admin home, not the sections under it", () => {
@@ -17,6 +17,20 @@ describe("ADMIN_SECTIONS", () => {
       ["Case studies", "/admin/case-studies"],
       ["Blog posts", "/admin/posts"],
     ]);
+  });
+});
+
+describe("Pricing and Cal.com sections", () => {
+  it("lists Packages under Pricing and Booking under Cal.com", () => {
+    expect(PRICING_SECTIONS.map((s) => [s.label, s.href])).toEqual([["Packages", "/admin/pricing"]]);
+    expect(BOOKING_SECTIONS.map((s) => [s.label, s.href])).toEqual([["Booking", "/admin/bookings"]]);
+  });
+
+  it("builds breadcrumbs for them", () => {
+    expect(breadcrumbsFor("/admin/bookings")).toEqual([{ label: "Booking" }]);
+    expect(breadcrumbsFor("/admin/pricing")).toEqual([{ label: "Packages" }]);
+    expect(breadcrumbsFor("/admin/pricing/new")).toEqual([{ label: "Packages", href: "/admin/pricing" }, { label: "New package" }]);
+    expect(breadcrumbsFor("/admin/pricing/abc")).toEqual([{ label: "Packages", href: "/admin/pricing" }, { label: "Edit package" }]);
   });
 });
 

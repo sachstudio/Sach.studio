@@ -54,6 +54,23 @@ describe("seed content", () => {
     const repo = createRepo(db as never);
     expect(await repo.adminListCaseStudies()).toHaveLength(7);
     expect(await repo.adminListPosts()).toHaveLength(4);
+    expect(await repo.adminListPricingPlans()).toHaveLength(4);
+  });
+
+  it("seeds the four pricing plans the website showed, and does not bring back one the owner deleted", async () => {
+    const db = await createTestDb();
+    await seedDatabase(db as never);
+    const repo = createRepo(db as never);
+    const plans = await repo.listPublishedPricingPlans();
+    expect(plans.map((p) => [p.name, p.price])).toEqual([
+      ["Logo & Branding", "$1,999"],
+      ["Websites & Landing Pages", "$2,999"],
+      ["Mobile App Design", "$3,999"],
+      ["Web App & Dashboard UI", "$3,999"],
+    ]);
+    await repo.deletePricingPlan(plans[0].id);
+    await seedDatabase(db as never);
+    expect(await repo.adminListPricingPlans()).toHaveLength(3);
   });
 
   it("publishes everything and flags content that still needs the owner's text", async () => {

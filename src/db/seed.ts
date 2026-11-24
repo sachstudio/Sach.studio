@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { createRepo, type Db } from "./repo";
-import { seedCaseStudies, seedPosts } from "./seed-data";
-import { blogPosts, caseStudies } from "./schema";
+import { seedCaseStudies, seedPosts, seedPricingPlans } from "./seed-data";
+import { blogPosts, caseStudies, pricingPlans } from "./schema";
 
 /**
  * Add the studio's starting content, matched by slug.
@@ -13,7 +13,7 @@ import { blogPosts, caseStudies } from "./schema";
 export async function seedDatabase(
   db: Db,
   options: { force?: boolean } = {},
-): Promise<{ caseStudies: number; posts: number }> {
+): Promise<{ caseStudies: number; posts: number; pricingPlans: number }> {
   const repo = createRepo(db);
   let addedStudies = 0;
   let addedPosts = 0;
@@ -32,5 +32,18 @@ export async function seedDatabase(
     if (!result.ok) throw new Error(`Seeding post "${input.slug}" failed: ${result.error}`);
     addedPosts += 1;
   }
-  return { caseStudies: addedStudies, posts: addedPosts };
+
+  // Packages have no slug to match on, so they are only added to an empty table: a package the owner
+  // deleted or reworded in the admin never comes back.
+  let addedPlans = 0;
+  const [anyPlan] = await db.select({ id: pricingPlans.id }).from(pricingPlans).limit(1);
+  if (!anyPlan || options.force) {
+    if (options.force) await db.delete(pricingPlans);
+    for (const input of seedPricingPlans) {
+      const result = await repo.savePricingPlan(input);
+      if (!result.ok) throw new Error(`Seeding package "${input.name}" failed: ${result.error}`);
+      addedPlans += 1;
+    }
+  }
+  return { caseStudies: addedStudies, posts: addedPosts, pricingPlans: addedPlans };
 }

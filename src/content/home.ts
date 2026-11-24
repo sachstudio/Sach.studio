@@ -1,11 +1,3 @@
-export type PricingPlan = {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  features: string[];
-};
-
 export type Testimonial = {
   id: string;
   name: string;
@@ -72,70 +64,6 @@ export const home = {
     title: "Flexible Pricing Plan",
     subtitle:
       "Transparent pricing for startups, founders, and modern businesses that value quality, speed, and real results - while Sach Studio handles the entire process smoothly for you.",
-    plans: [
-      {
-        id: "logo-branding",
-        name: "Logo & Branding",
-        description:
-          "We design logos and brand identities that help businesses look more professional, memorable, and trusted.",
-        price: "$1,999",
-        features: [
-          "Timeline: 2 Weeks",
-          "Unlimited Revisions",
-          "Logo & Brand Identity",
-          "Brand Assets",
-          "Company Profile",
-          "Marketing Collateral",
-          "Pitch Deck Design",
-        ],
-      },
-      {
-        id: "websites",
-        name: "Websites & Landing Pages",
-        description:
-          "We create high-performing websites and landing pages - from strategy and design to full development.",
-        price: "$2,999",
-        features: [
-          "Timeline: 2 - 6 Weeks",
-          "Unlimited Revisions",
-          "Development (Framer, Webflow, Nextjs, Reactjs, Wordpress)",
-          "Animations (Rive, After Effects)",
-          "Responsive Development",
-          "High SEO-Friendly Structure",
-          "Tools Integration",
-        ],
-      },
-      {
-        id: "mobile-app",
-        name: "Mobile App Design",
-        description:
-          "Modern iOS and Android app designs crafted for usability, performance, and seamless user experience.",
-        price: "$3,999",
-        features: [
-          "Timeline: 2–6 Weeks",
-          "Unlimited Revisions",
-          "iOS & Android Design",
-          "Simple Screens: $150/screen",
-          "Complex Screens: $250/screen",
-          "Developer-Ready Figma Files",
-        ],
-      },
-      {
-        id: "web-app-dashboard",
-        name: "Web App & Dashboard UI",
-        description:
-          "We create user-friendly web apps and dashboard experiences that are clean, scalable, and easy to use.",
-        price: "$3,999",
-        features: [
-          "Timeline: 2–6 Weeks",
-          "Unlimited Revisions",
-          "iOS & Android Design",
-          "Simple Screens: $200/screen",
-          "Complex Screens: $400/screen",
-          "Developer-Ready Figma Files",
-        ],
-      },
-    ] satisfies PricingPlan[],
   },
   whyUs: {
     title: "Why you will love us?",

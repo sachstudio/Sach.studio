@@ -7,7 +7,6 @@ import { ContentOverview } from "./ContentOverview";
 import { RecentTable } from "./RecentTable";
 import { RefreshButton } from "./RefreshButton";
 import { StatCards } from "./StatCards";
-import { TotalContent } from "./TotalContent";
 import { UpdateBanner } from "./UpdateBanner";
 
 /** The admin home page, laid out like the demo's "Modern" dashboard but filled with your own content numbers. */
@@ -30,9 +29,6 @@ export function Dashboard({ data, greeting, name }: { data: ReturnType<typeof bu
         </div>
         <div className="col-span-12 lg:col-span-7">
           <ContentOverview total={data.studies.total} byCategory={data.byCategory} />
-        </div>
-        <div className="col-span-12 lg:col-span-5">
-          <TotalContent studies={data.studies} posts={data.posts} />
         </div>
         <StatCards studies={data.studies} posts={data.posts} />
         <div className="col-span-12">

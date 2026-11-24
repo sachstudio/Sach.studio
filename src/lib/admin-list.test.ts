@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countByCategory, countByStatus, filterByCategory, filterByQuery, filterByStatus, formatEdited, pageNumbers, paginate, sortRows } from "./admin-list";
+import { countByCategory, countByStatus, filterByCategory, filterByQuery, filterByStatus, formatBookingTime, formatEdited, pageNumbers, paginate, sortRows } from "./admin-list";
 
 describe("filterByStatus", () => {
   const items = [
@@ -163,5 +163,11 @@ describe("countByCategory", () => {
 
   it("is all zeros for an empty list", () => {
     expect(countByCategory([]).all).toBe(0);
+  });
+});
+
+describe("formatBookingTime", () => {
+  it("shows the call in the studio time zone, with the weekday", () => {
+    expect(formatBookingTime(new Date("2026-11-28T10:30:00Z"))).toBe("Sat, 28 Nov 2026, 4:00 pm IST");
   });
 });

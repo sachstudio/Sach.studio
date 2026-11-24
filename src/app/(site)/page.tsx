@@ -11,6 +11,7 @@ import { WhyUs } from "@/components/home/WhyUs";
 import { FeaturedWork } from "@/components/works/FeaturedWork";
 import { homeFaqs } from "@/content/faqs";
 import { home } from "@/content/home";
+import { getPublishedPricingPlans } from "@/db/queries";
 
 export const metadata: Metadata = {
   title: { absolute: "Sach Studio: Website, App & Dashboard Design and Development" },
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
     "Sach Studio helps startups, businesses and modern brands launch high-converting websites, mobile apps, web apps and dashboards that look premium, perform fast and scale.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const plans = await getPublishedPricingPlans();
   return (
     <>
       <Hero />
@@ -26,7 +28,7 @@ export default function HomePage() {
       <ClientLogos />
       <FeaturedWork />
       <Process />
-      <Pricing />
+      <Pricing plans={plans} />
       <WhyUs />
       <Testimonials />
       <Faq title={home.faq.title} subtitle={home.faq.subtitle} items={homeFaqs} />

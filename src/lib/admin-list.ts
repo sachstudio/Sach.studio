@@ -9,6 +9,22 @@ const editedFormat = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Asia/Kolkata", // the studio works in Bangalore
 });
 
+const bookingFormat = new Intl.DateTimeFormat("en-GB", {
+  weekday: "short",
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  hour12: true,
+  timeZone: "Asia/Kolkata",
+});
+
+/** "Sat, 28 Nov 2026, 4:00 pm IST": when a booked call starts, in the studio's time zone. */
+export function formatBookingTime(date: Date): string {
+  return `${bookingFormat.format(date).replace(" at ", ", ").replace(/(am|pm)/i, (m) => m.toLowerCase())} IST`;
+}
+
 /** "23 Nov 2026": when something was last edited, in the studio's time zone. */
 export function formatEdited(date: Date): string {
   return editedFormat.format(date);

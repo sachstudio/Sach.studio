@@ -94,7 +94,37 @@ const postShape = z.object({
   isPlaceholder: z.boolean().default(false),
 });
 
+export const MAX_PLAN_FEATURES = 12;
+
+/** Where a pricing button can point: a section on the page, a page on this site, or a full web address. */
+function isButtonLink(value: string): boolean {
+  if (value.startsWith("#")) return value.length > 1;
+  if (value.startsWith("/")) return !value.startsWith("//");
+  return /^https?:\/\/\S+$/.test(value);
+}
+
+const pricingPlanShape = z.object({
+  name: z.string().trim().min(1, "Add the package name"),
+  description: z.string().trim().default(""),
+  priceLabel: z.string().trim().default("Starting from"),
+  price: z.string().trim().min(1, "Add the price, for example $1,999"),
+  ctaLabel: z.string().trim().min(1, "Add the button text").default("Book a 15min call"),
+  ctaHref: z
+    .string()
+    .trim()
+    .refine(isButtonLink, "Use #section, a page like /contact, or a full address starting with https://")
+    .default("#book-a-call"),
+  features: z
+    .array(z.string().trim())
+    .transform((items) => items.filter(Boolean))
+    .pipe(z.array(z.string()).max(MAX_PLAN_FEATURES, `Use at most ${MAX_PLAN_FEATURES} benefits`))
+    .default([]),
+  sortOrder: z.number().int().default(100),
+  status: z.enum(["draft", "published"]).default("draft"),
+});
+
 export type CaseStudyInput = z.infer<typeof caseStudyShape>;
+export type PricingPlanInput = z.infer<typeof pricingPlanShape>;
 export type PostInput = z.infer<typeof postShape>;
 
 export type ValidationResult<T> = { ok: true; data: T } | { ok: false; errors: Record<string, string> };
@@ -142,4 +172,9 @@ export function validatePost(input: unknown): ValidationResult<PostInput> {
     if (!data.coverImageUrl) errors.coverImageUrl = "Add a cover image before you publish";
   }
   return Object.keys(errors).length ? { ok: false, errors } : { ok: true, data };
+}
+
+export function validatePricingPlan(input: unknown): ValidationResult<PricingPlanInput> {
+  const parsed = pricingPlanShape.safeParse(input);
+  return parsed.success ? { ok: true, data: parsed.data } : { ok: false, errors: issuesToErrors(parsed.error) };
 }

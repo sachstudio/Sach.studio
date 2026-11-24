@@ -7,11 +7,11 @@ vi.mock("next/navigation", () => ({ usePathname: () => nav.pathname }));
 import { SidebarProvider } from "@/components/admin/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 
-function renderSidebar(pathname: string, props: { published?: number; total?: number } = {}) {
+function renderSidebar(pathname: string) {
   nav.pathname = pathname;
   return render(
     <SidebarProvider>
-      <AppSidebar published={props.published ?? 0} total={props.total ?? 0} />
+      <AppSidebar />
     </SidebarProvider>,
   );
 }
@@ -43,6 +43,20 @@ describe("AppSidebar", () => {
     expect(screen.getByRole("link", { name: "Blog posts" })).toHaveAttribute("href", "/admin/posts");
   });
 
+  it("has a Pricing group with Packages, and a Cal.com group with Booking", () => {
+    renderSidebar("/admin");
+    expect(screen.getByText("Pricing")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Packages" })).toHaveAttribute("href", "/admin/pricing");
+    expect(screen.getByText("Cal.com")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Booking" })).toHaveAttribute("href", "/admin/bookings");
+  });
+
+  it("marks Packages and Booking as current inside their own pages", () => {
+    renderSidebar("/admin/pricing/abc");
+    expect(screen.getByRole("link", { name: "Packages" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Booking" })).not.toHaveAttribute("aria-current");
+  });
+
   it("links out to the public site in a new tab", () => {
     renderSidebar("/admin/case-studies");
     const site = screen.getByRole("link", { name: /View website/ });
@@ -68,28 +82,10 @@ describe("AppSidebar", () => {
     expect(screen.getByText("Admin")).toBeInTheDocument();
   });
 
-  describe("published card", () => {
-    it("shows how much of the content is live, as a percentage and a count", () => {
-      renderSidebar("/admin/case-studies", { published: 7, total: 10 });
-      expect(screen.getByText("70%")).toBeInTheDocument();
-      expect(screen.getByText("7 of 10 case studies are live")).toBeInTheDocument();
-      expect(screen.getByRole("progressbar", { name: "Case studies published" })).toHaveAttribute("aria-valuenow", "70");
-    });
-
-    it("rounds the percentage", () => {
-      renderSidebar("/admin/case-studies", { published: 1, total: 3 });
-      expect(screen.getByText("33%")).toBeInTheDocument();
-    });
-
-    it("shows 0% instead of dividing by zero when there are no case studies", () => {
-      renderSidebar("/admin/case-studies", { published: 0, total: 0 });
-      expect(screen.getByText("0%")).toBeInTheDocument();
-      expect(screen.getByText("0 of 0 case studies are live")).toBeInTheDocument();
-    });
-
-    it("offers a way to add the next case study", () => {
-      renderSidebar("/admin/case-studies", { published: 1, total: 2 });
-      expect(screen.getByRole("link", { name: "New case study" })).toHaveAttribute("href", "/admin/case-studies/new");
-    });
+  it("does not repeat the published count or a New case study button, the dashboard and header already show them", () => {
+    renderSidebar("/admin/case-studies");
+    expect(screen.queryByRole("progressbar")).toBeNull();
+    expect(screen.queryByText(/case studies are live/)).toBeNull();
+    expect(screen.queryByRole("link", { name: "New case study" })).toBeNull();
   });
 });

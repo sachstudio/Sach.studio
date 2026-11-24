@@ -5,7 +5,6 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AppSidebar } from "@/components/admin/AppSidebar";
 import { SidebarInset, SidebarProvider } from "@/components/admin/ui/sidebar";
 import { TooltipProvider } from "@/components/admin/ui/tooltip";
-import { getRepo } from "@/db";
 import { gateAdmin } from "@/lib/admin-gate";
 
 // The admin uses Geist, like the shadcn dashboard it is modelled on. The public site keeps its own fonts.
@@ -20,8 +19,6 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "sw
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
   await connection(); // read the database at request time, never during the build
   await gateAdmin();
-  const studies = await (await getRepo()).adminListCaseStudies();
-  const published = studies.filter((s) => s.status === "published").length;
 
   return (
     <div
@@ -33,7 +30,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
       <style>{`body:has(.admin-root){font-family:${geist.style.fontFamily},ui-sans-serif,system-ui,sans-serif;font-weight:400}`}</style>
       <TooltipProvider>
         <SidebarProvider>
-          <AppSidebar published={published} total={studies.length} />
+          <AppSidebar />
           <SidebarInset className="min-w-0 overflow-clip border border-border md:peer-data-[variant=inset]:rounded-[14px] md:peer-data-[variant=inset]:shadow-sm">
             <AdminHeader />
             <div className="flex flex-1 flex-col gap-4 p-4">

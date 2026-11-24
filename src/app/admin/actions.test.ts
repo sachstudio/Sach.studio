@@ -11,6 +11,9 @@ const mocks = vi.hoisted(() => ({
     savePost: vi.fn(),
     setPostStatus: vi.fn(),
     deletePost: vi.fn(),
+    savePricingPlan: vi.fn(),
+    setPricingPlanStatus: vi.fn(),
+    deletePricingPlan: vi.fn(),
   },
 }));
 
@@ -21,6 +24,10 @@ vi.mock("@/db", () => ({ getRepo: async () => mocks.repo }));
 import {
   deleteCaseStudyAction,
   deletePostAction,
+  deletePricingPlanAction,
+  publishPricingPlanAction,
+  savePricingPlanAction,
+  unpublishPricingPlanAction,
   publishCaseStudyAction,
   publishPostAction,
   saveCaseStudyAction,
@@ -52,6 +59,10 @@ describe("admin actions: authorisation", () => {
       deleteCaseStudyAction("id-1"),
       publishPostAction({ slug: "p", title: "P", body: "x", coverImageUrl: "/a.webp" }),
       deletePostAction("id-2"),
+      savePricingPlanAction({ name: "A", price: "$1" }),
+      publishPricingPlanAction({ name: "A", price: "$1" }),
+      unpublishPricingPlanAction("id-3"),
+      deletePricingPlanAction("id-3"),
     ]);
     for (const r of results) expect(r).toEqual({ ok: false, error: "Not authorised" });
     for (const fn of Object.values(mocks.repo)) expect(fn).not.toHaveBeenCalled();
@@ -142,5 +153,34 @@ describe("admin actions: posts", () => {
     const result = await deletePostAction("p1");
     expect(result).toEqual({ ok: true, message: "Deleted", slug: "why-design" });
     expect(mocks.revalidateContent).toHaveBeenCalledWith(["posts", "post:why-design"]);
+  });
+});
+
+describe("admin actions: pricing packages", () => {
+  it("rejects a package without a price and shows the error on that field", async () => {
+    const result = await savePricingPlanAction({ name: "Websites", price: "" });
+    expect(result).toMatchObject({ ok: false, errors: { price: expect.any(String) } });
+    expect(mocks.repo.savePricingPlan).not.toHaveBeenCalled();
+  });
+
+  it("saves a package and refreshes the pricing section of the website", async () => {
+    mocks.repo.savePricingPlan.mockResolvedValue({ ok: true, id: "plan-1", slug: "Websites" });
+    const result = await savePricingPlanAction({ name: "Websites", price: "$2,999" });
+    expect(result).toEqual({ ok: true, message: "Saved", id: "plan-1" });
+    expect(mocks.revalidateContent).toHaveBeenCalledWith(["pricing"]);
+  });
+
+  it("publishing shows the package on the website", async () => {
+    mocks.repo.savePricingPlan.mockResolvedValue({ ok: true, id: "plan-1", slug: "Websites" });
+    await publishPricingPlanAction({ name: "Websites", price: "$2,999", status: "draft" }, "plan-1");
+    expect(mocks.repo.savePricingPlan.mock.calls[0][0]).toMatchObject({ status: "published" });
+  });
+
+  it("hides and deletes a package, refreshing the website each time", async () => {
+    mocks.repo.setPricingPlanStatus.mockResolvedValue({ ok: true });
+    mocks.repo.deletePricingPlan.mockResolvedValue({ ok: true });
+    expect(await unpublishPricingPlanAction("plan-1")).toEqual({ ok: true, message: "Unpublished" });
+    expect(await deletePricingPlanAction("plan-1")).toEqual({ ok: true, message: "Deleted" });
+    expect(mocks.revalidateContent).toHaveBeenCalledTimes(2);
   });
 });

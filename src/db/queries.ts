@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import type { CategorySlug } from "@/lib/categories";
-import { caseStudiesTag, caseStudyTag, postTag, postsTag } from "@/lib/tags";
+import { caseStudiesTag, caseStudyTag, postTag, postsTag, pricingTag } from "@/lib/tags";
 import { getRepo } from "./index";
 
 /*
@@ -49,4 +49,12 @@ export async function getRelatedPosts(slug: string, limit = 2) {
   cacheTag(postsTag);
   cacheLife("hours");
   return (await getRepo()).listRelatedPosts(slug, limit);
+}
+
+/** The package cards in the home page's pricing section: only the ones switched on, in the admin's order. */
+export async function getPublishedPricingPlans() {
+  "use cache";
+  cacheTag(pricingTag);
+  cacheLife("hours");
+  return (await getRepo()).listPublishedPricingPlans();
 }

@@ -1,4 +1,4 @@
-import type { CaseStudyInput, PostInput } from "@/lib/validation";
+import type { CaseStudyInput, PostInput, PricingPlanInput } from "@/lib/validation";
 
 const img = (name: string) => `/images/projects/${name}`;
 const logo = (name: string) => `/images/logos/${name}`;
@@ -396,5 +396,83 @@ export const seedPosts: PostInput[] = [
     status: "published",
     sortOrder: 40,
     isPlaceholder: true,
+  },
+];
+
+/** The four package cards the home page showed before pricing moved into the admin. */
+export const seedPricingPlans: PricingPlanInput[] = [
+  {
+    name: "Logo & Branding",
+    description: "We design logos and brand identities that help businesses look more professional, memorable, and trusted.",
+    priceLabel: "Starting from",
+    price: "$1,999",
+    ctaLabel: "Book a 15min call",
+    ctaHref: "#book-a-call",
+    features: [
+      "Timeline: 2 Weeks",
+      "Unlimited Revisions",
+      "Logo & Brand Identity",
+      "Brand Assets",
+      "Company Profile",
+      "Marketing Collateral",
+      "Pitch Deck Design",
+    ],
+    sortOrder: 10,
+    status: "published",
+  },
+  {
+    name: "Websites & Landing Pages",
+    description: "We create high-performing websites and landing pages - from strategy and design to full development.",
+    priceLabel: "Starting from",
+    price: "$2,999",
+    ctaLabel: "Book a 15min call",
+    ctaHref: "#book-a-call",
+    features: [
+      "Timeline: 2 - 6 Weeks",
+      "Unlimited Revisions",
+      "Development (Framer, Webflow, Nextjs, Reactjs, Wordpress)",
+      "Animations (Rive, After Effects)",
+      "Responsive Development",
+      "High SEO-Friendly Structure",
+      "Tools Integration",
+    ],
+    sortOrder: 20,
+    status: "published",
+  },
+  {
+    name: "Mobile App Design",
+    description: "Modern iOS and Android app designs crafted for usability, performance, and seamless user experience.",
+    priceLabel: "Starting from",
+    price: "$3,999",
+    ctaLabel: "Book a 15min call",
+    ctaHref: "#book-a-call",
+    features: [
+      "Timeline: 2–6 Weeks",
+      "Unlimited Revisions",
+      "iOS & Android Design",
+      "Simple Screens: $150/screen",
+      "Complex Screens: $250/screen",
+      "Developer-Ready Figma Files",
+    ],
+    sortOrder: 30,
+    status: "published",
+  },
+  {
+    name: "Web App & Dashboard UI",
+    description: "We create user-friendly web apps and dashboard experiences that are clean, scalable, and easy to use.",
+    priceLabel: "Starting from",
+    price: "$3,999",
+    ctaLabel: "Book a 15min call",
+    ctaHref: "#book-a-call",
+    features: [
+      "Timeline: 2–6 Weeks",
+      "Unlimited Revisions",
+      "iOS & Android Design",
+      "Simple Screens: $200/screen",
+      "Complex Screens: $400/screen",
+      "Developer-Ready Figma Files",
+    ],
+    sortOrder: 40,
+    status: "published",
   },
 ];

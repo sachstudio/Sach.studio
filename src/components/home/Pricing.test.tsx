@@ -1,32 +1,49 @@
 import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
+import { seedPricingPlans } from "@/db/seed-data";
 import { Pricing } from "./Pricing";
 
+const plans = seedPricingPlans.map((p, i) => ({ ...p, id: `plan-${i}` }));
+
 describe("Pricing", () => {
-  it("shows the four plans with their starting prices", () => {
-    render(<Pricing />);
-    const plans = screen.getAllByRole("article");
-    expect(plans).toHaveLength(4);
-    const prices = plans.map((p) => within(p).getByTestId("price").textContent);
+  it("shows a card for every package it is given, with the starting price", () => {
+    render(<Pricing plans={plans} />);
+    const cards = screen.getAllByRole("article");
+    expect(cards).toHaveLength(4);
+    const prices = cards.map((p) => within(p).getByTestId("price").textContent);
     expect(prices).toEqual(["$1,999", "$2,999", "$3,999", "$3,999"]);
+    expect(screen.getAllByText("Starting from")).toHaveLength(4);
   });
 
-  it("names the plans in design order", () => {
-    render(<Pricing />);
+  it("names the packages in the order given", () => {
+    render(<Pricing plans={plans} />);
     const names = screen.getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
     expect(names).toEqual(["Logo & Branding", "Websites & Landing Pages", "Mobile App Design", "Web App & Dashboard UI"]);
   });
 
-  it("gives every plan a booking button that jumps to the booking section", () => {
-    render(<Pricing />);
-    const buttons = screen.getAllByRole("link", { name: "Book a 15min call" });
-    expect(buttons).toHaveLength(4);
-    for (const b of buttons) expect(b).toHaveAttribute("href", "#book-a-call");
+  it("gives every package its own button, text and link", () => {
+    render(
+      <Pricing
+        plans={[
+          { ...plans[0], ctaLabel: "Talk to us", ctaHref: "/contact" },
+          { ...plans[1], ctaLabel: "Get a quote", ctaHref: "https://cal.com/sach/30min" },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("link", { name: "Talk to us" })).toHaveAttribute("href", "/contact");
+    expect(screen.getByRole("link", { name: "Get a quote" })).toHaveAttribute("href", "https://cal.com/sach/30min");
   });
 
-  it("lists the per-screen rates for the mobile app plan", () => {
-    render(<Pricing />);
+  it("uses the price words and benefits the admin set", () => {
+    render(<Pricing plans={[{ ...plans[2], priceLabel: "From", features: ["Simple Screens: $150/screen", "Complex Screens: $250/screen"] }]} />);
+    expect(screen.getByText("From")).toBeInTheDocument();
     expect(screen.getByText("Simple Screens: $150/screen")).toBeInTheDocument();
     expect(screen.getByText("Complex Screens: $250/screen")).toBeInTheDocument();
+  });
+
+  it("keeps the section heading but shows no cards when every package is hidden", () => {
+    render(<Pricing plans={[]} />);
+    expect(screen.getByRole("heading", { name: "Flexible Pricing Plan" })).toBeInTheDocument();
+    expect(screen.queryByRole("article")).toBeNull();
   });
 });
