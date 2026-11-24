@@ -33,7 +33,8 @@ export function Tabs<T extends string>({ items, value, onChange, label = "Catego
       aria-label={label}
       onKeyDown={onKeyDown}
       className={cn(
-        "inline-flex max-w-full gap-1 overflow-x-auto rounded-2xl border border-neutral-200 bg-neutral-100 p-1",
+        // Scrolls sideways when the tabs outgrow a phone; the scrollbar is hidden so the pill stays clean.
+        "inline-flex max-w-full gap-1 overflow-x-auto rounded-2xl border border-neutral-200 bg-neutral-100 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
     >
@@ -51,7 +52,7 @@ export function Tabs<T extends string>({ items, value, onChange, label = "Catego
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(item.value)}
             className={cn(
-              "shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm",
+              "min-h-11 shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm",
               selected
                 ? "bg-white font-semibold text-blue-500 shadow-[0_1px_3px_rgb(15_23_42/0.1)]"
                 : "font-normal text-neutral-600 hover:text-neutral-900",

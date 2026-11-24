@@ -118,4 +118,12 @@ describe("CaseStudyView", () => {
     rerender(<CaseStudyView study={study()} related={[]} />);
     expect(screen.queryByRole("heading", { name: "More like this" })).toBeNull();
   });
+
+  it("skips blank gallery entries instead of rendering an image with no source", () => {
+    render(
+      <CaseStudyView study={study({ galleryImages: ["/images/projects/acme-g1.webp", "", "  "] })} related={[]} />,
+    );
+    expect(screen.getAllByAltText(/gallery image/)).toHaveLength(1);
+    expect(screen.getByAltText("Acme: Website Redesign: gallery image 1")).toBeInTheDocument();
+  });
 });

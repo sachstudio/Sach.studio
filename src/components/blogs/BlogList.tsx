@@ -14,7 +14,7 @@ export type PostCardData = {
 
 export function PostCard({ post }: { post: PostCardData }) {
   return (
-    <article className="motion-lift flex flex-col gap-5 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
+    <article className="motion-lift relative flex flex-col gap-5 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
       <Link href={`/blogs/${post.slug}`} tabIndex={-1} aria-hidden className="block overflow-hidden rounded-2xl">
         {post.coverImageUrl ? (
           <Image
@@ -30,13 +30,13 @@ export function PostCard({ post }: { post: PostCardData }) {
         )}
       </Link>
       <div className="flex flex-col gap-3 px-3 pb-4">
-        {post.displayDate && <p className="text-xs text-neutral-500">{post.displayDate}</p>}
+        {post.displayDate && <p className="text-sm text-neutral-500">{post.displayDate}</p>}
         <h3 className="font-serif text-[26px] leading-tight text-neutral-950">{post.title}</h3>
         <div>
           <Link
             href={`/blogs/${post.slug}`}
             aria-label={`Read more: ${post.title}`}
-            className="inline-block border-b-2 border-blue-500 pb-0.5 text-xs font-semibold uppercase tracking-[0.01em] text-blue-500 hover:border-blue-700 hover:text-blue-700"
+            className="inline-block border-b-2 border-blue-500 pb-0.5 text-xs font-semibold uppercase tracking-[0.01em] text-blue-500 after:absolute after:inset-0 after:rounded-3xl after:content-[''] hover:border-blue-700 hover:text-blue-700"
           >
             Read more
           </Link>

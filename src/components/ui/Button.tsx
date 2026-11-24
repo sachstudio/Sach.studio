@@ -18,10 +18,11 @@ const base =
   "inline-flex items-center justify-center gap-2 font-sans font-semibold uppercase tracking-[0.01em] text-sm disabled:opacity-50 disabled:pointer-events-none";
 
 const variants = {
+  // min-h (not a fixed h) so a longer label from the admin wraps inside the button instead of spilling out.
   primary:
-    "h-[54px] rounded-xl px-7 text-white bg-gradient-to-b from-blue-500 to-blue-700 shadow-button motion-press",
+    "min-h-[54px] rounded-xl px-7 py-2 text-center text-white bg-gradient-to-b from-blue-500 to-blue-700 shadow-button motion-press",
   outline:
-    "h-[54px] rounded-xl px-7 text-blue-500 bg-white border border-neutral-200 hover:border-blue-300 hover:bg-blue-50 motion-press",
+    "min-h-[54px] rounded-xl px-7 py-2 text-center text-blue-500 bg-white border border-neutral-200 hover:border-blue-300 hover:bg-blue-50 motion-press",
   link: "text-blue-500 border-b-2 border-blue-500 pb-0.5 hover:text-blue-700 hover:border-blue-700",
 } as const;
 

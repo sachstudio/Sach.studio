@@ -26,6 +26,15 @@ describe("CalEmbed", () => {
     expect(frame.parentElement).toHaveClass("w-full");
   });
 
+  it("is tall enough on phones and tablets for Cal.com's one-column layout, and shorter once it goes three-column", () => {
+    render(<CalEmbed calLink="sach/15min" />);
+    const frame = screen.getByTitle("Book a 15-minute call");
+    // Narrow: the stacked calendar and time slots need about 1100px, so the page scrolls instead of the frame.
+    expect(frame).toHaveClass("h-[1100px]");
+    // From 816px wide the frame is at least 768px wide and Cal.com lays out three columns.
+    expect(frame).toHaveClass("min-[816px]:h-[680px]");
+  });
+
   it("has no frame of its own around the Cal.com calendar", () => {
     render(<CalEmbed calLink="sach/15min" />);
     const wrapper = screen.getByTitle("Book a 15-minute call").parentElement!;

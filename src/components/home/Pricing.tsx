@@ -14,17 +14,21 @@ function SparkIcon() {
 export function Pricing({ plans }: { plans: Pick<PricingPlan, "id" | "name" | "description" | "priceLabel" | "price" | "ctaLabel" | "ctaHref" | "features">[] }) {
   const { pricing } = home;
   return (
-    <section id="pricing" className="scroll-mt-10 px-4 py-20 sm:px-6 sm:py-28">
-      <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
+    <section id="pricing" className="scroll-mt-10 px-4 py-16 sm:px-6 sm:py-28">
+      <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={pricing.title} subtitle={pricing.subtitle} />
-        <div className="grid gap-6 md:grid-cols-2">
+        {/* One card per row below lg (price panel beside the feature list on tablets), two columns from lg. */}
+        <div className="grid gap-6 lg:grid-cols-2">
           {plans.map((plan) => (
-            <article key={plan.id} className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
-              <div className="rounded-2xl bg-neutral-100/70 p-6 sm:p-8">
-                <h3 className="font-serif text-[34px] leading-tight text-neutral-950 sm:text-[38px]">{plan.name}</h3>
-                <p className="mt-3 min-h-[3.5rem] text-[15px] leading-relaxed text-neutral-600">{plan.description}</p>
-                <p className="mt-6 flex items-baseline gap-3 font-serif">
-                  {plan.priceLabel && <span className="text-[28px] text-neutral-500">{plan.priceLabel}</span>}
+            <article
+              key={plan.id}
+              className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:block"
+            >
+              <div className="rounded-2xl bg-neutral-100/70 p-5 sm:p-8 md:flex md:flex-col lg:block">
+                <h3 className="font-serif text-[30px] leading-tight text-neutral-950 sm:text-[38px]">{plan.name}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-neutral-600 lg:min-h-[3.5rem]">{plan.description}</p>
+                <p className="mt-6 flex flex-wrap items-baseline gap-x-3 font-serif md:mt-auto md:pt-6 lg:mt-6 lg:pt-0">
+                  {plan.priceLabel && <span className="text-2xl text-neutral-500 sm:text-[28px]">{plan.priceLabel}</span>}
                   <span data-testid="price" className="text-[40px] leading-none text-blue-500">
                     {plan.price}
                   </span>
@@ -33,7 +37,7 @@ export function Pricing({ plans }: { plans: Pick<PricingPlan, "id" | "name" | "d
                   {plan.ctaLabel}
                 </Button>
               </div>
-              <ul className="flex flex-col gap-3.5 px-6 py-7 sm:px-8">
+              <ul className="flex flex-col gap-3.5 px-4 py-6 sm:px-8 sm:py-7 md:justify-center">
                 {plan.features.map((feature, i) => (
                   <li key={`${i}-${feature}`} className="flex items-start gap-3 text-[15px] text-neutral-800">
                     <SparkIcon />

@@ -34,6 +34,24 @@
 
 html {
   background: var(--color-neutral-50);
+  /* Phones in landscape otherwise enlarge text on their own, which breaks the layout. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* A very long word (an email, a URL, a name typed in the admin) wraps instead of pushing the page sideways. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  blockquote,
+  dt,
+  dd {
+    overflow-wrap: break-word;
+  }
 }
 
 body {

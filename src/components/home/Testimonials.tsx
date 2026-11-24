@@ -22,26 +22,26 @@ function initials(name: string) {
 function TestimonialCard({ item }: { item: TestimonialItem }) {
   return (
     <article className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
-      <div className="flex h-full flex-col gap-8 rounded-2xl bg-neutral-100/70 p-6 sm:p-10">
+      <div className="flex h-full flex-col gap-6 rounded-2xl bg-neutral-100/70 p-5 sm:gap-8 sm:p-8 lg:p-10">
         <div className="flex items-center justify-between gap-4">
           {item.avatarUrl ? (
-            <Image src={item.avatarUrl} alt="" width={80} height={52} unoptimized className="h-10 w-auto rounded-full" />
+            <Image src={item.avatarUrl} alt="" width={80} height={52} unoptimized className="h-10 w-auto shrink-0 rounded-full" />
           ) : (
             <span
               aria-hidden
-              className="flex size-10 items-center justify-center rounded-full bg-blue-100 text-sm font-medium text-blue-700"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-medium text-blue-700"
             >
               {initials(item.name)}
             </span>
           )}
           {item.tag && (
-            <span className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-600">
+            <span className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium uppercase tracking-[0.1em] text-neutral-600">
               {item.tag}
             </span>
           )}
         </div>
         <blockquote className="text-lg leading-[1.75] text-neutral-900 sm:text-xl sm:leading-[1.75]">{item.quote}</blockquote>
-        <footer className="mt-auto pt-4">
+        <footer className="mt-auto pt-2 sm:pt-4">
           <p className="text-[15px] font-medium text-neutral-900">{item.name}</p>
           <p className="text-xs text-neutral-500">{item.role}</p>
         </footer>
@@ -86,10 +86,10 @@ export function Testimonials({ items }: { items: TestimonialItem[] }) {
   const visible = items.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
 
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
-      <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
+    <section className="px-4 py-16 sm:px-6 sm:py-28">
+      <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={home.testimonialsIntro.title} subtitle={home.testimonialsIntro.subtitle} />
-        <div key={current} className="motion-enter-small grid gap-6 md:grid-cols-2" aria-live="polite">
+        <div key={current} className="motion-enter-small grid gap-6 lg:grid-cols-2" aria-live="polite">
           {visible.map((t) => (
             <TestimonialCard key={t.id} item={t} />
           ))}

@@ -54,7 +54,8 @@ export default async function BlogPostPage({ params }: Params) {
           </div>
         )}
 
-        <div className="mx-auto w-full max-w-[800px]">
+        {/* 33em at 17px is about 70-75 characters per line, a comfortable measure for long posts */}
+        <div className="mx-auto w-full max-w-[33em] text-[17px]">
           <PostBody markdown={post.body} />
         </div>
 

@@ -17,7 +17,7 @@ export default async function ContactPage() {
   return (
     <>
       <section className="px-4 pb-10 pt-16 sm:px-6 sm:pt-24">
-        <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
+        <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
           <SectionHeading
             as="h1"
             size="hero"

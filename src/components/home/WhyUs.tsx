@@ -10,45 +10,52 @@ function BentoCard({
   text,
   children,
   className,
+  visualClassName = "h-[240px] sm:h-[270px]",
 }: {
   title: string;
   text: string;
   children: React.ReactNode;
   className?: string;
+  /** Height of the picture area. The pain-point card needs more room while its labels are stacked one per row. */
+  visualClassName?: string;
 }) {
   return (
     <article className={cn("flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-card", className)}>
-      <div className="relative h-[270px] overflow-hidden">{children}</div>
-      <div className="flex flex-col gap-3 px-8 pb-8 pt-2">
-        <h3 className="font-serif text-[30px] leading-tight text-neutral-950">{title}</h3>
-        <p className="text-[17px] leading-relaxed text-neutral-600">{text}</p>
+      <div className={cn("relative overflow-hidden", visualClassName)}>{children}</div>
+      <div className="flex flex-col gap-3 px-6 pb-7 pt-2 sm:px-8 sm:pb-8">
+        <h3 className="font-serif text-[28px] leading-tight text-neutral-950 sm:text-[30px]">{title}</h3>
+        <p className="max-w-[60ch] text-base leading-relaxed text-neutral-600 sm:text-[17px]">{text}</p>
       </div>
     </article>
   );
 }
 
+/**
+ * The tilted pain-point labels. They are scattered by hand only from xl (cards at least ~600px wide);
+ * on narrower cards the fixed positions pile up on top of each other, so they wrap as a loose, tilted row instead.
+ */
 const pillPlacement = [
-  "left-3 top-5 -rotate-[4deg]",
-  "right-3 top-2 -rotate-[8deg]",
-  "left-[22%] top-[92px] -rotate-[8deg]",
-  "right-[14%] top-[104px] rotate-[6deg]",
-  "left-5 top-[168px] -rotate-[8deg]",
-  "right-3 top-[184px] -rotate-[8deg]",
+  "-rotate-[4deg] xl:left-3 xl:top-5",
+  "rotate-[3deg] xl:right-3 xl:top-2 xl:-rotate-[8deg]",
+  "-rotate-[3deg] xl:left-[22%] xl:top-[92px] xl:-rotate-[8deg]",
+  "rotate-[5deg] xl:right-[14%] xl:top-[104px] xl:rotate-[6deg]",
+  "-rotate-[5deg] xl:left-5 xl:top-[168px] xl:-rotate-[8deg]",
+  "rotate-[2deg] xl:right-3 xl:top-[184px] xl:-rotate-[8deg]",
 ];
 
 function PainPoints() {
   return (
-    <div aria-hidden className="absolute inset-0">
+    <div aria-hidden className="absolute inset-0 flex flex-wrap content-center items-center justify-center gap-x-2.5 gap-y-2.5 px-4 xl:block xl:p-0">
       {whyUs.painPoints.map((text, i) => (
         <span
           key={text}
           className={cn(
-            "absolute inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-sm font-normal text-neutral-800",
+            "inline-flex items-center gap-2 rounded-xl border px-3.5 py-2 text-sm font-normal text-neutral-800 xl:absolute",
             pillPlacement[i],
             i % 3 === 0 ? "border-blue-200 bg-blue-100" : "border-neutral-200 bg-neutral-50",
           )}
         >
-          <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="size-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
             <path d="M12 4 2.5 20h19L12 4Zm0 6v5m0 2.5v.01" strokeLinecap="round" />
           </svg>
           {text}
@@ -121,12 +128,16 @@ function ToolChips() {
 
 export function WhyUs() {
   return (
-    <section className="px-4 py-20 sm:px-6 sm:py-28">
-      <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
+    <section className="px-4 py-16 sm:px-6 sm:py-28">
+      <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={whyUs.title} subtitle={whyUs.subtitle} />
-        <div className="flex flex-col gap-7">
-          <div className="grid gap-7 md:grid-cols-2">
-            <BentoCard title={whyUs.cards.conversion.title} text={whyUs.cards.conversion.text}>
+        <div className="flex flex-col gap-6 sm:gap-7">
+          <div className="grid gap-6 sm:gap-7 md:grid-cols-2">
+            <BentoCard
+              title={whyUs.cards.conversion.title}
+              text={whyUs.cards.conversion.text}
+              visualClassName="h-[300px] sm:h-[270px] md:h-[300px] lg:h-[270px]"
+            >
               <PainPoints />
             </BentoCard>
             <BentoCard title={whyUs.cards.integrations.title} text={whyUs.cards.integrations.text}>
@@ -139,14 +150,15 @@ export function WhyUs() {
               />
             </BentoCard>
           </div>
-          <div className="grid gap-7 md:grid-cols-3">
+          {/* Three across only from lg; on tablets the third card spans the row instead of squeezing into 220px. */}
+          <div className="grid gap-6 sm:gap-7 md:grid-cols-2 lg:grid-cols-3">
             <BentoCard title={whyUs.cards.team.title} text={whyUs.cards.team.text}>
               <DesignTiles />
             </BentoCard>
             <BentoCard title={whyUs.cards.standOut.title} text={whyUs.cards.standOut.text}>
               <StandOutBars />
             </BentoCard>
-            <BentoCard title={whyUs.cards.tools.title} text={whyUs.cards.tools.text}>
+            <BentoCard title={whyUs.cards.tools.title} text={whyUs.cards.tools.text} className="md:col-span-2 lg:col-span-1">
               <ToolChips />
             </BentoCard>
           </div>

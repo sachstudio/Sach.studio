@@ -49,7 +49,7 @@ function TwoColumn({ title, children }: { title: string; children: React.ReactNo
   return (
     <section className="grid gap-6 lg:grid-cols-[1fr_600px] lg:gap-10">
       <h2 className="font-serif text-4xl leading-tight text-neutral-950 sm:text-[44px]">{title}</h2>
-      <div className="flex flex-col gap-5 text-[15px] leading-[1.85] text-neutral-500">{children}</div>
+      <div className="flex flex-col gap-5 text-base leading-[1.8] text-neutral-500 lg:text-[15px] lg:leading-[1.85]">{children}</div>
     </section>
   );
 }
@@ -75,12 +75,13 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
   const hasResults = study.resultsText.trim() || study.stats.length > 0;
   const featureImages = normalizeFeatureImages(study.featureImages).filter((image) => image.url);
   const featureRows = groupFeatureImages(featureImages);
+  const galleryImages = study.galleryImages.filter((src) => src.trim());
   const featureNumber = new Map(featureImages.map((image, i) => [image.url, i + 1]));
 
   return (
     <article className="px-4 pb-24 pt-16 sm:px-6 sm:pt-24">
-      <div className="mx-auto flex max-w-[1300px] flex-col gap-24 sm:gap-32">
-        <header className="flex flex-col gap-14">
+      <div className="mx-auto flex max-w-[1300px] flex-col gap-16 sm:gap-24 lg:gap-32">
+        <header className="flex flex-col gap-10 sm:gap-14">
           <SectionHeading as="h1" title={study.title} subtitle={study.subtitle} className="mx-auto max-w-[1000px]" />
           {study.heroImageUrl && <ImageCard src={study.heroImageUrl} alt={`${study.title}: project overview`} priority />}
         </header>
@@ -105,20 +106,20 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
                 ))}
               </ul>
             )}
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
               {study.figmaUrl && (
-                <Button variant="primary" href={study.figmaUrl} icon={<FigmaMark />} className="h-11 px-5 text-xs">
+                <Button variant="primary" href={study.figmaUrl} icon={<FigmaMark />} className="h-11 w-full px-5 text-xs sm:w-auto">
                   View Figma design
                 </Button>
               )}
               {study.liveUrl ? (
-                <Button variant="outline" href={study.liveUrl} className="h-11 px-5 text-xs">
+                <Button variant="outline" href={study.liveUrl} className="h-11 w-full px-5 text-xs sm:w-auto">
                   Live website
                 </Button>
               ) : (
                 <span
                   aria-disabled
-                  className="inline-flex h-11 items-center rounded-xl border border-neutral-200 bg-white px-5 text-xs font-semibold uppercase tracking-[0.01em] text-neutral-400"
+                  className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-neutral-200 bg-white px-5 text-xs sm:w-auto font-semibold uppercase tracking-[0.01em] text-neutral-400"
                 >
                   Live soon
                 </span>
@@ -130,7 +131,7 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
               <h2 className="font-serif text-4xl leading-tight text-neutral-950 sm:text-[44px]">
                 {study.clientName ? `About ${study.clientName}` : "About the project"}
               </h2>
-              <p className="text-[15px] leading-[1.85] text-neutral-500">{study.about}</p>
+              <p className="text-base leading-[1.8] text-neutral-500 lg:text-[15px] lg:leading-[1.85]">{study.about}</p>
             </div>
           )}
         </section>
@@ -170,13 +171,13 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
         )}
 
         {hasResults && (
-          <div className="flex flex-col gap-14">
+          <div className="flex flex-col gap-10 sm:gap-14">
             <TwoColumn title="Results">{study.resultsText && <p>{study.resultsText}</p>}</TwoColumn>
             {study.stats.length > 0 && (
-              <dl className="grid divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white/60 sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-y-0">
+              <dl className="grid divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white/60 md:grid-flow-col md:auto-cols-fr md:divide-x md:divide-y-0">
                 {study.stats.map((stat) => (
                   <div key={stat.label} className="flex flex-col-reverse items-center gap-2 px-6 py-8 text-center">
-                    <dt className="text-[15px] text-neutral-400">{stat.label}</dt>
+                    <dt className="text-[15px] text-neutral-500">{stat.label}</dt>
                     <dd className="font-serif text-[48px] leading-none text-neutral-900">{stat.value}</dd>
                   </div>
                 ))}
@@ -185,9 +186,9 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
           </div>
         )}
 
-        {study.galleryImages.length > 0 && (
+        {galleryImages.length > 0 && (
           <div className="flex flex-col gap-6">
-            {study.galleryImages.map((src, i) => (
+            {galleryImages.map((src, i) => (
               <ImageCard key={src} src={src} alt={`${study.title}: gallery image ${i + 1}`} />
             ))}
           </div>
@@ -202,7 +203,7 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
         {related.length > 0 && (
           <section className="flex flex-col gap-12">
             <h2 className="text-center font-serif text-4xl text-neutral-950 sm:text-[44px]">More like this</h2>
-            <div className="grid gap-8 md:grid-cols-3">
+            <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
               {related.map((r) => (
                 <ProjectTileCard key={r.slug} project={toCardData(r)} showDate />
               ))}

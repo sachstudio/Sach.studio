@@ -82,4 +82,11 @@ describe("ProjectGrid", () => {
     expect(within(second).queryByRole("link", { name: "Case study" })).toBeNull();
     expect(within(second).queryByRole("link", { name: "Explore project" })).toBeNull();
   });
+
+  it("keeps the category tabs scrollable on a narrow screen with tap-sized buttons", () => {
+    render(<ProjectGrid projects={[project(1)]} />);
+    const list = screen.getByRole("tablist", { name: "Project categories" });
+    expect(list.className).toContain("overflow-x-auto");
+    expect(list.className).toContain("max-md:[&>button]:min-h-11");
+  });
 });

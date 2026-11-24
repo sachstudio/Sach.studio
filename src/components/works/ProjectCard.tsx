@@ -11,17 +11,20 @@ function FigmaMark() {
   );
 }
 
+/** The link text stays small and underlined; the invisible pseudo-element stretches the tap area to 48px high. */
+const linkHitArea = "relative after:absolute after:-inset-x-1 after:-inset-y-3 after:content-['']";
+
 function CardActions({ project }: { project: ProjectCardData }) {
   if (!project.hasDetail && !project.figmaUrl) return null;
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+    <div className="flex flex-wrap items-center gap-x-8 gap-y-5">
       {project.hasDetail && (
-        <Button variant="link" href={`/works/${project.slug}`}>
+        <Button variant="link" href={`/works/${project.slug}`} className={linkHitArea}>
           Case study
         </Button>
       )}
       {project.figmaUrl && (
-        <Button variant="link" href={project.figmaUrl} icon={<FigmaMark />}>
+        <Button variant="link" href={project.figmaUrl} icon={<FigmaMark />} className={linkHitArea}>
           Explore project
         </Button>
       )}
@@ -48,12 +51,12 @@ function CardImage({ project, className, sizes }: { project: ProjectCardData; cl
 export function ProjectRowCard({ project }: { project: ProjectCardData }) {
   const meta = cardMeta(project);
   return (
-    <article className="motion-lift grid gap-6 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card lg:grid-cols-[minmax(0,630px)_1fr] lg:gap-10">
-      <CardImage project={project} sizes="(min-width: 1024px) 630px, 100vw" className="aspect-[630/474]" />
-      <div className="flex flex-col justify-between gap-8 px-3 pb-6 pt-2 lg:py-9 lg:pr-10">
+    <article className="motion-lift grid gap-6 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card lg:grid-cols-[minmax(0,5fr)_minmax(0,4fr)] lg:gap-8 xl:grid-cols-[minmax(0,630px)_1fr] xl:gap-10">
+      <CardImage project={project} sizes="(min-width: 1280px) 630px, (min-width: 1024px) 55vw, 100vw" className="aspect-[630/474]" />
+      <div className="flex flex-col justify-between gap-8 px-3 pb-6 pt-2 lg:py-8 lg:pr-8 xl:py-9 xl:pr-10">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-600">{meta || " "}</p>
         <div className="flex flex-col gap-4">
-          <h3 className="font-serif text-3xl leading-[1.15] text-neutral-950 sm:text-4xl md:text-[40px]">{project.title}</h3>
+          <h3 className="font-serif text-3xl leading-[1.15] text-neutral-950 sm:text-4xl md:text-[40px] lg:text-4xl xl:text-[40px]">{project.title}</h3>
           {project.summary && <p className="max-w-[520px] text-[17px] leading-[1.75] text-neutral-600">{project.summary}</p>}
         </div>
         <CardActions project={project} />
@@ -72,7 +75,7 @@ export function ProjectTileCard({ project, showDate = false }: { project: Projec
       </div>
       <div className="flex flex-col gap-3 px-1">
         {meta && <p className="text-sm text-neutral-500">{meta}</p>}
-        <h3 className="font-serif text-[28px] leading-tight text-neutral-950">{project.title}</h3>
+        <h3 className="font-serif text-[28px] leading-tight text-neutral-950 md:text-2xl lg:text-[28px]">{project.title}</h3>
         <CardActions project={project} />
       </div>
     </article>
