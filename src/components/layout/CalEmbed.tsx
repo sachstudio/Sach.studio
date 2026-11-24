@@ -14,12 +14,12 @@ export function CalEmbed({ calLink }: { calLink?: string }) {
   }
 
   return (
-    <div className="mx-auto max-w-[1300px] overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 p-2.5 shadow-card">
+    <div className="mx-auto w-full max-w-[1300px] overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 p-2.5 shadow-card">
       <iframe
         title="Book a 15-minute call"
         src={`https://cal.com/${link}?embed=true&layout=month_view&theme=light`}
         loading="lazy"
-        className="h-[640px] w-full rounded-2xl border-0 bg-white sm:h-[680px]"
+        className="h-[760px] w-full rounded-2xl border-0 bg-white sm:h-[680px]"
       />
     </div>
   );

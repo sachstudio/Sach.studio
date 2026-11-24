@@ -18,6 +18,14 @@ describe("CalEmbed", () => {
     expect(frame).toHaveAttribute("src", expect.stringContaining("https://cal.com/sach/15min"));
   });
 
+  it("spans the full width of its section so the calendar can use its wide layout", () => {
+    render(<CalEmbed calLink="sach/15min" />);
+    const frame = screen.getByTitle("Book a 15-minute call");
+    expect(frame).toHaveClass("w-full");
+    // Inside a flex column an auto-margin box shrinks to its content unless it asks for the full width.
+    expect(frame.parentElement).toHaveClass("w-full");
+  });
+
   it("falls back to the environment link", () => {
     vi.stubEnv("NEXT_PUBLIC_CAL_LINK", "studio/15min");
     render(<CalEmbed />);
