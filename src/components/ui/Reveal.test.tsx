@@ -46,6 +46,29 @@ describe("Reveal", () => {
     expect(disconnect).toHaveBeenCalled();
   });
 
+  it("reveals a block the visitor scrolled past or jumped over, even if the observer never reported it", () => {
+    const rect = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({ top: 5000 } as DOMRect);
+    render(<Reveal><p>Skipped over</p></Reveal>);
+    const box = screen.getByText("Skipped over").parentElement!;
+    expect(box.dataset.reveal).toBe("hidden");
+    // A fast fling or an anchor link: the block is now above the screen, and no observer callback ever came.
+    rect.mockReturnValue({ top: -1200 } as DOMRect);
+    act(() => {
+      window.dispatchEvent(new Event("scroll"));
+    });
+    expect(box.dataset.reveal).toBe("shown");
+    expect(disconnect).toHaveBeenCalled();
+  });
+
+  it("stays hidden on scroll while the block is still well below the screen", () => {
+    place(5000);
+    render(<Reveal><p>Far below</p></Reveal>);
+    act(() => {
+      window.dispatchEvent(new Event("scroll"));
+    });
+    expect(screen.getByText("Far below").parentElement!.dataset.reveal).toBe("hidden");
+  });
+
   it("always keeps the text in the page so it can be read without scrolling effects", () => {
     place(5000);
     render(<Reveal><p>Always in the DOM</p></Reveal>);

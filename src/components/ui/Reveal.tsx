@@ -30,17 +30,31 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
     if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
 
     setState("hidden"); // armed only after mount, so the server HTML is always visible
+
+    const stop = () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", check);
+    };
+    const show = () => {
+      stop();
+      setState("shown");
+    };
+    // The observer only reports a block while it crosses the screen. A fast fling or an anchor link can jump
+    // straight over it, so scrolling also checks: a block that has come up to, or gone above, the lower part of
+    // the screen is shown, and nobody ever scrolls back to a blank gap.
+    const check = () => {
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.9) show();
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
-          setState("shown");
-          observer.disconnect();
-        }
+        if (entry?.isIntersecting) show();
       },
       { rootMargin: "0px 0px -10% 0px" },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    window.addEventListener("scroll", check, { passive: true });
+    return stop;
   }, []);
 
   return (
