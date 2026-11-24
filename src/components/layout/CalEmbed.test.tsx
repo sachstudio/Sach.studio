@@ -18,6 +18,15 @@ describe("CalEmbed", () => {
     expect(frame).toHaveAttribute("src", expect.stringContaining("https://cal.com/sach/15min"));
   });
 
+  it("fades its box in on scroll without delaying the iframe: it stays lazy and is never display:none", () => {
+    render(<CalEmbed calLink="sach/15min" />);
+    const frame = screen.getByTitle("Book a 15-minute call");
+    expect(frame).toHaveAttribute("loading", "lazy");
+    expect(frame.parentElement).toHaveAttribute("data-reveal");
+    expect(frame).not.toHaveClass("hidden");
+    expect(frame.parentElement).not.toHaveClass("hidden");
+  });
+
   it("spans the full width of its section so the calendar can use its wide layout", () => {
     render(<CalEmbed calLink="sach/15min" />);
     const frame = screen.getByTitle("Book a 15-minute call");

@@ -74,6 +74,7 @@ body {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -179,6 +180,13 @@ body {
 /* The "Let's work together" band is a functional ticker from the design; it pauses when pointed at. */
 .motion-ticker:hover {
   animation-play-state: paused;
+}
+
+/* Printing shows every block that is still waiting to scroll in (see Reveal). */
+@media print {
+  [data-reveal="hidden"] {
+    opacity: 1 !important;
+  }
 }
 
 /* Words of a page heading rising in one after another on load: 300ms each, 60ms apart, ease-out. */

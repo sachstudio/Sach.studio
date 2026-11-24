@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui";
+import { Reveal } from "@/components/ui/Reveal";
 
 export type PostCardData = {
   slug: string;
@@ -60,11 +61,11 @@ export function BlogList({ posts, pageSize = 4 }: { posts: PostCardData[]; pageS
 
   return (
     <div className="flex flex-col items-center gap-12">
-      <div className="grid w-full max-w-[1300px] gap-8 md:grid-cols-2">
+      <Reveal className="grid w-full max-w-[1300px] gap-8 md:grid-cols-2">
         {posts.slice(0, visible).map((p) => (
           <PostCard key={p.slug} post={p} />
         ))}
-      </div>
+      </Reveal>
       {posts.length > visible && (
         <Button variant="outline" onClick={() => setVisible((v) => v + pageSize)} className="h-11 px-6 text-xs">
           Load more

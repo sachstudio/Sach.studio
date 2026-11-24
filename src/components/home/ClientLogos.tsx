@@ -1,10 +1,11 @@
 import Image from "next/image";
+import { Reveal } from "@/components/ui/Reveal";
 import { home } from "@/content/home";
 
 export function ClientLogos() {
   return (
     <section className="px-4 py-10 sm:px-6 sm:py-16">
-      <div className="mx-auto flex max-w-[1300px] flex-col items-center gap-8 sm:gap-12">
+      <Reveal className="mx-auto flex max-w-[1300px] flex-col items-center gap-8 sm:gap-12">
         <h2 className="max-w-[860px] text-balance text-center text-lg font-medium text-neutral-900 sm:text-xl">{home.trustedBy}</h2>
         <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 sm:gap-x-16 sm:gap-y-8">
           {home.clientLogos.map((logo) => (
@@ -19,7 +20,7 @@ export function ClientLogos() {
             </li>
           ))}
         </ul>
-      </div>
+      </Reveal>
     </section>
   );
 }

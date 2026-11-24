@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Tabs } from "@/components/ui";
+import { Reveal } from "@/components/ui/Reveal";
 import { CATEGORIES, type CategorySlug } from "@/lib/categories";
 import type { ProjectCardData } from "@/lib/projects";
 import { ProjectRowCard, ProjectTileCard } from "./ProjectCard";
@@ -95,29 +96,31 @@ export function ProjectGrid({
         />
       </div>
 
-      {shown.length === 0 ? (
-        <div key={category} className="motion-enter-small flex w-full max-w-[1300px] flex-col items-center gap-2 rounded-3xl border border-dashed border-neutral-300 bg-white/60 px-6 py-16 text-center">
-          <p className="font-serif text-3xl text-neutral-900">No projects in this category yet</p>
-          <p className="text-neutral-600">Choose another category above, or check back soon.</p>
-        </div>
-      ) : variant === "featured" ? (
-        <div key={category} className="motion-enter-small flex w-full max-w-[1300px] flex-col gap-8">
-          <ProjectRowCard project={shown[0]} />
-          {shown.length > 1 && (
-            <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
-              {shown.slice(1).map((p) => (
-                <ProjectTileCard key={p.slug} project={p} likeLeadOnPhones />
-              ))}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div key={category} className="motion-enter-small flex w-full max-w-[1300px] flex-col gap-8">
-          {shown.map((p) => (
-            <ProjectRowCard key={p.slug} project={p} />
-          ))}
-        </div>
-      )}
+      <Reveal className="w-full max-w-[1300px]">
+        {shown.length === 0 ? (
+          <div key={category} className="motion-enter-small flex w-full max-w-[1300px] flex-col items-center gap-2 rounded-3xl border border-dashed border-neutral-300 bg-white/60 px-6 py-16 text-center">
+            <p className="font-serif text-3xl text-neutral-900">No projects in this category yet</p>
+            <p className="text-neutral-600">Choose another category above, or check back soon.</p>
+          </div>
+        ) : variant === "featured" ? (
+          <div key={category} className="motion-enter-small flex w-full max-w-[1300px] flex-col gap-8">
+            <ProjectRowCard project={shown[0]} />
+            {shown.length > 1 && (
+              <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+                {shown.slice(1).map((p) => (
+                  <ProjectTileCard key={p.slug} project={p} likeLeadOnPhones />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div key={category} className="motion-enter-small flex w-full max-w-[1300px] flex-col gap-8">
+            {shown.map((p) => (
+              <ProjectRowCard key={p.slug} project={p} />
+            ))}
+          </div>
+        )}
+      </Reveal>
 
       {showLoadMore && inCategory.length > visible && (
         <Button variant="outline" onClick={() => setVisible((v) => v + pageSize)} className="h-11 px-6 text-xs">

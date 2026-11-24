@@ -1,3 +1,5 @@
+import { Reveal } from "@/components/ui/Reveal";
+
 export function CalEmbed({ calLink }: { calLink?: string }) {
   const link = (calLink ?? process.env.NEXT_PUBLIC_CAL_LINK ?? "").trim().replace(/^\/+/, "");
 
@@ -20,13 +22,14 @@ export function CalEmbed({ calLink }: { calLink?: string }) {
     // (a page narrower than about 816px). That column is about 1100px tall, so the frame is made that tall and the
     // page scrolls instead of a second scroll bar appearing inside the frame. From 816px the three-column layout
     // fits in 680px.
-    <div className="mx-auto w-full max-w-[1040px]">
+    // The box fades up as it scrolls in (after the heading above it); the iframe inside keeps loading="lazy" untouched.
+    <Reveal delay={100} className="mx-auto w-full max-w-[1040px]">
       <iframe
         title="Book a 15-minute call"
         src={`https://cal.com/${link}?embed=true&layout=month_view&theme=light`}
         loading="lazy"
         className="block h-[1100px] w-full border-0 bg-transparent min-[816px]:h-[680px]"
       />
-    </div>
+    </Reveal>
   );
 }

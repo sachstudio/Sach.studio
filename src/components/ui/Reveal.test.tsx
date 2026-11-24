@@ -58,4 +58,53 @@ describe("Reveal", () => {
     render(<Reveal><p>No observer</p></Reveal>);
     expect(screen.getByText("No observer").parentElement!.dataset.reveal).toBe("idle");
   });
+
+  it("plays the entrance animation once it is shown, hidden at opacity 0 before that", () => {
+    place(5000);
+    render(<Reveal><p>Animated</p></Reveal>);
+    const box = screen.getByText("Animated").parentElement!;
+    expect(box).toHaveClass("opacity-0");
+    expect(box).not.toHaveClass("motion-enter");
+    act(() => trigger?.({ isIntersecting: true }));
+    expect(box).toHaveClass("motion-enter");
+    expect(box).not.toHaveClass("opacity-0");
+  });
+
+  it("stays shown once revealed and never hides or replays again", () => {
+    place(5000);
+    const { rerender } = render(<Reveal><p>Once</p></Reveal>);
+    const box = screen.getByText("Once").parentElement!;
+    act(() => trigger?.({ isIntersecting: true }));
+    act(() => trigger?.({ isIntersecting: false }));
+    rerender(<Reveal><p>Once</p></Reveal>);
+    expect(box.dataset.reveal).toBe("shown");
+    expect(disconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it("sets --motion-delay from the delay prop, and nothing when there is no delay", () => {
+    place(5000);
+    render(
+      <>
+        <Reveal delay={100}><p>Second</p></Reveal>
+        <Reveal><p>First</p></Reveal>
+      </>,
+    );
+    expect(screen.getByText("Second").parentElement!.style.getPropertyValue("--motion-delay")).toBe("100ms");
+    expect(screen.getByText("First").parentElement!.style.getPropertyValue("--motion-delay")).toBe("");
+  });
+
+  it("passes the layout classes through to its wrapper", () => {
+    place(100);
+    render(<Reveal className="w-full min-w-0 flex flex-col"><p>Layout</p></Reveal>);
+    expect(screen.getByText("Layout").parentElement).toHaveClass("w-full", "min-w-0", "flex", "flex-col");
+  });
+
+  it("never hides content for people who asked for reduced motion", () => {
+    place(5000);
+    vi.stubGlobal("matchMedia", (q: string) => ({ matches: q.includes("reduce"), media: q, addEventListener() {}, removeEventListener() {} }));
+    render(<Reveal><p>Calm</p></Reveal>);
+    const box = screen.getByText("Calm").parentElement!;
+    expect(box.dataset.reveal).toBe("idle");
+    expect(box).not.toHaveClass("opacity-0");
+  });
 });

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button, Pill, SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
+import { Reveal } from "@/components/ui/Reveal";
 import type { CaseStudy } from "@/db/schema";
 import { groupFeatureImages, normalizeFeatureImages } from "@/lib/feature-images";
 import { toCardData } from "@/lib/projects";
@@ -45,13 +46,15 @@ function SquareCard({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-function TwoColumn({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
+/** `reveal={false}` when a parent group already reveals it (Results), so the fade never runs twice. */
+function TwoColumn({ title, children, reveal = true }: { title: string; children: React.ReactNode; reveal?: boolean }) {
+  const content = (
     <section className="grid gap-6 lg:grid-cols-[1fr_600px] lg:gap-10">
       <h2 className="font-serif text-4xl leading-tight text-neutral-950 sm:text-[44px]">{title}</h2>
       <div className="flex flex-col gap-5 text-base leading-[1.8] text-neutral-500 lg:text-[15px] lg:leading-[1.85]">{children}</div>
     </section>
   );
+  return reveal ? <Reveal>{content}</Reveal> : content;
 }
 
 function LeadList({ items }: { items: { lead: string; text: string }[] }) {
@@ -86,57 +89,63 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
           {study.heroImageUrl && <ImageCard src={study.heroImageUrl} alt={`${study.title}: project overview`} priority />}
         </header>
 
-        <section className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className="flex flex-col gap-6">
-            {study.clientLogoUrl && (
-              <Image
-                src={study.clientLogoUrl}
-                alt={study.clientName ? `${study.clientName} logo` : "Client logo"}
-                width={300}
-                height={100}
-                className="h-14 w-auto self-start mix-blend-multiply"
-              />
-            )}
-            {study.tags.length > 0 && (
-              <ul className="flex flex-wrap gap-2">
-                {study.tags.map((tag) => (
-                  <li key={tag}>
-                    <Pill tone="neutral">{tag}</Pill>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
-              {study.figmaUrl && (
-                <Button variant="primary" href={study.figmaUrl} icon={<FigmaMark />} className="h-11 w-full px-5 text-xs sm:w-auto">
-                  View Figma design
-                </Button>
+        <Reveal>
+          <section className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div className="flex flex-col gap-6">
+              {study.clientLogoUrl && (
+                <Image
+                  src={study.clientLogoUrl}
+                  alt={study.clientName ? `${study.clientName} logo` : "Client logo"}
+                  width={300}
+                  height={100}
+                  className="h-14 w-auto self-start mix-blend-multiply"
+                />
               )}
-              {study.liveUrl ? (
-                <Button variant="outline" href={study.liveUrl} className="h-11 w-full px-5 text-xs sm:w-auto">
-                  Live website
-                </Button>
-              ) : (
-                <span
-                  aria-disabled
-                  className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-neutral-200 bg-white px-5 text-xs sm:w-auto font-semibold uppercase tracking-[0.01em] text-neutral-400"
-                >
-                  Live soon
-                </span>
+              {study.tags.length > 0 && (
+                <ul className="flex flex-wrap gap-2">
+                  {study.tags.map((tag) => (
+                    <li key={tag}>
+                      <Pill tone="neutral">{tag}</Pill>
+                    </li>
+                  ))}
+                </ul>
               )}
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
+                {study.figmaUrl && (
+                  <Button variant="primary" href={study.figmaUrl} icon={<FigmaMark />} className="h-11 w-full px-5 text-xs sm:w-auto">
+                    View Figma design
+                  </Button>
+                )}
+                {study.liveUrl ? (
+                  <Button variant="outline" href={study.liveUrl} className="h-11 w-full px-5 text-xs sm:w-auto">
+                    Live website
+                  </Button>
+                ) : (
+                  <span
+                    aria-disabled
+                    className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-neutral-200 bg-white px-5 text-xs sm:w-auto font-semibold uppercase tracking-[0.01em] text-neutral-400"
+                  >
+                    Live soon
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-          {study.about.trim() && (
-            <div className="flex flex-col gap-5">
-              <h2 className="font-serif text-4xl leading-tight text-neutral-950 sm:text-[44px]">
-                {study.clientName ? `About ${study.clientName}` : "About the project"}
-              </h2>
-              <p className="text-base leading-[1.8] text-neutral-500 lg:text-[15px] lg:leading-[1.85]">{study.about}</p>
-            </div>
-          )}
-        </section>
+            {study.about.trim() && (
+              <div className="flex flex-col gap-5">
+                <h2 className="font-serif text-4xl leading-tight text-neutral-950 sm:text-[44px]">
+                  {study.clientName ? `About ${study.clientName}` : "About the project"}
+                </h2>
+                <p className="text-base leading-[1.8] text-neutral-500 lg:text-[15px] lg:leading-[1.85]">{study.about}</p>
+              </div>
+            )}
+          </section>
+        </Reveal>
 
-        {study.bannerImageUrl && <ImageCard src={study.bannerImageUrl} alt={`${study.title}: highlights`} />}
+        {study.bannerImageUrl && (
+          <Reveal>
+            <ImageCard src={study.bannerImageUrl} alt={`${study.title}: highlights`} />
+          </Reveal>
+        )}
 
         {hasProblem && (
           <TwoColumn title="Problem Statement">
@@ -153,7 +162,7 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
         )}
 
         {featureRows.length > 0 && (
-          <div className="flex flex-col gap-6">
+          <Reveal className="flex flex-col gap-6">
             {featureRows.map((row) =>
               row[0].shape === "rectangle" ? (
                 <div key={row[0].url} data-feature-row="rectangle">
@@ -167,12 +176,12 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
                 </div>
               ),
             )}
-          </div>
+          </Reveal>
         )}
 
         {hasResults && (
-          <div className="flex flex-col gap-10 sm:gap-14">
-            <TwoColumn title="Results">{study.resultsText && <p>{study.resultsText}</p>}</TwoColumn>
+          <Reveal className="flex flex-col gap-10 sm:gap-14">
+            <TwoColumn title="Results" reveal={false}>{study.resultsText && <p>{study.resultsText}</p>}</TwoColumn>
             {study.stats.length > 0 && (
               <dl className="grid divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white/60 md:grid-flow-col md:auto-cols-fr md:divide-x md:divide-y-0">
                 {study.stats.map((stat) => (
@@ -183,15 +192,15 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
                 ))}
               </dl>
             )}
-          </div>
+          </Reveal>
         )}
 
         {galleryImages.length > 0 && (
-          <div className="flex flex-col gap-6">
+          <Reveal className="flex flex-col gap-6">
             {galleryImages.map((src, i) => (
               <ImageCard key={src} src={src} alt={`${study.title}: gallery image ${i + 1}`} />
             ))}
-          </div>
+          </Reveal>
         )}
 
         {study.conclusion.trim() && (
@@ -201,16 +210,18 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
         )}
 
         {related.length > 0 && (
-          <section className="flex flex-col gap-12">
-            <h2 className="text-center font-serif text-4xl text-neutral-950 sm:text-[44px]">More like this</h2>
-            <SnapRow label="More like this, swipe to see more case studies" className="md:grid md:grid-cols-3 md:gap-6 lg:gap-8">
-              {related.map((r) => (
-                <SnapSlide key={r.slug}>
-                  <ProjectTileCard project={toCardData(r)} showDate />
-                </SnapSlide>
-              ))}
-            </SnapRow>
-          </section>
+          <Reveal>
+            <section className="flex flex-col gap-12">
+              <h2 className="text-center font-serif text-4xl text-neutral-950 sm:text-[44px]">More like this</h2>
+              <SnapRow label="More like this, swipe to see more case studies" className="md:grid md:grid-cols-3 md:gap-6 lg:gap-8">
+                {related.map((r) => (
+                  <SnapSlide key={r.slug}>
+                    <ProjectTileCard project={toCardData(r)} showDate />
+                  </SnapSlide>
+                ))}
+              </SnapRow>
+            </section>
+          </Reveal>
         )}
       </div>
     </article>

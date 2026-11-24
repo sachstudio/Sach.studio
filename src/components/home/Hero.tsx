@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button, Pill } from "@/components/ui";
+import { Reveal } from "@/components/ui/Reveal";
 import { SplitText, wordCount } from "@/components/ui/SplitText";
 import { home } from "@/content/home";
 
@@ -41,7 +42,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="mx-auto mt-12 max-w-[1300px] rounded-3xl border border-neutral-200 bg-white p-2 shadow-card sm:mt-20 sm:rounded-[28px] sm:p-2.5">
+      <Reveal className="mx-auto mt-12 max-w-[1300px] rounded-3xl border border-neutral-200 bg-white p-2 shadow-card sm:mt-20 sm:rounded-[28px] sm:p-2.5">
         <Image
           src="/images/hero/hero-photo.webp"
           alt="A presenter on camera in a studio, the kind of brand video and web experience Sach Studio builds for clients"
@@ -51,7 +52,7 @@ export function Hero() {
           sizes="(min-width: 1344px) 1280px, calc(100vw - 32px)"
           className="aspect-[4/3] w-full rounded-2xl object-cover sm:aspect-video sm:rounded-[20px]"
         />
-      </div>
+      </Reveal>
     </section>
   );
 }

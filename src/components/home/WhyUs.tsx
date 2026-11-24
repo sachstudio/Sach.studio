@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
+import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
 import { home } from "@/content/home";
 
@@ -136,34 +137,36 @@ export function WhyUs() {
           the first two cards share row one (3 + 3), then two across at md with the last card spanning the row,
           or three across (2 + 2 + 2) from lg.
         */}
-        <SnapRow label="Why work with us, swipe to see more reasons" className="md:grid md:grid-cols-6 md:gap-7">
-          <BentoCard
-            title={whyUs.cards.conversion.title}
-            text={whyUs.cards.conversion.text}
-            className="md:col-span-3"
-            visualClassName="h-[300px] sm:h-[270px] md:h-[300px] lg:h-[270px]"
-          >
-            <PainPoints />
-          </BentoCard>
-          <BentoCard title={whyUs.cards.integrations.title} text={whyUs.cards.integrations.text} className="md:col-span-3">
-            <Image
-              src="/images/why/integrations.png"
-              alt=""
-              width={634}
-              height={300}
-              className="h-full w-full object-cover"
-            />
-          </BentoCard>
-          <BentoCard title={whyUs.cards.team.title} text={whyUs.cards.team.text} className="md:col-span-3 lg:col-span-2">
-            <DesignTiles />
-          </BentoCard>
-          <BentoCard title={whyUs.cards.standOut.title} text={whyUs.cards.standOut.text} className="md:col-span-3 lg:col-span-2">
-            <StandOutBars />
-          </BentoCard>
-          <BentoCard title={whyUs.cards.tools.title} text={whyUs.cards.tools.text} className="md:col-span-6 lg:col-span-2">
-            <ToolChips />
-          </BentoCard>
-        </SnapRow>
+        <Reveal>
+          <SnapRow label="Why work with us, swipe to see more reasons" className="md:grid md:grid-cols-6 md:gap-7">
+            <BentoCard
+              title={whyUs.cards.conversion.title}
+              text={whyUs.cards.conversion.text}
+              className="md:col-span-3"
+              visualClassName="h-[300px] sm:h-[270px] md:h-[300px] lg:h-[270px]"
+            >
+              <PainPoints />
+            </BentoCard>
+            <BentoCard title={whyUs.cards.integrations.title} text={whyUs.cards.integrations.text} className="md:col-span-3">
+              <Image
+                src="/images/why/integrations.png"
+                alt=""
+                width={634}
+                height={300}
+                className="h-full w-full object-cover"
+              />
+            </BentoCard>
+            <BentoCard title={whyUs.cards.team.title} text={whyUs.cards.team.text} className="md:col-span-3 lg:col-span-2">
+              <DesignTiles />
+            </BentoCard>
+            <BentoCard title={whyUs.cards.standOut.title} text={whyUs.cards.standOut.text} className="md:col-span-3 lg:col-span-2">
+              <StandOutBars />
+            </BentoCard>
+            <BentoCard title={whyUs.cards.tools.title} text={whyUs.cards.tools.text} className="md:col-span-6 lg:col-span-2">
+              <ToolChips />
+            </BentoCard>
+          </SnapRow>
+        </Reveal>
       </div>
     </section>
   );

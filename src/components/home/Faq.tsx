@@ -17,11 +17,13 @@ export function Faq({ title, subtitle, items, layout = "split" }: FaqProps) {
     return (
       <section className="px-4 py-16 sm:px-6 sm:py-28">
         <div className="mx-auto flex max-w-[860px] flex-col gap-10 sm:gap-12">
-          <div className="flex flex-col items-center gap-5 text-center">
+          <Reveal className="flex flex-col items-center gap-5 text-center">
             <h2 className="font-serif text-4xl text-neutral-950 text-balance sm:text-5xl md:text-[56px]">{title}</h2>
             <p className="text-base text-neutral-600 sm:text-lg">{subtitle}</p>
-          </div>
-          <Accordion items={items} />
+          </Reveal>
+          <Reveal delay={100}>
+            <Accordion items={items} />
+          </Reveal>
         </div>
       </section>
     );
@@ -34,7 +36,9 @@ export function Faq({ title, subtitle, items, layout = "split" }: FaqProps) {
           <h2 className="font-serif text-4xl leading-[1.1] text-neutral-950 text-balance sm:text-5xl md:text-[56px]">{title}</h2>
           <p className="max-w-[620px] text-base leading-[1.75] text-neutral-600 sm:text-lg">{subtitle}</p>
         </Reveal>
-        <Accordion items={items} />
+        <Reveal delay={100}>
+          <Accordion items={items} />
+        </Reveal>
       </div>
     </section>
   );
