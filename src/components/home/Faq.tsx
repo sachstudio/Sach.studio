@@ -11,6 +11,8 @@ type FaqProps = {
 };
 
 export function Faq({ title, subtitle, items, layout = "split" }: FaqProps) {
+  // A page with no FAQs switched on shows no empty FAQ section.
+  if (items.length === 0) return null;
   if (layout === "stacked") {
     return (
       <section className="px-4 py-20 sm:px-6 sm:py-28">

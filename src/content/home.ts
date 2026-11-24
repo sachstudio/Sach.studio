@@ -1,13 +1,3 @@
-export type Testimonial = {
-  id: string;
-  name: string;
-  role: string;
-  tag: string;
-  quote: string;
-  /** Cropped avatar pair from the Figma design; the rest fall back to initials. */
-  avatar?: string;
-};
-
 export const home = {
   hero: {
     badge: "Accepting new projects",
@@ -120,58 +110,6 @@ export const home = {
     subtitle:
       "Real feedback from startups, founders, and businesses we’ve helped through premium design and development.",
   },
-  testimonials: [
-    {
-      id: "emily-carter",
-      name: "Emily Carter",
-      role: "Founder, SaaS Startup",
-      tag: "Website & Landing Pages",
-      quote:
-        "“Sach Studio completely changed how people perceived our business online. Within the first month after launch, our landing page conversion rate improved by around 32%, and visitors were spending noticeably more time on the website. The process also felt extremely smooth compared to previous agencies we worked with.”",
-      avatar: "/images/testimonials/avatar-1.png",
-    },
-    {
-      id: "daniel-brooks",
-      name: "Daniel Brooks",
-      role: "Founder, Tech Startup",
-      tag: "Logo, Branding & Marketing Collaterals",
-      quote:
-        "“The branding work felt very strategic instead of just visually attractive. From logo design to pitch deck assets and social creatives, everything finally looked consistent. It genuinely helped us look more credible while pitching to investors and clients.”",
-      avatar: "/images/testimonials/avatar-2.png",
-    },
-    {
-      id: "sophia-martinez",
-      name: "Sophia Martinez",
-      role: "Marketing Lead, E-commerce Brand",
-      tag: "Website & Landing Pages",
-      quote:
-        "“We were struggling with high bounce rates and poor engagement on our old website. Sach Studio redesigned the entire experience, simplified the user flow, and improved the loading speed significantly. We started receiving better-quality leads within weeks.”",
-    },
-    {
-      id: "emma-wilson",
-      name: "Emma Wilson",
-      role: "Director, Digital Agency",
-      tag: "Logo, Branding & Marketing Collaterals",
-      quote:
-        "“We originally hired Sach Studio for a logo refresh, but ended up rebranding the entire company with them. The visual direction, typography, and marketing assets gave our business a much more premium identity almost immediately.”",
-    },
-    {
-      id: "arjun-patel",
-      name: "Arjun Patel",
-      role: "Product Manager, Fintech Platform",
-      tag: "Web App & Dashboard UI/UX",
-      quote:
-        "“Our dashboard was previously difficult to navigate and visually outdated. Sach Studio redesigned the entire interface with a much cleaner UX structure, and our support requests related to navigation dropped noticeably after launch.”",
-    },
-    {
-      id: "michael-carter",
-      name: "Michael Carter",
-      role: "Founder, AI Automation Company",
-      tag: "Strategy & Consultation",
-      quote:
-        "“What stood out was how deeply they understood the business side of the project. They weren’t just making things look good — they helped us rethink the structure, messaging, and conversion flow of the entire website.”",
-    },
-  ] satisfies Testimonial[],
   faq: {
     title: "Frequently Asked Questions",
     subtitle: "Have questions? Here are some quick answers to help you understand how we work.",

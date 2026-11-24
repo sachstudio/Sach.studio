@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CATEGORIES, type CategorySlug } from "./categories";
+import { FAQ_PAGE_VALUES } from "./faq-pages";
 import { FEATURE_SHAPES } from "./feature-images";
 import { SLUG_PATTERN } from "./slug";
 
@@ -123,7 +124,31 @@ const pricingPlanShape = z.object({
   status: z.enum(["draft", "published"]).default("draft"),
 });
 
+const faqShape = z.object({
+  question: z.string().trim().min(1, "Add the question"),
+  answer: z.string().trim().min(1, "Add the answer"),
+  pages: z
+    .array(z.enum(FAQ_PAGE_VALUES, { message: "Choose pages from the list" }))
+    .transform((pages) => [...new Set(pages)])
+    .pipe(z.array(z.enum(FAQ_PAGE_VALUES)).min(1, "Choose at least one page to show it on"))
+    .default(["home"]),
+  sortOrder: z.number().int().default(100),
+  status: z.enum(["draft", "published"]).default("draft"),
+});
+
+const testimonialShape = z.object({
+  name: z.string().trim().min(1, "Add the client's name"),
+  role: z.string().trim().default(""),
+  tag: z.string().trim().default(""),
+  quote: z.string().trim().min(1, "Add what the client said"),
+  avatarUrl: imageRef.default(""),
+  sortOrder: z.number().int().default(100),
+  status: z.enum(["draft", "published"]).default("draft"),
+});
+
 export type CaseStudyInput = z.infer<typeof caseStudyShape>;
+export type FaqInput = z.infer<typeof faqShape>;
+export type TestimonialInput = z.infer<typeof testimonialShape>;
 export type PricingPlanInput = z.infer<typeof pricingPlanShape>;
 export type PostInput = z.infer<typeof postShape>;
 
@@ -176,5 +201,15 @@ export function validatePost(input: unknown): ValidationResult<PostInput> {
 
 export function validatePricingPlan(input: unknown): ValidationResult<PricingPlanInput> {
   const parsed = pricingPlanShape.safeParse(input);
+  return parsed.success ? { ok: true, data: parsed.data } : { ok: false, errors: issuesToErrors(parsed.error) };
+}
+
+export function validateFaq(input: unknown): ValidationResult<FaqInput> {
+  const parsed = faqShape.safeParse(input);
+  return parsed.success ? { ok: true, data: parsed.data } : { ok: false, errors: issuesToErrors(parsed.error) };
+}
+
+export function validateTestimonial(input: unknown): ValidationResult<TestimonialInput> {
+  const parsed = testimonialShape.safeParse(input);
   return parsed.success ? { ok: true, data: parsed.data } : { ok: false, errors: issuesToErrors(parsed.error) };
 }

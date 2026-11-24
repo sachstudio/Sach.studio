@@ -1,17 +1,19 @@
 "use client";
 
-import { Briefcase, CalendarDays, ExternalLink, LayoutDashboard, Newspaper, Tags, type LucideIcon } from "lucide-react";
+import { Briefcase, CalendarDays, CircleHelp, ExternalLink, LayoutDashboard, MessageSquareQuote, Newspaper, Tags, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Badge } from "@/components/admin/ui/badge";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/admin/ui/sidebar";
-import { ADMIN_SECTIONS, BOOKING_SECTIONS, DASHBOARD_HREF, PRICING_SECTIONS, isCurrentSection, isDashboard } from "@/lib/admin-nav";
+import { ADMIN_SECTIONS, BOOKING_SECTIONS, DASHBOARD_HREF, PRICING_SECTIONS, WEBSITE_SECTIONS, isCurrentSection, isDashboard } from "@/lib/admin-nav";
 import { cn } from "cn";
 
 const ICONS: Record<string, LucideIcon> = {
   "/admin/case-studies": Briefcase,
   "/admin/posts": Newspaper,
   "/admin/pricing": Tags,
+  "/admin/testimonials": MessageSquareQuote,
+  "/admin/faqs": CircleHelp,
   "/admin/bookings": CalendarDays,
 };
 
@@ -82,6 +84,7 @@ export function AppSidebar() {
           </div>
           <NavGroup label="Content" sections={ADMIN_SECTIONS} pathname={pathname} />
           <NavGroup label="Pricing" sections={PRICING_SECTIONS} pathname={pathname} />
+          <NavGroup label="Website sections" sections={WEBSITE_SECTIONS} pathname={pathname} />
           <NavGroup label="Cal.com" sections={BOOKING_SECTIONS} pathname={pathname} />
         </div>
       </SidebarContent>

@@ -9,7 +9,13 @@ export const PRICING_SECTIONS = [{ href: "/admin/pricing", label: "Packages", si
 /** Calls booked through the Cal.com widget. */
 export const BOOKING_SECTIONS = [{ href: "/admin/bookings", label: "Booking", singular: "booking" }] as const;
 
-const ALL_SECTIONS = [...ADMIN_SECTIONS, ...PRICING_SECTIONS, ...BOOKING_SECTIONS];
+/** Sections of the public pages that the owner edits: the client quotes and the FAQ lists. */
+export const WEBSITE_SECTIONS = [
+  { href: "/admin/testimonials", label: "Testimonials", singular: "testimonial" },
+  { href: "/admin/faqs", label: "FAQs", singular: "FAQ" },
+] as const;
+
+const ALL_SECTIONS = [...ADMIN_SECTIONS, ...PRICING_SECTIONS, ...WEBSITE_SECTIONS, ...BOOKING_SECTIONS];
 
 export const DASHBOARD_HREF = "/admin";
 

@@ -1,9 +1,32 @@
-import { and, asc, desc, eq, ne } from "drizzle-orm";
+import { and, asc, desc, eq, ne, sql } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type { CategorySlug } from "@/lib/categories";
-import { validateCaseStudy, validatePost, type CaseStudyInput, type PostInput, type PricingPlanInput } from "@/lib/validation";
+import type { FaqPage } from "@/lib/faq-pages";
+import {
+  validateCaseStudy,
+  validatePost,
+  type CaseStudyInput,
+  type FaqInput,
+  type PostInput,
+  type PricingPlanInput,
+  type TestimonialInput,
+} from "@/lib/validation";
 import * as schema from "./schema";
-import { blogPosts, bookings, caseStudies, pricingPlans, type BlogPost, type Booking, type CaseStudy, type ContentStatus, type PricingPlan } from "./schema";
+import {
+  blogPosts,
+  bookings,
+  caseStudies,
+  faqs,
+  pricingPlans,
+  testimonials,
+  type BlogPost,
+  type Booking,
+  type CaseStudy,
+  type ContentStatus,
+  type Faq,
+  type PricingPlan,
+  type Testimonial,
+} from "./schema";
 import type { BookingInput } from "@/lib/cal-webhook";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,6 +58,8 @@ export function createRepo(db: Db) {
   const caseOrder = [asc(caseStudies.sortOrder), desc(caseStudies.createdAt)];
   const postOrder = [asc(blogPosts.sortOrder), desc(blogPosts.createdAt)];
   const planOrder = [asc(pricingPlans.sortOrder), asc(pricingPlans.createdAt)];
+  const faqOrder = [asc(faqs.sortOrder), asc(faqs.createdAt)];
+  const testimonialOrder = [asc(testimonials.sortOrder), asc(testimonials.createdAt)];
 
   return {
     // ---- case studies: public ----
@@ -283,6 +308,87 @@ export function createRepo(db: Db) {
     async deletePricingPlan(id: string): Promise<{ ok: true } | { ok: false; error: string }> {
       const deleted = await db.delete(pricingPlans).where(eq(pricingPlans.id, id)).returning({ id: pricingPlans.id });
       return deleted.length ? { ok: true } : { ok: false, error: "This package no longer exists. It may have been deleted." };
+    },
+
+    // ---- FAQs (home and contact pages) ----
+    /** The FAQs one page shows: only the ones switched on for that page, in the admin's order. */
+    async listPublishedFaqs(page: FaqPage): Promise<Faq[]> {
+      return db
+        .select()
+        .from(faqs)
+        .where(and(eq(faqs.status, "published"), sql`${faqs.pages} @> ${JSON.stringify([page])}::jsonb`))
+        .orderBy(...faqOrder);
+    },
+
+    async adminListFaqs(): Promise<Faq[]> {
+      return db.select().from(faqs).orderBy(...faqOrder);
+    },
+
+    async adminGetFaq(id: string): Promise<Faq | null> {
+      const [row] = await db.select().from(faqs).where(eq(faqs.id, id)).limit(1);
+      return row ?? null;
+    },
+
+    async saveFaq(input: FaqInput, id?: string): Promise<SaveResult> {
+      if (!id) {
+        const [row] = await db.insert(faqs).values(input).returning({ id: faqs.id });
+        return { ok: true, id: row.id, slug: input.question };
+      }
+      const updated = await db.update(faqs).set({ ...input, updatedAt: new Date() }).where(eq(faqs.id, id)).returning({ id: faqs.id });
+      if (!updated.length) return { ok: false, error: "This FAQ no longer exists. It may have been deleted." };
+      return { ok: true, id, slug: input.question };
+    },
+
+    async setFaqStatus(id: string, status: ContentStatus): Promise<{ ok: true } | { ok: false; error: string }> {
+      const updated = await db.update(faqs).set({ status, updatedAt: new Date() }).where(eq(faqs.id, id)).returning({ id: faqs.id });
+      return updated.length ? { ok: true } : { ok: false, error: "This FAQ no longer exists. It may have been deleted." };
+    },
+
+    async deleteFaq(id: string): Promise<{ ok: true } | { ok: false; error: string }> {
+      const deleted = await db.delete(faqs).where(eq(faqs.id, id)).returning({ id: faqs.id });
+      return deleted.length ? { ok: true } : { ok: false, error: "This FAQ no longer exists. It may have been deleted." };
+    },
+
+    // ---- testimonials (home page) ----
+    async listPublishedTestimonials(): Promise<Testimonial[]> {
+      return db.select().from(testimonials).where(eq(testimonials.status, "published")).orderBy(...testimonialOrder);
+    },
+
+    async adminListTestimonials(): Promise<Testimonial[]> {
+      return db.select().from(testimonials).orderBy(...testimonialOrder);
+    },
+
+    async adminGetTestimonial(id: string): Promise<Testimonial | null> {
+      const [row] = await db.select().from(testimonials).where(eq(testimonials.id, id)).limit(1);
+      return row ?? null;
+    },
+
+    async saveTestimonial(input: TestimonialInput, id?: string): Promise<SaveResult> {
+      if (!id) {
+        const [row] = await db.insert(testimonials).values(input).returning({ id: testimonials.id });
+        return { ok: true, id: row.id, slug: input.name };
+      }
+      const updated = await db
+        .update(testimonials)
+        .set({ ...input, updatedAt: new Date() })
+        .where(eq(testimonials.id, id))
+        .returning({ id: testimonials.id });
+      if (!updated.length) return { ok: false, error: "This testimonial no longer exists. It may have been deleted." };
+      return { ok: true, id, slug: input.name };
+    },
+
+    async setTestimonialStatus(id: string, status: ContentStatus): Promise<{ ok: true } | { ok: false; error: string }> {
+      const updated = await db
+        .update(testimonials)
+        .set({ status, updatedAt: new Date() })
+        .where(eq(testimonials.id, id))
+        .returning({ id: testimonials.id });
+      return updated.length ? { ok: true } : { ok: false, error: "This testimonial no longer exists. It may have been deleted." };
+    },
+
+    async deleteTestimonial(id: string): Promise<{ ok: true } | { ok: false; error: string }> {
+      const deleted = await db.delete(testimonials).where(eq(testimonials.id, id)).returning({ id: testimonials.id });
+      return deleted.length ? { ok: true } : { ok: false, error: "This testimonial no longer exists. It may have been deleted." };
     },
   };
 }

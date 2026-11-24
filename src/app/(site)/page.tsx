@@ -9,9 +9,8 @@ import { Stats } from "@/components/home/Stats";
 import { Testimonials } from "@/components/home/Testimonials";
 import { WhyUs } from "@/components/home/WhyUs";
 import { FeaturedWork } from "@/components/works/FeaturedWork";
-import { homeFaqs } from "@/content/faqs";
 import { home } from "@/content/home";
-import { getPublishedPricingPlans } from "@/db/queries";
+import { getPublishedFaqs, getPublishedPricingPlans, getPublishedTestimonials } from "@/db/queries";
 
 export const metadata: Metadata = {
   title: { absolute: "Sach Studio: Website, App & Dashboard Design and Development" },
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const plans = await getPublishedPricingPlans();
+  const [plans, testimonials, faqs] = await Promise.all([getPublishedPricingPlans(), getPublishedTestimonials(), getPublishedFaqs("home")]);
   return (
     <>
       <Hero />
@@ -30,8 +29,8 @@ export default async function HomePage() {
       <Process />
       <Pricing plans={plans} />
       <WhyUs />
-      <Testimonials />
-      <Faq title={home.faq.title} subtitle={home.faq.subtitle} items={homeFaqs} />
+      <Testimonials items={testimonials} />
+      <Faq title={home.faq.title} subtitle={home.faq.subtitle} items={faqs} />
       <BookingSection />
     </>
   );

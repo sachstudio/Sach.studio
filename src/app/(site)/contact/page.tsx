@@ -3,7 +3,7 @@ import { Faq } from "@/components/home/Faq";
 import { CalEmbed } from "@/components/layout/CalEmbed";
 import { SectionHeading } from "@/components/ui";
 import { about } from "@/content/about";
-import { contactFaqs } from "@/content/faqs";
+import { getPublishedFaqs } from "@/db/queries";
 
 export const metadata: Metadata = {
   title: "Contact Us: Book a 15-minute call",
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
     "Choose a time that works for you and discuss your project, goals and how Sach Studio can help bring your vision to life.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
   const { contact } = about;
+  const faqs = await getPublishedFaqs("contact");
   return (
     <>
       <section className="px-4 pb-10 pt-16 sm:px-6 sm:pt-24">
@@ -30,7 +31,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      <Faq title={contact.faqTitle} subtitle={contact.faqSubtitle} items={contactFaqs} layout="stacked" />
+      <Faq title={contact.faqTitle} subtitle={contact.faqSubtitle} items={faqs} layout="stacked" />
     </>
   );
 }

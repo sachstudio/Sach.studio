@@ -107,3 +107,39 @@ export const pricingPlans = pgTable("pricing_plans", {
 });
 
 export type PricingPlan = typeof pricingPlans.$inferSelect;
+
+/** One question and answer in a FAQ list. It can be shown on more than one page of the website. */
+export const faqs = pgTable("faqs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  /** The website pages that show it, for example ["home", "contact"] (see src/lib/faq-pages.ts). */
+  pages: jsonb("pages").$type<string[]>().notNull().default(["home"]),
+  /** Lower numbers come first, on every page. */
+  sortOrder: integer("sort_order").notNull().default(100),
+  status: text("status").$type<ContentStatus>().notNull().default("published"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Faq = typeof faqs.$inferSelect;
+
+/** A client quote shown in the "What our clients say" section of the home page. */
+export const testimonials = pgTable("testimonials", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  /** For example "Founder, SaaS Startup". */
+  role: text("role").notNull().default(""),
+  /** The small label on the card, for example the service they bought. */
+  tag: text("tag").notNull().default(""),
+  quote: text("quote").notNull(),
+  /** Empty shows the client's initials instead. */
+  avatarUrl: text("avatar_url").notNull().default(""),
+  /** Lower numbers come first. */
+  sortOrder: integer("sort_order").notNull().default(100),
+  status: text("status").$type<ContentStatus>().notNull().default("published"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Testimonial = typeof testimonials.$inferSelect;

@@ -1,4 +1,4 @@
-import type { CaseStudyInput, PostInput, PricingPlanInput } from "@/lib/validation";
+import type { CaseStudyInput, FaqInput, PostInput, PricingPlanInput, TestimonialInput } from "@/lib/validation";
 
 const img = (name: string) => `/images/projects/${name}`;
 const logo = (name: string) => `/images/logos/${name}`;
@@ -475,4 +475,169 @@ export const seedPricingPlans: PricingPlanInput[] = [
     sortOrder: 40,
     status: "published",
   },
+];
+
+
+/**
+ * The FAQs the website showed before they moved into the admin. The first answer on each page is the owner's
+ * copy; the others are placeholders written from the questions (see docs/placeholder-content.md).
+ */
+export const seedFaqs: FaqInput[] = [
+  {
+    "question": "How Long Does A Project Take?",
+    "answer": "SACH STUDIO offers multiple services including website design, landing pages, mobile apps, web apps, dashboard UI/UX, branding, and marketing systems. Most projects are completed within 1–6 weeks depending on the project scope, revisions, and client feedback timeline. Before starting any project, we clearly communicate the estimated delivery timeline and always aim to deliver on time.",
+    "pages": [
+      "home"
+    ],
+    "sortOrder": 10,
+    "status": "published"
+  },
+  {
+    "question": "Do You Provide Both Design And Development Services?",
+    "answer": "Yes. We design and build in one team, so nothing is lost between a design file and a live product. We can also design only, and hand over developer-ready Figma files, if you already have a development team.",
+    "pages": [
+      "home"
+    ],
+    "sortOrder": 20,
+    "status": "published"
+  },
+  {
+    "question": "Do You Offer Ongoing Support And Maintenance Services?",
+    "answer": "Yes. Website projects include limited free support after launch for bug fixes and small adjustments. For ongoing updates, performance checks and new pages, we offer a monthly maintenance plan.",
+    "pages": [
+      "home"
+    ],
+    "sortOrder": 30,
+    "status": "published"
+  },
+  {
+    "question": "How Do I Get Started With SACH STUDIO?",
+    "answer": "Book a 15-minute call using the calendar on this page. We will talk through your goals, scope and timeline, then send a clear proposal. Work begins once the proposal is approved and the first payment is made.",
+    "pages": [
+      "home"
+    ],
+    "sortOrder": 40,
+    "status": "published"
+  },
+  {
+    "question": "What Happens If I’m Not Satisfied With The Final Result?",
+    "answer": "We refine the work until you are satisfied, within the agreed scope and timeline. Tell us what is not working, and we will revise it. Revisions are unlimited while the project is active and before final approval.",
+    "pages": [
+      "home"
+    ],
+    "sortOrder": 50,
+    "status": "published"
+  },
+  {
+    "question": "Why Do Unlimited Revisions Have A Deadline?",
+    "answer": "Unlimited revisions apply during the active project phase so the work keeps moving and your launch date holds. Once a design is approved in writing, further changes are treated as a new request and may be quoted separately.",
+    "pages": [
+      "home"
+    ],
+    "sortOrder": 60,
+    "status": "published"
+  },
+  {
+    "question": "What Happens During The 15-Minute Consultation Call?",
+    "answer": "During the consultation call, we’ll understand your business, project goals, requirements, and challenges. We’ll also discuss possible solutions, timelines, and how SACH STUDIO can help bring your vision to life.",
+    "pages": [
+      "contact"
+    ],
+    "sortOrder": 10,
+    "status": "published"
+  },
+  {
+    "question": "What Should I Prepare Before Booking The Meeting?",
+    "answer": "Nothing formal. It helps to have a rough idea of your goals, any websites or brands you like, your timeline and your budget range. If you have existing designs or content, bring links to them.",
+    "pages": [
+      "contact"
+    ],
+    "sortOrder": 20,
+    "status": "published"
+  },
+  {
+    "question": "Do You Work With International Clients And Different Time Zones?",
+    "answer": "Yes. We work with clients around the world. The booking calendar shows times in your own time zone, and we communicate by email and video call so projects run smoothly across regions.",
+    "pages": [
+      "contact"
+    ],
+    "sortOrder": 30,
+    "status": "published"
+  },
+  {
+    "question": "Can I Reschedule My Booked Consultation Call?",
+    "answer": "Yes. Use the reschedule link in your booking confirmation email to pick a new time, or reply to that email and we will move it for you.",
+    "pages": [
+      "contact"
+    ],
+    "sortOrder": 40,
+    "status": "published"
+  },
+  {
+    "question": "What Happens After I Book The Meeting?",
+    "answer": "You will receive a confirmation email with the meeting link and calendar invite. After the call, we send a short summary with next steps and a proposal if we are a good fit.",
+    "pages": [
+      "contact"
+    ],
+    "sortOrder": 50,
+    "status": "published"
+  }
+];
+
+/** The six client quotes the home page showed before testimonials moved into the admin. */
+export const seedTestimonials: TestimonialInput[] = [
+  {
+    "name": "Emily Carter",
+    "role": "Founder, SaaS Startup",
+    "tag": "Website & Landing Pages",
+    "quote": "“Sach Studio completely changed how people perceived our business online. Within the first month after launch, our landing page conversion rate improved by around 32%, and visitors were spending noticeably more time on the website. The process also felt extremely smooth compared to previous agencies we worked with.”",
+    "avatarUrl": "/images/testimonials/avatar-1.png",
+    "sortOrder": 10,
+    "status": "published"
+  },
+  {
+    "name": "Daniel Brooks",
+    "role": "Founder, Tech Startup",
+    "tag": "Logo, Branding & Marketing Collaterals",
+    "quote": "“The branding work felt very strategic instead of just visually attractive. From logo design to pitch deck assets and social creatives, everything finally looked consistent. It genuinely helped us look more credible while pitching to investors and clients.”",
+    "avatarUrl": "/images/testimonials/avatar-2.png",
+    "sortOrder": 20,
+    "status": "published"
+  },
+  {
+    "name": "Sophia Martinez",
+    "role": "Marketing Lead, E-commerce Brand",
+    "tag": "Website & Landing Pages",
+    "quote": "“We were struggling with high bounce rates and poor engagement on our old website. Sach Studio redesigned the entire experience, simplified the user flow, and improved the loading speed significantly. We started receiving better-quality leads within weeks.”",
+    "avatarUrl": "",
+    "sortOrder": 30,
+    "status": "published"
+  },
+  {
+    "name": "Emma Wilson",
+    "role": "Director, Digital Agency",
+    "tag": "Logo, Branding & Marketing Collaterals",
+    "quote": "“We originally hired Sach Studio for a logo refresh, but ended up rebranding the entire company with them. The visual direction, typography, and marketing assets gave our business a much more premium identity almost immediately.”",
+    "avatarUrl": "",
+    "sortOrder": 40,
+    "status": "published"
+  },
+  {
+    "name": "Arjun Patel",
+    "role": "Product Manager, Fintech Platform",
+    "tag": "Web App & Dashboard UI/UX",
+    "quote": "“Our dashboard was previously difficult to navigate and visually outdated. Sach Studio redesigned the entire interface with a much cleaner UX structure, and our support requests related to navigation dropped noticeably after launch.”",
+    "avatarUrl": "",
+    "sortOrder": 50,
+    "status": "published"
+  },
+  {
+    "name": "Michael Carter",
+    "role": "Founder, AI Automation Company",
+    "tag": "Strategy & Consultation",
+    "quote": "“What stood out was how deeply they understood the business side of the project. They weren’t just making things look good — they helped us rethink the structure, messaging, and conversion flow of the entire website.”",
+    "avatarUrl": "",
+    "sortOrder": 60,
+    "status": "published"
+  }
 ];

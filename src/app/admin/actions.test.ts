@@ -14,6 +14,12 @@ const mocks = vi.hoisted(() => ({
     savePricingPlan: vi.fn(),
     setPricingPlanStatus: vi.fn(),
     deletePricingPlan: vi.fn(),
+    saveFaq: vi.fn(),
+    setFaqStatus: vi.fn(),
+    deleteFaq: vi.fn(),
+    saveTestimonial: vi.fn(),
+    setTestimonialStatus: vi.fn(),
+    deleteTestimonial: vi.fn(),
   },
 }));
 
@@ -24,7 +30,15 @@ vi.mock("@/db", () => ({ getRepo: async () => mocks.repo }));
 import {
   deleteCaseStudyAction,
   deletePostAction,
+  deleteFaqAction,
   deletePricingPlanAction,
+  deleteTestimonialAction,
+  publishFaqAction,
+  publishTestimonialAction,
+  saveFaqAction,
+  saveTestimonialAction,
+  unpublishFaqAction,
+  unpublishTestimonialAction,
   publishPricingPlanAction,
   savePricingPlanAction,
   unpublishPricingPlanAction,
@@ -63,6 +77,14 @@ describe("admin actions: authorisation", () => {
       publishPricingPlanAction({ name: "A", price: "$1" }),
       unpublishPricingPlanAction("id-3"),
       deletePricingPlanAction("id-3"),
+      saveFaqAction({ question: "Q", answer: "A" }),
+      publishFaqAction({ question: "Q", answer: "A" }),
+      unpublishFaqAction("id-4"),
+      deleteFaqAction("id-4"),
+      saveTestimonialAction({ name: "N", quote: "Q" }),
+      publishTestimonialAction({ name: "N", quote: "Q" }),
+      unpublishTestimonialAction("id-5"),
+      deleteTestimonialAction("id-5"),
     ]);
     for (const r of results) expect(r).toEqual({ ok: false, error: "Not authorised" });
     for (const fn of Object.values(mocks.repo)) expect(fn).not.toHaveBeenCalled();
@@ -181,6 +203,61 @@ describe("admin actions: pricing packages", () => {
     mocks.repo.deletePricingPlan.mockResolvedValue({ ok: true });
     expect(await unpublishPricingPlanAction("plan-1")).toEqual({ ok: true, message: "Unpublished" });
     expect(await deletePricingPlanAction("plan-1")).toEqual({ ok: true, message: "Deleted" });
+    expect(mocks.revalidateContent).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("admin actions: FAQs", () => {
+  it("rejects a FAQ with no answer or no page, and shows the error on that field", async () => {
+    expect(await saveFaqAction({ question: "Q", answer: "" })).toMatchObject({ ok: false, errors: { answer: expect.any(String) } });
+    expect(await saveFaqAction({ question: "Q", answer: "A", pages: [] })).toMatchObject({ ok: false, errors: { pages: expect.any(String) } });
+    expect(mocks.repo.saveFaq).not.toHaveBeenCalled();
+  });
+
+  it("saves a FAQ and refreshes the FAQ lists of the website", async () => {
+    mocks.repo.saveFaq.mockResolvedValue({ ok: true, id: "faq-1", slug: "Q" });
+    expect(await saveFaqAction({ question: "Q", answer: "A" })).toEqual({ ok: true, message: "Saved", id: "faq-1" });
+    expect(mocks.revalidateContent).toHaveBeenCalledWith(["faqs"]);
+  });
+
+  it("publishing shows the FAQ on the website", async () => {
+    mocks.repo.saveFaq.mockResolvedValue({ ok: true, id: "faq-1", slug: "Q" });
+    await publishFaqAction({ question: "Q", answer: "A", status: "draft" }, "faq-1");
+    expect(mocks.repo.saveFaq.mock.calls[0][0]).toMatchObject({ status: "published" });
+  });
+
+  it("hides and deletes a FAQ, refreshing the website each time", async () => {
+    mocks.repo.setFaqStatus.mockResolvedValue({ ok: true });
+    mocks.repo.deleteFaq.mockResolvedValue({ ok: true });
+    expect(await unpublishFaqAction("faq-1")).toEqual({ ok: true, message: "Unpublished" });
+    expect(await deleteFaqAction("faq-1")).toEqual({ ok: true, message: "Deleted" });
+    expect(mocks.revalidateContent).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("admin actions: testimonials", () => {
+  it("rejects a testimonial without a quote and shows the error on that field", async () => {
+    expect(await saveTestimonialAction({ name: "Emily", quote: "" })).toMatchObject({ ok: false, errors: { quote: expect.any(String) } });
+    expect(mocks.repo.saveTestimonial).not.toHaveBeenCalled();
+  });
+
+  it("saves a testimonial and refreshes the testimonials section of the website", async () => {
+    mocks.repo.saveTestimonial.mockResolvedValue({ ok: true, id: "t-1", slug: "Emily" });
+    expect(await saveTestimonialAction({ name: "Emily", quote: "Great." })).toEqual({ ok: true, message: "Saved", id: "t-1" });
+    expect(mocks.revalidateContent).toHaveBeenCalledWith(["testimonials"]);
+  });
+
+  it("publishing shows the testimonial on the website", async () => {
+    mocks.repo.saveTestimonial.mockResolvedValue({ ok: true, id: "t-1", slug: "Emily" });
+    await publishTestimonialAction({ name: "Emily", quote: "Great.", status: "draft" }, "t-1");
+    expect(mocks.repo.saveTestimonial.mock.calls[0][0]).toMatchObject({ status: "published" });
+  });
+
+  it("hides and deletes a testimonial, refreshing the website each time", async () => {
+    mocks.repo.setTestimonialStatus.mockResolvedValue({ ok: true });
+    mocks.repo.deleteTestimonial.mockResolvedValue({ ok: true });
+    expect(await unpublishTestimonialAction("t-1")).toEqual({ ok: true, message: "Unpublished" });
+    expect(await deleteTestimonialAction("t-1")).toEqual({ ok: true, message: "Deleted" });
     expect(mocks.revalidateContent).toHaveBeenCalledTimes(2);
   });
 });

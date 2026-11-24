@@ -4,7 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { SectionHeading } from "@/components/ui";
 import { cn } from "@/lib/cn";
-import { home, type Testimonial } from "@/content/home";
+import { home } from "@/content/home";
+
+/** What a card needs. The home page passes the published rows from the database. */
+export type TestimonialItem = { id: string; name: string; role: string; tag: string; quote: string; avatarUrl: string };
 
 const PER_PAGE = 2;
 
@@ -16,13 +19,13 @@ function initials(name: string) {
     .slice(0, 2);
 }
 
-function TestimonialCard({ item }: { item: Testimonial }) {
+function TestimonialCard({ item }: { item: TestimonialItem }) {
   return (
     <article className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
       <div className="flex h-full flex-col gap-8 rounded-2xl bg-neutral-100/70 p-6 sm:p-10">
         <div className="flex items-center justify-between gap-4">
-          {item.avatar ? (
-            <Image src={item.avatar} alt="" width={80} height={52} unoptimized className="h-10 w-auto rounded-full" />
+          {item.avatarUrl ? (
+            <Image src={item.avatarUrl} alt="" width={80} height={52} unoptimized className="h-10 w-auto rounded-full" />
           ) : (
             <span
               aria-hidden
@@ -31,9 +34,11 @@ function TestimonialCard({ item }: { item: Testimonial }) {
               {initials(item.name)}
             </span>
           )}
-          <span className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-600">
-            {item.tag}
-          </span>
+          {item.tag && (
+            <span className="rounded-md border border-neutral-200 bg-white px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-600">
+              {item.tag}
+            </span>
+          )}
         </div>
         <blockquote className="text-lg leading-[1.75] text-neutral-900 sm:text-xl sm:leading-[1.75]">{item.quote}</blockquote>
         <footer className="mt-auto pt-4">
@@ -72,23 +77,26 @@ function ArrowButton({
   );
 }
 
-export function Testimonials() {
+export function Testimonials({ items }: { items: TestimonialItem[] }) {
   const [page, setPage] = useState(0);
-  const pages = Math.ceil(home.testimonials.length / PER_PAGE);
-  const visible = home.testimonials.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
+  if (items.length === 0) return null;
+  const pages = Math.ceil(items.length / PER_PAGE);
+  // If testimonials were removed while the page was open, never land past the last pair.
+  const current = Math.min(page, pages - 1);
+  const visible = items.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
 
   return (
     <section className="px-4 py-20 sm:px-6 sm:py-28">
       <div className="mx-auto flex max-w-[1300px] flex-col gap-14">
         <SectionHeading title={home.testimonialsIntro.title} subtitle={home.testimonialsIntro.subtitle} />
-        <div key={page} className="motion-enter-small grid gap-6 md:grid-cols-2" aria-live="polite">
+        <div key={current} className="motion-enter-small grid gap-6 md:grid-cols-2" aria-live="polite">
           {visible.map((t) => (
             <TestimonialCard key={t.id} item={t} />
           ))}
         </div>
         <div className="flex justify-center gap-3">
-          <ArrowButton direction="prev" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))} />
-          <ArrowButton direction="next" disabled={page >= pages - 1} onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} />
+          <ArrowButton direction="prev" disabled={current === 0} onClick={() => setPage((p) => Math.max(0, p - 1))} />
+          <ArrowButton direction="next" disabled={current >= pages - 1} onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} />
         </div>
       </div>
     </section>

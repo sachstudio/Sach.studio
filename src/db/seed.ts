@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { createRepo, type Db } from "./repo";
-import { seedCaseStudies, seedPosts, seedPricingPlans } from "./seed-data";
-import { blogPosts, caseStudies, pricingPlans } from "./schema";
+import { seedCaseStudies, seedFaqs, seedPosts, seedPricingPlans, seedTestimonials } from "./seed-data";
+import { blogPosts, caseStudies, faqs, pricingPlans, testimonials } from "./schema";
 
 /**
  * Add the studio's starting content, matched by slug.
@@ -13,7 +13,7 @@ import { blogPosts, caseStudies, pricingPlans } from "./schema";
 export async function seedDatabase(
   db: Db,
   options: { force?: boolean } = {},
-): Promise<{ caseStudies: number; posts: number; pricingPlans: number }> {
+): Promise<{ caseStudies: number; posts: number; pricingPlans: number; faqs: number; testimonials: number }> {
   const repo = createRepo(db);
   let addedStudies = 0;
   let addedPosts = 0;
@@ -45,5 +45,27 @@ export async function seedDatabase(
       addedPlans += 1;
     }
   }
-  return { caseStudies: addedStudies, posts: addedPosts, pricingPlans: addedPlans };
+
+  // FAQs and testimonials work the same way: only added to an empty table, so deleting or rewording one sticks.
+  let addedFaqs = 0;
+  const [anyFaq] = await db.select({ id: faqs.id }).from(faqs).limit(1);
+  if (!anyFaq || options.force) {
+    if (options.force) await db.delete(faqs);
+    for (const input of seedFaqs) {
+      const result = await repo.saveFaq(input);
+      if (!result.ok) throw new Error(`Seeding FAQ "${input.question}" failed: ${result.error}`);
+      addedFaqs += 1;
+    }
+  }
+  let addedTestimonials = 0;
+  const [anyTestimonial] = await db.select({ id: testimonials.id }).from(testimonials).limit(1);
+  if (!anyTestimonial || options.force) {
+    if (options.force) await db.delete(testimonials);
+    for (const input of seedTestimonials) {
+      const result = await repo.saveTestimonial(input);
+      if (!result.ok) throw new Error(`Seeding testimonial "${input.name}" failed: ${result.error}`);
+      addedTestimonials += 1;
+    }
+  }
+  return { caseStudies: addedStudies, posts: addedPosts, pricingPlans: addedPlans, faqs: addedFaqs, testimonials: addedTestimonials };
 }

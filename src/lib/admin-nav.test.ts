@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ADMIN_SECTIONS, BOOKING_SECTIONS, PRICING_SECTIONS, breadcrumbsFor, DASHBOARD_HREF, isCurrentSection, isDashboard } from "./admin-nav";
+import { ADMIN_SECTIONS, BOOKING_SECTIONS, PRICING_SECTIONS, WEBSITE_SECTIONS, breadcrumbsFor, DASHBOARD_HREF, isCurrentSection, isDashboard } from "./admin-nav";
 
 describe("isDashboard", () => {
   it("is only the admin home, not the sections under it", () => {
@@ -31,6 +31,21 @@ describe("Pricing and Cal.com sections", () => {
     expect(breadcrumbsFor("/admin/pricing")).toEqual([{ label: "Packages" }]);
     expect(breadcrumbsFor("/admin/pricing/new")).toEqual([{ label: "Packages", href: "/admin/pricing" }, { label: "New package" }]);
     expect(breadcrumbsFor("/admin/pricing/abc")).toEqual([{ label: "Packages", href: "/admin/pricing" }, { label: "Edit package" }]);
+  });
+});
+
+describe("Website sections", () => {
+  it("lists Testimonials and FAQs with their addresses", () => {
+    expect(WEBSITE_SECTIONS.map((s) => [s.label, s.href])).toEqual([
+      ["Testimonials", "/admin/testimonials"],
+      ["FAQs", "/admin/faqs"],
+    ]);
+  });
+
+  it("builds breadcrumbs for them", () => {
+    expect(breadcrumbsFor("/admin/faqs")).toEqual([{ label: "FAQs" }]);
+    expect(breadcrumbsFor("/admin/faqs/new")).toEqual([{ label: "FAQs", href: "/admin/faqs" }, { label: "New FAQ" }]);
+    expect(breadcrumbsFor("/admin/testimonials/abc")).toEqual([{ label: "Testimonials", href: "/admin/testimonials" }, { label: "Edit testimonial" }]);
   });
 });
 

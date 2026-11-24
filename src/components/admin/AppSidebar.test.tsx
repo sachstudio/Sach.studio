@@ -57,6 +57,19 @@ describe("AppSidebar", () => {
     expect(screen.getByRole("link", { name: "Booking" })).not.toHaveAttribute("aria-current");
   });
 
+  it("has a Website sections group with Testimonials and FAQs", () => {
+    renderSidebar("/admin");
+    expect(screen.getByText("Website sections")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Testimonials" })).toHaveAttribute("href", "/admin/testimonials");
+    expect(screen.getByRole("link", { name: "FAQs" })).toHaveAttribute("href", "/admin/faqs");
+  });
+
+  it("marks FAQs as current inside its own pages and not Testimonials", () => {
+    renderSidebar("/admin/faqs/abc");
+    expect(screen.getByRole("link", { name: "FAQs" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Testimonials" })).not.toHaveAttribute("aria-current");
+  });
+
   it("links out to the public site in a new tab", () => {
     renderSidebar("/admin/case-studies");
     const site = screen.getByRole("link", { name: /View website/ });

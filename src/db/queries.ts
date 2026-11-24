@@ -1,6 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import type { CategorySlug } from "@/lib/categories";
-import { caseStudiesTag, caseStudyTag, postTag, postsTag, pricingTag } from "@/lib/tags";
+import type { FaqPage } from "@/lib/faq-pages";
+import { caseStudiesTag, caseStudyTag, faqsTag, postTag, postsTag, pricingTag, testimonialsTag } from "@/lib/tags";
 import { getRepo } from "./index";
 
 /*
@@ -49,6 +50,22 @@ export async function getRelatedPosts(slug: string, limit = 2) {
   cacheTag(postsTag);
   cacheLife("hours");
   return (await getRepo()).listRelatedPosts(slug, limit);
+}
+
+/** The FAQs one page of the website shows: only the ones switched on for it, in the admin's order. */
+export async function getPublishedFaqs(page: FaqPage) {
+  "use cache";
+  cacheTag(faqsTag);
+  cacheLife("hours");
+  return (await getRepo()).listPublishedFaqs(page);
+}
+
+/** The client quotes in the home page's testimonials section, in the admin's order. */
+export async function getPublishedTestimonials() {
+  "use cache";
+  cacheTag(testimonialsTag);
+  cacheLife("hours");
+  return (await getRepo()).listPublishedTestimonials();
 }
 
 /** The package cards in the home page's pricing section: only the ones switched on, in the admin's order. */

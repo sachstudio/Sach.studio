@@ -1,6 +1,7 @@
-import type { BlogPost, CaseStudy, PricingPlan } from "@/db/schema";
+import type { BlogPost, CaseStudy, Faq, PricingPlan, Testimonial } from "@/db/schema";
 import { normalizeFeatureImages } from "./feature-images";
-import type { CaseStudyInput, PostInput, PricingPlanInput } from "./validation";
+import type { FaqPage } from "./faq-pages";
+import type { CaseStudyInput, FaqInput, PostInput, PricingPlanInput, TestimonialInput } from "./validation";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -139,4 +140,36 @@ export function emptyPricingPlan(): PricingPlanInput {
     sortOrder: 100,
     status: "published",
   };
+}
+
+export function faqToInput(row: Faq): FaqInput {
+  return {
+    question: row.question,
+    answer: row.answer,
+    pages: row.pages as FaqPage[],
+    sortOrder: row.sortOrder,
+    status: row.status,
+  };
+}
+
+/** Starting values for a new FAQ: shown on the home page, after the others. */
+export function emptyFaq(): FaqInput {
+  return { question: "", answer: "", pages: ["home"], sortOrder: 100, status: "published" };
+}
+
+export function testimonialToInput(row: Testimonial): TestimonialInput {
+  return {
+    name: row.name,
+    role: row.role,
+    tag: row.tag,
+    quote: row.quote,
+    avatarUrl: row.avatarUrl,
+    sortOrder: row.sortOrder,
+    status: row.status,
+  };
+}
+
+/** Starting values for a new testimonial, added after the others. */
+export function emptyTestimonial(): TestimonialInput {
+  return { name: "", role: "", tag: "", quote: "", avatarUrl: "", sortOrder: 100, status: "published" };
 }

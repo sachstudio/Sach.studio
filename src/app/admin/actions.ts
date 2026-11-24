@@ -3,8 +3,8 @@
 import { getRepo } from "@/db";
 import { requireAdmin } from "@/lib/admin-auth";
 import { revalidateContent } from "@/lib/revalidate";
-import { pricingTag, tagsForCaseStudyChange, tagsForPostChange } from "@/lib/tags";
-import { validateCaseStudy, validatePost, validatePricingPlan } from "@/lib/validation";
+import { faqsTag, pricingTag, tagsForCaseStudyChange, tagsForPostChange, testimonialsTag } from "@/lib/tags";
+import { validateCaseStudy, validateFaq, validatePost, validatePricingPlan, validateTestimonial } from "@/lib/validation";
 
 export type ActionResult =
   | { ok: true; message: "Saved" | "Published" | "Unpublished" | "Deleted"; id?: string; slug?: string }
@@ -194,5 +194,113 @@ export async function deletePricingPlanAction(id: string): Promise<ActionResult>
     return { ok: true, message: "Deleted" };
   } catch (error) {
     return unexpected("delete the package", error);
+  }
+}
+
+// ---------- FAQs ----------
+
+async function saveFaqInput(input: unknown, id: string | undefined, status: "draft" | "published" | null): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+
+  const merged = status && input && typeof input === "object" ? { ...input, status } : input;
+  const checked = validateFaq(merged);
+  if (!checked.ok) return { ok: false, error: fix, errors: checked.errors };
+
+  try {
+    const result = await (await getRepo()).saveFaq(checked.data, id);
+    if (!result.ok) return fromRepoFailure(result);
+    revalidateContent([faqsTag]);
+    return { ok: true, message: status === "published" ? "Published" : "Saved", id: result.id };
+  } catch (error) {
+    return unexpected("save the FAQ", error);
+  }
+}
+
+export async function saveFaqAction(input: unknown, id?: string): Promise<ActionResult> {
+  return saveFaqInput(input, id, null);
+}
+
+export async function publishFaqAction(input: unknown, id?: string): Promise<ActionResult> {
+  return saveFaqInput(input, id, "published");
+}
+
+export async function unpublishFaqAction(id: string): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+  try {
+    const result = await (await getRepo()).setFaqStatus(id, "draft");
+    if (!result.ok) return { ok: false, error: result.error };
+    revalidateContent([faqsTag]);
+    return { ok: true, message: "Unpublished" };
+  } catch (error) {
+    return unexpected("hide the FAQ", error);
+  }
+}
+
+export async function deleteFaqAction(id: string): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+  try {
+    const result = await (await getRepo()).deleteFaq(id);
+    if (!result.ok) return { ok: false, error: result.error };
+    revalidateContent([faqsTag]);
+    return { ok: true, message: "Deleted" };
+  } catch (error) {
+    return unexpected("delete the FAQ", error);
+  }
+}
+
+// ---------- testimonials ----------
+
+async function saveTestimonialInput(input: unknown, id: string | undefined, status: "draft" | "published" | null): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+
+  const merged = status && input && typeof input === "object" ? { ...input, status } : input;
+  const checked = validateTestimonial(merged);
+  if (!checked.ok) return { ok: false, error: fix, errors: checked.errors };
+
+  try {
+    const result = await (await getRepo()).saveTestimonial(checked.data, id);
+    if (!result.ok) return fromRepoFailure(result);
+    revalidateContent([testimonialsTag]);
+    return { ok: true, message: status === "published" ? "Published" : "Saved", id: result.id };
+  } catch (error) {
+    return unexpected("save the testimonial", error);
+  }
+}
+
+export async function saveTestimonialAction(input: unknown, id?: string): Promise<ActionResult> {
+  return saveTestimonialInput(input, id, null);
+}
+
+export async function publishTestimonialAction(input: unknown, id?: string): Promise<ActionResult> {
+  return saveTestimonialInput(input, id, "published");
+}
+
+export async function unpublishTestimonialAction(id: string): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+  try {
+    const result = await (await getRepo()).setTestimonialStatus(id, "draft");
+    if (!result.ok) return { ok: false, error: result.error };
+    revalidateContent([testimonialsTag]);
+    return { ok: true, message: "Unpublished" };
+  } catch (error) {
+    return unexpected("hide the testimonial", error);
+  }
+}
+
+export async function deleteTestimonialAction(id: string): Promise<ActionResult> {
+  const refusal = await denied();
+  if (refusal) return refusal;
+  try {
+    const result = await (await getRepo()).deleteTestimonial(id);
+    if (!result.ok) return { ok: false, error: result.error };
+    revalidateContent([testimonialsTag]);
+    return { ok: true, message: "Deleted" };
+  } catch (error) {
+    return unexpected("delete the testimonial", error);
   }
 }

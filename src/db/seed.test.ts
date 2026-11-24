@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { createRepo } from "./repo";
-import { seedCaseStudies, seedPosts } from "./seed-data";
+import { seedCaseStudies, seedFaqs, seedPosts, seedTestimonials } from "./seed-data";
 import { seedDatabase } from "./seed";
 import { createTestDb } from "./test-db";
 import { normalizeFeatureImages } from "@/lib/feature-images";
-import { validateCaseStudy, validatePost } from "@/lib/validation";
+import { validateCaseStudy, validateFaq, validatePost, validateTestimonial } from "@/lib/validation";
 
 describe("seed content", () => {
   it("passes the same validation the admin uses", () => {
@@ -71,6 +71,32 @@ describe("seed content", () => {
     await repo.deletePricingPlan(plans[0].id);
     await seedDatabase(db as never);
     expect(await repo.adminListPricingPlans()).toHaveLength(3);
+  });
+
+  it("seeds the FAQs each page showed and the six client quotes, and never brings back what the owner deleted", async () => {
+    const db = await createTestDb();
+    await seedDatabase(db as never);
+    const repo = createRepo(db as never);
+    expect(await repo.listPublishedFaqs("home")).toHaveLength(6);
+    expect(await repo.listPublishedFaqs("contact")).toHaveLength(5);
+    expect((await repo.listPublishedFaqs("home"))[0].question).toBe("How Long Does A Project Take?");
+    const quotes = await repo.listPublishedTestimonials();
+    expect(quotes.map((t) => t.name)).toEqual(["Emily Carter", "Daniel Brooks", "Sophia Martinez", "Emma Wilson", "Arjun Patel", "Michael Carter"]);
+    expect(quotes[0].avatarUrl).toBe("/images/testimonials/avatar-1.png");
+
+    await repo.deleteFaq((await repo.listPublishedFaqs("contact"))[0].id);
+    await repo.deleteTestimonial(quotes[0].id);
+    await seedDatabase(db as never);
+    expect(await repo.listPublishedFaqs("contact")).toHaveLength(4);
+    expect(await repo.listPublishedTestimonials()).toHaveLength(5);
+  });
+
+  it("seeded FAQs and testimonials pass the same validation the admin uses, and their photos exist", () => {
+    for (const f of seedFaqs) expect(validateFaq(f).ok, f.question).toBe(true);
+    for (const t of seedTestimonials) {
+      expect(validateTestimonial(t).ok, t.name).toBe(true);
+      if (t.avatarUrl) expect(existsSync(path.join(process.cwd(), "public", t.avatarUrl)), t.avatarUrl).toBe(true);
+    }
   });
 
   it("publishes everything and flags content that still needs the owner's text", async () => {

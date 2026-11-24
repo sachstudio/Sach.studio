@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { createRepo, type Repo } from "./repo";
 import { createTestDb } from "./test-db";
 import type { BookingInput } from "@/lib/cal-webhook";
-import type { CaseStudyInput, PostInput, PricingPlanInput } from "@/lib/validation";
+import type { CaseStudyInput, FaqInput, PostInput, PricingPlanInput, TestimonialInput } from "@/lib/validation";
 
 function study(overrides: Partial<CaseStudyInput> = {}): CaseStudyInput {
   return {
@@ -264,5 +264,83 @@ describe("pricing plans", () => {
     expect(await repo.deletePricingPlan(saved.id)).toEqual({ ok: true });
     expect(await repo.adminGetPricingPlan(saved.id)).toBeNull();
     expect((await repo.deletePricingPlan(saved.id)).ok).toBe(false);
+  });
+});
+
+describe("faqs", () => {
+  const faq = (overrides: Partial<FaqInput> = {}): FaqInput => ({
+    question: "How long does it take?",
+    answer: "About two weeks.",
+    pages: ["home"],
+    sortOrder: 100,
+    status: "published",
+    ...overrides,
+  });
+
+  it("gives each page only its own shown FAQs, in position order", async () => {
+    await repo.saveFaq(faq({ question: "Second", sortOrder: 20, pages: ["home", "contact"] }));
+    await repo.saveFaq(faq({ question: "First", sortOrder: 10, pages: ["home"] }));
+    await repo.saveFaq(faq({ question: "Contact only", sortOrder: 5, pages: ["contact"] }));
+    await repo.saveFaq(faq({ question: "Hidden", sortOrder: 1, status: "draft" }));
+    expect((await repo.listPublishedFaqs("home")).map((f) => f.question)).toEqual(["First", "Second"]);
+    expect((await repo.listPublishedFaqs("contact")).map((f) => f.question)).toEqual(["Contact only", "Second"]);
+    expect(await repo.adminListFaqs()).toHaveLength(4);
+  });
+
+  it("edits a FAQ in place, including which pages show it", async () => {
+    const saved = await repo.saveFaq(faq());
+    if (!saved.ok) throw new Error("setup failed");
+    await repo.saveFaq(faq({ answer: "Three weeks.", pages: ["contact"] }), saved.id);
+    expect(await repo.adminGetFaq(saved.id)).toMatchObject({ answer: "Three weeks.", pages: ["contact"] });
+    expect(await repo.listPublishedFaqs("home")).toHaveLength(0);
+  });
+
+  it("can hide, show and delete a FAQ", async () => {
+    const saved = await repo.saveFaq(faq());
+    if (!saved.ok) throw new Error("setup failed");
+    expect(await repo.setFaqStatus(saved.id, "draft")).toEqual({ ok: true });
+    expect(await repo.listPublishedFaqs("home")).toHaveLength(0);
+    expect(await repo.deleteFaq(saved.id)).toEqual({ ok: true });
+    expect(await repo.adminGetFaq(saved.id)).toBeNull();
+    expect((await repo.deleteFaq(saved.id)).ok).toBe(false);
+  });
+});
+
+describe("testimonials", () => {
+  const item = (overrides: Partial<TestimonialInput> = {}): TestimonialInput => ({
+    name: "Emily Carter",
+    role: "Founder, SaaS Startup",
+    tag: "Website & Landing Pages",
+    quote: "Great work.",
+    avatarUrl: "",
+    sortOrder: 100,
+    status: "published",
+    ...overrides,
+  });
+
+  it("only returns shown testimonials to the public site, in position order", async () => {
+    await repo.saveTestimonial(item({ name: "Second", sortOrder: 20 }));
+    await repo.saveTestimonial(item({ name: "First", sortOrder: 10 }));
+    await repo.saveTestimonial(item({ name: "Hidden", sortOrder: 5, status: "draft" }));
+    expect((await repo.listPublishedTestimonials()).map((t) => t.name)).toEqual(["First", "Second"]);
+    expect((await repo.adminListTestimonials()).map((t) => t.name)).toEqual(["Hidden", "First", "Second"]);
+  });
+
+  it("edits a testimonial in place", async () => {
+    const saved = await repo.saveTestimonial(item());
+    if (!saved.ok) throw new Error("setup failed");
+    await repo.saveTestimonial(item({ quote: "Even better.", avatarUrl: "/images/testimonials/avatar-1.png" }), saved.id);
+    expect(await repo.adminGetTestimonial(saved.id)).toMatchObject({ quote: "Even better.", avatarUrl: "/images/testimonials/avatar-1.png" });
+    expect(await repo.adminListTestimonials()).toHaveLength(1);
+  });
+
+  it("can hide, show and delete a testimonial", async () => {
+    const saved = await repo.saveTestimonial(item());
+    if (!saved.ok) throw new Error("setup failed");
+    expect(await repo.setTestimonialStatus(saved.id, "draft")).toEqual({ ok: true });
+    expect(await repo.listPublishedTestimonials()).toHaveLength(0);
+    expect(await repo.deleteTestimonial(saved.id)).toEqual({ ok: true });
+    expect(await repo.adminGetTestimonial(saved.id)).toBeNull();
+    expect((await repo.deleteTestimonial(saved.id)).ok).toBe(false);
   });
 });
