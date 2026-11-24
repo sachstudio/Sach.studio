@@ -18,6 +18,13 @@ describe("PageHeading", () => {
     expect(screen.getByRole("button", { name: "New case study" })).toBeInTheDocument();
   });
 
+  it("shows a back button before the title only when asked", () => {
+    const { rerender } = render(<PageHeading title="Edit post" />);
+    expect(screen.queryByRole("link", { name: /^Back/ })).toBeNull();
+    rerender(<PageHeading title="Edit post" back={{ href: "/admin/posts", label: "Blog posts" }} />);
+    expect(screen.getByRole("link", { name: "Back to Blog posts" })).toHaveAttribute("href", "/admin/posts");
+  });
+
   it("works without a subtitle or actions", () => {
     render(<PageHeading title="Blog posts" />);
     expect(screen.getByRole("heading", { name: "Blog posts" })).toBeInTheDocument();

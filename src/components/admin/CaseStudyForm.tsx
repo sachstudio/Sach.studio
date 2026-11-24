@@ -124,7 +124,7 @@ export function CaseStudyForm({ id, initial }: { id?: string; initial: CaseStudy
       }}
       className="flex flex-col gap-4"
     >
-      <PageHeader title={id ? "Edit case study" : "New case study"} />
+      <PageHeader title={id ? "Edit case study" : "New case study"} subtitle="A project on your Works page" />
 
       {notice && <FormNotice kind={notice.kind} text={notice.text} />}
 

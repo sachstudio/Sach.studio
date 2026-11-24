@@ -69,7 +69,7 @@ export function PostForm({ id, initial }: { id?: string; initial: PostInput }) {
       }}
       className="flex flex-col gap-4"
     >
-      <PageHeader title={id ? "Edit post" : "New post"} />
+      <PageHeader title={id ? "Edit post" : "New post"} subtitle="An article on your blog" />
 
       {notice && <FormNotice kind={notice.kind} text={notice.text} />}
 

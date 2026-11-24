@@ -62,7 +62,7 @@ export function PricingForm({ id, initial }: { id?: string; initial: PricingPlan
       }}
       className="flex flex-col gap-4"
     >
-      <PageHeader title={id ? "Edit package" : "New package"} />
+      <PageHeader title={id ? "Edit package" : "New package"} subtitle="A pricing card on your home page" />
 
       {notice && <FormNotice kind={notice.kind} text={notice.text} />}
 
