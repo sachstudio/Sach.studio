@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button, Pill, SectionHeading } from "@/components/ui";
+import { Button, Pill, SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
 import type { CaseStudy } from "@/db/schema";
 import { groupFeatureImages, normalizeFeatureImages } from "@/lib/feature-images";
 import { toCardData } from "@/lib/projects";
@@ -203,11 +203,13 @@ export function CaseStudyView({ study, related }: { study: CaseStudy; related: C
         {related.length > 0 && (
           <section className="flex flex-col gap-12">
             <h2 className="text-center font-serif text-4xl text-neutral-950 sm:text-[44px]">More like this</h2>
-            <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+            <SnapRow label="More like this, swipe to see more case studies" className="md:grid md:grid-cols-3 md:gap-6 lg:gap-8">
               {related.map((r) => (
-                <ProjectTileCard key={r.slug} project={toCardData(r)} showDate />
+                <SnapSlide key={r.slug}>
+                  <ProjectTileCard project={toCardData(r)} showDate />
+                </SnapSlide>
               ))}
-            </div>
+            </SnapRow>
           </section>
         )}
       </div>

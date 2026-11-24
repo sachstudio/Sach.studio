@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { SectionHeading } from "@/components/ui";
+import { SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
 import { cn } from "@/lib/cn";
 import { home } from "@/content/home";
 
@@ -19,9 +19,9 @@ function initials(name: string) {
     .slice(0, 2);
 }
 
-function TestimonialCard({ item }: { item: TestimonialItem }) {
+function TestimonialCard({ item, className }: { item: TestimonialItem; className?: string }) {
   return (
-    <article className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
+    <SnapSlide as="article" className={cn("rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card", className)}>
       <div className="flex h-full flex-col gap-6 rounded-2xl bg-neutral-100/70 p-5 sm:gap-8 sm:p-8 lg:p-10">
         <div className="flex items-center justify-between gap-4">
           {item.avatarUrl ? (
@@ -46,7 +46,7 @@ function TestimonialCard({ item }: { item: TestimonialItem }) {
           <p className="text-xs text-neutral-500">{item.role}</p>
         </footer>
       </div>
-    </article>
+    </SnapSlide>
   );
 }
 
@@ -83,18 +83,26 @@ export function Testimonials({ items }: { items: TestimonialItem[] }) {
   const pages = Math.ceil(items.length / PER_PAGE);
   // If testimonials were removed while the page was open, never land past the last pair.
   const current = Math.min(page, pages - 1);
-  const visible = items.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
 
   return (
     <section className="px-4 py-16 sm:px-6 sm:py-28">
       <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={home.testimonialsIntro.title} subtitle={home.testimonialsIntro.subtitle} />
-        <div key={current} className="motion-enter-small grid gap-6 lg:grid-cols-2" aria-live="polite">
-          {visible.map((t) => (
-            <TestimonialCard key={t.id} item={t} />
+        {/*
+          Phones: every testimonial in one swipe row, no arrows. From md: the pair for the current page, with the arrows below.
+          All cards stay in the page; the ones off the current page are only hidden from md up.
+        */}
+        <SnapRow
+          key={current}
+          label="Client testimonials, swipe to see more"
+          aria-live="polite"
+          className="motion-enter-small md:grid md:gap-6 lg:grid-cols-2"
+        >
+          {items.map((t, i) => (
+            <TestimonialCard key={t.id} item={t} className={Math.floor(i / PER_PAGE) === current ? undefined : "md:hidden"} />
           ))}
-        </div>
-        <div className="flex justify-center gap-3">
+        </SnapRow>
+        <div className="hidden justify-center gap-3 md:flex">
           <ArrowButton direction="prev" disabled={current === 0} onClick={() => setPage((p) => Math.max(0, p - 1))} />
           <ArrowButton direction="next" disabled={current >= pages - 1} onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} />
         </div>

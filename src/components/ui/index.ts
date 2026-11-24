@@ -4,3 +4,4 @@ export { SectionHeading } from "./SectionHeading";
 export { Tabs } from "./Tabs";
 export { Accordion } from "./Accordion";
 export { Card } from "./Card";
+export { SnapRow, SnapSlide } from "./SnapRow";

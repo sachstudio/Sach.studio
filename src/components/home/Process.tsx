@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { SectionHeading } from "@/components/ui";
+import { SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
 import { home } from "@/content/home";
 
 export function Process() {
@@ -8,10 +8,11 @@ export function Process() {
     <section className="px-4 py-16 sm:px-6 sm:py-28">
       <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={process.title} subtitle={process.subtitle} />
-        {/* One step per row below lg (text beside the picture on tablets), three columns from lg. */}
-        <ol className="grid gap-6 lg:grid-cols-3">
+        {/* Phones: swipe row. md: one step per row (text beside the picture), three columns from lg. */}
+        <SnapRow as="ol" label="Our process, swipe to see more steps" className="md:grid md:gap-6 lg:grid-cols-3">
           {process.steps.map((step) => (
-            <li
+            <SnapSlide
+              as="li"
               key={step.label}
               className="flex flex-col rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card md:flex-row lg:flex-col"
             >
@@ -30,9 +31,9 @@ export function Process() {
                 height={380}
                 className="aspect-[4/3] w-full rounded-2xl object-cover md:aspect-auto md:w-[44%] md:shrink-0 lg:aspect-square lg:w-full"
               />
-            </li>
+            </SnapSlide>
           ))}
-        </ol>
+        </SnapRow>
       </div>
     </section>
   );

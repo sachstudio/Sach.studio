@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { SectionHeading } from "@/components/ui";
+import { SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
 import { about } from "@/content/about";
 
 export function Values() {
@@ -8,9 +8,10 @@ export function Values() {
     <section className="px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={values.title} subtitle={values.subtitle} />
-        <ul className="grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
+        <SnapRow as="ul" label="What drives Sach Studio, swipe to see more values" className="md:grid md:grid-cols-2 md:gap-6 xl:grid-cols-4">
           {values.items.map((item) => (
-            <li
+            <SnapSlide
+              as="li"
               key={item.title}
               className="flex flex-col items-center gap-5 rounded-3xl border border-neutral-200 bg-white p-6 text-center shadow-card sm:gap-6 sm:p-8"
             >
@@ -23,9 +24,9 @@ export function Values() {
                 className="h-24 w-auto rounded-2xl sm:h-28"
               />
               <p className="text-base leading-[1.65] text-neutral-600">{item.text}</p>
-            </li>
+            </SnapSlide>
           ))}
-        </ul>
+        </SnapRow>
       </div>
     </section>
   );

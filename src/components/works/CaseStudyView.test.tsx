@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { CaseStudyView } from "./CaseStudyView";
 import type { CaseStudy } from "@/db/schema";
 
@@ -125,5 +125,13 @@ describe("CaseStudyView", () => {
     );
     expect(screen.getAllByAltText(/gallery image/)).toHaveLength(1);
     expect(screen.getByAltText("Acme: Website Redesign: gallery image 1")).toBeInTheDocument();
+  });
+
+  it("puts the related case studies in a swipe row for phones, one slide each", () => {
+    const related = [study({ slug: "a", title: "Alpha" }), study({ slug: "b", title: "Beta" }), study({ slug: "c", title: "Gamma" })];
+    render(<CaseStudyView study={study()} related={related} />);
+    const row = screen.getByRole("region", { name: "More like this, swipe to see more case studies" });
+    expect(within(row).getAllByRole("article")).toHaveLength(3);
+    expect(screen.getAllByRole("button", { name: /^Go to slide [0-9] of 3$/ })).toHaveLength(3);
   });
 });

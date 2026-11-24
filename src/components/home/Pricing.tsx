@@ -1,4 +1,4 @@
-import { Button, SectionHeading } from "@/components/ui";
+import { Button, SectionHeading, SnapRow, SnapSlide } from "@/components/ui";
 import { home } from "@/content/home";
 import type { PricingPlan } from "@/db/schema";
 
@@ -17,10 +17,11 @@ export function Pricing({ plans }: { plans: Pick<PricingPlan, "id" | "name" | "d
     <section id="pricing" className="scroll-mt-10 px-4 py-16 sm:px-6 sm:py-28">
       <div className="mx-auto flex max-w-[1300px] flex-col gap-10 sm:gap-14">
         <SectionHeading title={pricing.title} subtitle={pricing.subtitle} />
-        {/* One card per row below lg (price panel beside the feature list on tablets), two columns from lg. */}
-        <div className="grid gap-6 lg:grid-cols-2">
+        {/* Phones: swipe row. md: one card per row (price panel beside the feature list), two columns from lg. */}
+        <SnapRow label="Pricing packages, swipe to see more" className="md:grid md:gap-6 lg:grid-cols-2">
           {plans.map((plan) => (
-            <article
+            <SnapSlide
+              as="article"
               key={plan.id}
               className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:block"
             >
@@ -45,9 +46,9 @@ export function Pricing({ plans }: { plans: Pick<PricingPlan, "id" | "name" | "d
                   </li>
                 ))}
               </ul>
-            </article>
+            </SnapSlide>
           ))}
-        </div>
+        </SnapRow>
       </div>
     </section>
   );

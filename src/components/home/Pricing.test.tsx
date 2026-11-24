@@ -46,4 +46,20 @@ describe("Pricing", () => {
     expect(screen.getByRole("heading", { name: "Flexible Pricing Plan" })).toBeInTheDocument();
     expect(screen.queryByRole("article")).toBeNull();
   });
+
+  it("lets phones swipe through the packages, one card per slide, and keeps the grid from lg", () => {
+    render(<Pricing plans={plans} />);
+    const row = screen.getByRole("region", { name: "Pricing packages, swipe to see more" });
+    expect(within(row).getAllByRole("article")).toHaveLength(4);
+    expect(within(row).getAllByRole("article")[0].className).toContain("snap-start");
+    expect(screen.getAllByRole("button", { name: /^Go to slide [0-9] of 4$/ })).toHaveLength(4);
+    expect(screen.getAllByRole("article")[0].parentElement!.className).toContain("lg:grid-cols-2");
+  });
+
+  it("only applies the description minimum height from lg", () => {
+    render(<Pricing plans={plans} />);
+    const description = screen.getByText(plans[0].description);
+    expect(description.className).toContain("lg:min-h-[3.5rem]");
+    expect(description.className).not.toMatch(/(^| )min-h-/);
+  });
 });
