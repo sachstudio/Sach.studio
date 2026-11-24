@@ -26,6 +26,12 @@ describe("CalEmbed", () => {
     expect(frame.parentElement).toHaveClass("w-full");
   });
 
+  it("has no frame of its own around the Cal.com calendar", () => {
+    render(<CalEmbed calLink="sach/15min" />);
+    const wrapper = screen.getByTitle("Book a 15-minute call").parentElement!;
+    expect(wrapper.className).not.toMatch(/border|shadow|bg-|rounded|p-\d/);
+  });
+
   it("falls back to the environment link", () => {
     vi.stubEnv("NEXT_PUBLIC_CAL_LINK", "studio/15min");
     render(<CalEmbed />);

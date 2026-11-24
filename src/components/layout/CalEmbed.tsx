@@ -14,12 +14,14 @@ export function CalEmbed({ calLink }: { calLink?: string }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1300px] overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 p-2.5 shadow-card">
+    // No frame around the calendar: Cal.com draws its own card, at most 1040px wide, so the box is exactly that
+    // wide and the widget fills it. On smaller screens it shrinks with the page.
+    <div className="mx-auto w-full max-w-[1040px]">
       <iframe
         title="Book a 15-minute call"
         src={`https://cal.com/${link}?embed=true&layout=month_view&theme=light`}
         loading="lazy"
-        className="h-[760px] w-full rounded-2xl border-0 bg-white sm:h-[680px]"
+        className="h-[760px] w-full border-0 bg-transparent sm:h-[680px]"
       />
     </div>
   );
