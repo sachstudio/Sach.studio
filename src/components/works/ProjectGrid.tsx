@@ -106,7 +106,7 @@ export function ProjectGrid({
           {shown.length > 1 && (
             <div className="grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
               {shown.slice(1).map((p) => (
-                <ProjectTileCard key={p.slug} project={p} />
+                <ProjectTileCard key={p.slug} project={p} likeLeadOnPhones />
               ))}
             </div>
           )}

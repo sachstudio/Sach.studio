@@ -65,17 +65,48 @@ export function ProjectRowCard({ project }: { project: ProjectCardData }) {
   );
 }
 
-/** Compact card: image on top, title and links below (Home grid and "More like this"). */
-export function ProjectTileCard({ project, showDate = false }: { project: ProjectCardData; showDate?: boolean }) {
+/**
+ * Compact card: image on top, title and links below (Home grid and "More like this").
+ * With likeLeadOnPhones it looks exactly like the wide lead card below tablet width, one bordered card with the
+ * label, title, summary and links inside, so every project on a phone reads the same. From md up it is the plain tile.
+ */
+export function ProjectTileCard({
+  project,
+  showDate = false,
+  likeLeadOnPhones = false,
+}: {
+  project: ProjectCardData;
+  showDate?: boolean;
+  likeLeadOnPhones?: boolean;
+}) {
   const meta = showDate ? (project.displayDate ?? cardMeta(project)) : "";
+  const lead = likeLeadOnPhones;
   return (
-    <article className="motion-lift flex flex-col gap-5">
-      <div className="rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card">
+    <article
+      className={cn(
+        "motion-lift flex flex-col",
+        lead
+          ? "rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card md:gap-5 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none"
+          : "gap-5",
+      )}
+    >
+      <div className={cn(!lead && "rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-card", lead && "md:rounded-3xl md:border md:border-neutral-200 md:bg-white md:p-2.5 md:shadow-card")}>
         <CardImage project={project} sizes="(min-width: 768px) 400px, 100vw" className="aspect-[4/3]" />
       </div>
-      <div className="flex flex-col gap-3 px-1">
-        {meta && <p className="text-sm text-neutral-500">{meta}</p>}
-        <h3 className="font-serif text-[28px] leading-tight text-neutral-950 md:text-2xl lg:text-[28px]">{project.title}</h3>
+      <div className={cn("flex flex-col", lead ? "gap-8 px-3 pb-6 pt-5 md:gap-3 md:px-1 md:pb-0 md:pt-0" : "gap-3 px-1")}>
+        {lead && cardMeta(project) && <p className="text-sm font-medium uppercase tracking-[0.2em] text-neutral-600 md:hidden">{cardMeta(project)}</p>}
+        {meta && <p className={cn("text-sm text-neutral-500", lead && "max-md:hidden")}>{meta}</p>}
+        <div className="flex flex-col gap-4 md:gap-3">
+          <h3
+            className={cn(
+              "font-serif leading-tight text-neutral-950 md:text-2xl lg:text-[28px]",
+              lead ? "text-3xl leading-[1.15] sm:text-4xl md:leading-tight" : "text-[28px]",
+            )}
+          >
+            {project.title}
+          </h3>
+          {lead && project.summary && <p className="text-[17px] leading-[1.75] text-neutral-600 md:hidden">{project.summary}</p>}
+        </div>
         <CardActions project={project} />
       </div>
     </article>
