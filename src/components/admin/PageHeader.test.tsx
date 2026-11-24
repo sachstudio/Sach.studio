@@ -33,6 +33,24 @@ describe("PageHeader", () => {
     expect(within(trail).getByText("Edit post")).toHaveAttribute("aria-current", "page");
   });
 
+  it("has no back button on a list page", () => {
+    renderHeader("/admin/case-studies");
+    expect(screen.queryByRole("link", { name: /^Back/ })).toBeNull();
+  });
+
+  it("puts a back button before the title on an inner page, going to the list", () => {
+    renderHeader("/admin/pricing/new");
+    const back = screen.getByRole("link", { name: "Back to Packages" });
+    expect(back).toHaveAttribute("href", "/admin/pricing");
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(back.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("goes back one step at a time: preview returns to the edit page", () => {
+    renderHeader("/admin/case-studies/3f2a/preview");
+    expect(screen.getByRole("link", { name: "Back to Edit case study" })).toHaveAttribute("href", "/admin/case-studies/3f2a");
+  });
+
   it("shows the Preview step with a link back to the edit page", () => {
     renderHeader("/admin/case-studies/3f2a/preview");
     const trail = screen.getByRole("navigation", { name: "breadcrumb" });
